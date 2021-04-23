@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "629277850112",
+    "project_id": "deliverinator",
+    "storage_bucket": "deliverinator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629277850112:android:bc65fb026f85aa5b0eb6e5",
+        "android_client_info": {
+          "package_name": "com.example.deliverinator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629277850112-979l2o8vfi2pjtl0lkgkdjnfo31if1ad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARzffsFCMQ5R3aUf93mtt8E75txZ4949c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629277850112-979l2o8vfi2pjtl0lkgkdjnfo31if1ad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
