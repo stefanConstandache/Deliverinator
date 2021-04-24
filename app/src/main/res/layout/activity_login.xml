@@ -33,8 +33,9 @@
         android:layout_marginTop="32dp"
         android:hint="@string/login_email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/login_button"
+        app:layout_constraintBottom_toTopOf="@+id/login_password_editText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_app_name_textView"
         app:layout_constraintVertical_bias="0.3" />
@@ -46,6 +47,7 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_email_editText"
         app:layout_constraintVertical_bias="0.2" />
