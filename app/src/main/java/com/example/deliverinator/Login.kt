@@ -36,7 +36,7 @@ class Login : AppCompatActivity() {
     }
 
     fun launchRegisterActivity(view: View) {
-        intent = Intent(this, Register::class.java)
+        val intent = Intent(this, Register::class.java)
         startActivity(intent)
     }
 
@@ -61,7 +61,5 @@ class Login : AppCompatActivity() {
                 Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
             }
         }
-        
-
     }
 }
