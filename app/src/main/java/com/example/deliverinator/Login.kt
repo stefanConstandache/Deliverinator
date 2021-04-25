@@ -70,9 +70,4 @@ class Login : AppCompatActivity() {
             }
         }
     }
-
-    fun launchRegisterActivity(view: View) {
-        intent = Intent(this, Register::class.java)
-        startActivity(intent)
-    }
 }
