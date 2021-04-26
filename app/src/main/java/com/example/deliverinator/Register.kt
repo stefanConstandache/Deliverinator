@@ -56,26 +56,26 @@ class Register : AppCompatActivity() {
         val phone = mPhone.text.toString().trim()
 
         if (TextUtils.isEmpty(fullName)) {
-            mFullName.error = "Field cannot be empty"
+            mFullName.error = getString(R.string.register_empty_field)
             return
         }
 
         if (!isValidEmail(email)) {
-            mEmail.error = "Invalid email"
+            mEmail.error = getString(R.string.invalid_email)
             return
         }
 
         if (!isValidPhone(phone)) {
-            mPhone.error = "Invalid phone number"
+            mPhone.error = getString(R.string.register_invalid_phone)
         }
 
         if (!isValidPassword(password)) {
-            mPassword.error = "Password must be 8 characters long and contain at least one number and one uppercase"
+            mPassword.error = getString(R.string.register_invalid_password)
             return
         }
 
         if (confirmPassword != password) {
-            mConfirmPassword.error = "Passwords must match"
+            mConfirmPassword.error = getString(R.string.register_invalid_confirm_password)
             return
         }
 
@@ -83,14 +83,14 @@ class Register : AppCompatActivity() {
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(this, "Registration Completed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.registration_completed), Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
 
                 val dashboardIntent = Intent(this, Dashboard::class.java)
                 startActivity(dashboardIntent)
             } else {
-                Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.user_registered), Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
             }

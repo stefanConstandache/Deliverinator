@@ -44,12 +44,12 @@ class Login : AppCompatActivity() {
         val password = mPassword.text.toString().trim()
 
         if (!isValidEmail(email)) {
-            mEmail.error = "Invalid Email!"
+            mEmail.error = getString(R.string.invalid_email)
             return
         }
 
         if (!isValidPassword(password)) {
-            mPassword.error = "Invalid Password!"
+            mPassword.error = getString(R.string.invalid_password)
             return
         }
 
@@ -57,14 +57,14 @@ class Login : AppCompatActivity() {
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(this, "Logged In!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.login_logged_in), Toast.LENGTH_SHORT).show()
 
                 val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
                 startActivity(dashboardIntent)
 
                 mProgressBar.visibility = View.INVISIBLE
             } else {
-                Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.login_incorrect), Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
             }
