@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
+import com.example.deliverinator.Utils.Companion.isValidEmail
+import com.example.deliverinator.Utils.Companion.isValidPassword
+import com.example.deliverinator.Utils.Companion.isValidPhone
 import com.google.firebase.auth.FirebaseAuth
 
 class Register : AppCompatActivity() {
@@ -44,6 +47,7 @@ class Register : AppCompatActivity() {
         val intent = Intent(this, Login::class.java)
         startActivity(intent)
     }
+
     fun launchDashBoard(view: View) {
         val fullName = mFullName.text.toString().trim()
         val email = mEmail.text.toString().trim()
@@ -51,20 +55,13 @@ class Register : AppCompatActivity() {
         val confirmPassword = mConfirmPassword.text.toString().trim()
         val phone = mPhone.text.toString().trim()
 
-        mProgressBar.visibility = View.VISIBLE
-
         if (TextUtils.isEmpty(fullName)) {
-            mFullName.error = "Field cannot be empty";
+            mFullName.error = "Field cannot be empty"
             return
         }
 
         if (!isValidEmail(email)) {
-            mEmail.error = "Invalid email";
-            return
-        }
-
-        if (!isValidPassword(password)) {
-            mPassword.error = "Password must be 8 characters long and contain at least one number and one uppercase";
+            mEmail.error = "Invalid email"
             return
         }
 
@@ -72,18 +69,30 @@ class Register : AppCompatActivity() {
             mPhone.error = "Invalid phone number"
         }
 
+        if (!isValidPassword(password)) {
+            mPassword.error = "Password must be 8 characters long and contain at least one number and one uppercase"
+            return
+        }
+
         if (confirmPassword != password) {
             mConfirmPassword.error = "Passwords must match"
             return
         }
 
+        mProgressBar.visibility = View.VISIBLE
+
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(this, "Registration Completed", Toast.LENGTH_SHORT).show()
+
+                mProgressBar.visibility = View.INVISIBLE
+
                 val dashboardIntent = Intent(this, Dashboard::class.java)
                 startActivity(dashboardIntent)
             } else {
                 Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
+
+                mProgressBar.visibility = View.INVISIBLE
             }
         }
     }
