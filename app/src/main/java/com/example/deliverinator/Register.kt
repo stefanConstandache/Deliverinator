@@ -67,6 +67,7 @@ class Register : AppCompatActivity() {
 
         if (!isValidPhone(phone)) {
             mPhone.error = getString(R.string.register_invalid_phone)
+            return
         }
 
         if (!isValidPassword(password)) {
