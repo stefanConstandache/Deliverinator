@@ -32,36 +32,42 @@ class Login : AppCompatActivity() {
             startActivity(dashboardIntent)
             finish()
         }
-
     }
 
     fun launchRegisterActivity(view: View) {
-        intent = Intent(this, Register::class.java)
+        val intent = Intent(this, Register::class.java)
         startActivity(intent)
     }
 
     fun launchDashboard(view: View) {
         val email = mEmail.text.toString().trim()
         val password = mPassword.text.toString().trim()
+
         if (!isValidEmail(email)) {
             mEmail.error = "Invalid Email!"
             return
         }
+
         if (!isValidPassword(password)) {
             mPassword.error = "Invalid Password!"
             return
         }
+
         mProgressBar.visibility = View.VISIBLE
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { 
+
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
                 Toast.makeText(this, "Logged In!", Toast.LENGTH_SHORT).show()
+
                 val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
                 startActivity(dashboardIntent)
+
+                mProgressBar.visibility = View.INVISIBLE
             } else {
                 Toast.makeText(this, "Error!", Toast.LENGTH_SHORT).show()
+
+                mProgressBar.visibility = View.INVISIBLE
             }
         }
-        
-
     }
 }
