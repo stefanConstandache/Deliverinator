@@ -20,4 +20,12 @@
     <string name="register_invalid_phone">Invalid phone number</string>
     <string name="registration_completed">Registration Completed</string>
     <string name="user_registered">User already registered!</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="reset_link_sent">Reset Link Sent!</string>
+    <string name="link_not_sent">\"Link couldn\'t be sent \"</string>
+    <string name="send">Send</string>
 </resources>
