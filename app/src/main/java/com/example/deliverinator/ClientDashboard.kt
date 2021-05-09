@@ -1,22 +1,24 @@
 package com.example.deliverinator
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
-class Dashboard : AppCompatActivity() {
+class ClientDashboard : AppCompatActivity() {
+    private lateinit var mHello: TextView
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        setContentView(R.layout.activity_client_dashboard)
 
+        mHello = findViewById(R.id.client_dashboard_textView)
         mAuth = FirebaseAuth.getInstance()
+
+        mHello.text = "Hello client ${mAuth.currentUser?.email}"
     }
 
     fun launchLogin(view: View) {

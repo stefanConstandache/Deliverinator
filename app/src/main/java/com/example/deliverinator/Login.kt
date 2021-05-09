@@ -1,17 +1,13 @@
 package com.example.deliverinator
 
-import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
-import com.example.deliverinator.Utils.Companion.isValidEmail
-import com.example.deliverinator.Utils.Companion.isValidPassword
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class Login : AppCompatActivity() {
@@ -38,10 +34,30 @@ class Login : AppCompatActivity() {
         mStore = FirebaseFirestore.getInstance()
 
         val user = mAuth.currentUser
-
+        val x = user?.email
         if (user != null && user.isEmailVerified) {
-            val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
-            startActivity(dashboardIntent)
+            val docRef: DocumentReference =
+                mStore.collection("Users").document(user.uid)
+
+            docRef.get().addOnSuccessListener { docSnap ->
+                when {
+                    docSnap.getString("UserType") == "0" -> {
+                        val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
+                        startActivity(dashboardIntent)
+                    }
+
+                    docSnap.getString("UserType") == "1" -> {
+                        val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
+                        startActivity(dashboardIntent)
+                    }
+
+                    docSnap.getString("UserType") == "2" -> {
+                        val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
+                        startActivity(dashboardIntent)
+                    }
+                }
+            }
+
             finish()
         }
     }
@@ -54,44 +70,53 @@ class Login : AppCompatActivity() {
     fun launchDashboard(view: View) {
         val email = mEmail.text.toString().trim()
         val password = mPassword.text.toString().trim()
-        val user = mAuth.currentUser
-        val isEmailVerified = user?.isEmailVerified
 
         mProgressBar.visibility = View.VISIBLE
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful && isEmailVerified == true) {
-                Toast.makeText(this, R.string.login_logged_in, Toast.LENGTH_SHORT).show()
+        mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener {
+            val user = it.user
 
-                mProgressBar.visibility = View.INVISIBLE
+            when (user?.isEmailVerified) {
+                true -> {
+                    Toast.makeText(this, R.string.login_logged_in, Toast.LENGTH_SHORT).show()
 
-                if (user != null) {
+                    mProgressBar.visibility = View.INVISIBLE
+
                     val docRef: DocumentReference =
                         mStore.collection("Users").document(user.uid)
+
                     docRef.get().addOnSuccessListener { docSnap ->
-                        if (docSnap.getString("UserType") != "0") {
-                            val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
-                            startActivity(dashboardIntent)
-                        } else if (docSnap.getString("UserType") != "1") {
-                            val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
-                            startActivity(dashboardIntent)
-                        } else if (docSnap.getString("UserType") != "2") {
-                            val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
-                            startActivity(dashboardIntent)
+                        when {
+                            docSnap.getString("UserType") == "0" -> {
+                                val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
+                                startActivity(dashboardIntent)
+                            }
+
+                            docSnap.getString("UserType") == "1" -> {
+                                val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
+                                startActivity(dashboardIntent)
+                            }
+
+                            docSnap.getString("UserType") == "2" -> {
+                                val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
+                                startActivity(dashboardIntent)
+                            }
                         }
                     }
+
+                    finish()
                 }
 
-                finish()
-            } else if (isEmailVerified == false) {
-                Toast.makeText(this, R.string.email_not_verified, Toast.LENGTH_SHORT).show()
+                false -> {
+                    Toast.makeText(this, R.string.email_not_verified, Toast.LENGTH_SHORT).show()
 
-                mProgressBar.visibility = View.INVISIBLE
-            } else {
-                Toast.makeText(this, R.string.login_incorrect, Toast.LENGTH_SHORT).show()
-
-                mProgressBar.visibility = View.INVISIBLE
+                    mProgressBar.visibility = View.INVISIBLE
+                }
             }
+        }.addOnFailureListener {
+            Toast.makeText(this, R.string.login_incorrect, Toast.LENGTH_SHORT).show()
+
+            mProgressBar.visibility = View.INVISIBLE
         }
     }
 

@@ -1,20 +1,17 @@
 package com.example.deliverinator
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.example.deliverinator.Utils.Companion.isValidEmail
 import com.example.deliverinator.Utils.Companion.isValidPassword
 import com.example.deliverinator.Utils.Companion.isValidPhone
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.*
-import kotlin.collections.HashMap
 
 class Register : AppCompatActivity() {
     private lateinit var mFullName: EditText
@@ -46,7 +43,7 @@ class Register : AppCompatActivity() {
         mRadioGroup = findViewById(R.id.radioGroup)
 
         if (mAuth.currentUser != null) {
-            val dashboardIntent = Intent(this, Dashboard::class.java)
+            val dashboardIntent = Intent(this, ClientDashboard::class.java)
             startActivity(dashboardIntent)
             finish()
         }
@@ -106,35 +103,36 @@ class Register : AppCompatActivity() {
                     }
 
                 Toast.makeText(this, R.string.registration_completed, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, R.string.user_registered, Toast.LENGTH_SHORT).show()
+            }
+        }.addOnSuccessListener {
+            val user = mAuth.currentUser
 
-                if (user != null) {
-                    val radioButton: RadioButton = findViewById(mRadioGroup.checkedRadioButtonId)
-                    val docRef: DocumentReference = mStore.collection("Users").document(user.uid)
-                    val userInfo = HashMap<String, Any>()
+            if (user != null) {
+                val radioButton: RadioButton = findViewById(mRadioGroup.checkedRadioButtonId)
+                val docRef: DocumentReference = mStore.collection("Users").document(user.uid)
+                val userInfo = HashMap<String, Any>()
 
-                    userInfo["FullName"] = fullName
-                    userInfo["UserEmail"] = email
-                    userInfo["PhoneNumber"] = phone
+                userInfo["FullName"] = fullName
+                userInfo["UserEmail"] = email
+                userInfo["PhoneNumber"] = phone
 
-                    // 0 means admin, 1 means user, 2 means restaurant
-                    if (radioButton.text == "Register as Client"){
-                        userInfo["UserType"] = "1"
-                    } else {
-                        userInfo["UserType"] = "2"
-                    }
-
-                    docRef.set(userInfo)
+                // 0 means admin, 1 means user, 2 means restaurant
+                if (radioButton.text == "Register as Client"){
+                    userInfo["UserType"] = "1"
+                } else {
+                    userInfo["UserType"] = "2"
                 }
+
+                docRef.set(userInfo)
 
                 mProgressBar.visibility = View.INVISIBLE
 
                 val loginIntent = Intent(this, Login::class.java)
                 startActivity(loginIntent)
-                finish()
-            } else {
-                Toast.makeText(this, R.string.user_registered, Toast.LENGTH_SHORT).show()
 
-                mProgressBar.visibility = View.INVISIBLE
+                finish()
             }
         }
     }
