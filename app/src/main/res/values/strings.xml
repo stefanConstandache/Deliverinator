@@ -10,4 +10,14 @@
     <string name="register_confirm_password">Confirm Password</string>
     <string name="login_register_here">Don\'t have an account? Register here</string>
     <string name="dashboard_logout">Logout</string>
+    <string name="login_incorrect">Incorrect email and/or password</string>
+    <string name="login_logged_in">Logged In!</string>
+    <string name="invalid_email">Invalid Email!</string>
+    <string name="invalid_password">Invalid Password!</string>
+    <string name="register_invalid_password">Password must be 8 characters long and contain at least one number and one uppercase</string>
+    <string name="register_invalid_confirm_password">Passwords must match</string>
+    <string name="register_empty_field">Field cannot be empty</string>
+    <string name="register_invalid_phone">Invalid phone number</string>
+    <string name="registration_completed">Registration Completed</string>
+    <string name="user_registered">User already registered!</string>
 </resources>
