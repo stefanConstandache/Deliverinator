@@ -12,15 +12,15 @@ import com.example.deliverinator.Utils.Companion.isValidPhone
 import com.google.firebase.auth.FirebaseAuth
 
 class Register : AppCompatActivity() {
-    lateinit var mFullName: EditText
-    lateinit var mEmail: EditText
-    lateinit var mPassword: EditText
-    lateinit var mConfirmPassword: EditText
-    lateinit var mPhone: EditText
-    lateinit var mRegisterBtn: Button
-    lateinit var mAuth: FirebaseAuth
-    lateinit var mLoginBtn: TextView
-    lateinit var mProgressBar: ProgressBar
+    private lateinit var mFullName: EditText
+    private lateinit var mEmail: EditText
+    private lateinit var mPassword: EditText
+    private lateinit var mConfirmPassword: EditText
+    private lateinit var mPhone: EditText
+    private lateinit var mRegisterBtn: Button
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mLoginBtn: TextView
+    private lateinit var mProgressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,8 +100,8 @@ class Register : AppCompatActivity() {
 
                 mProgressBar.visibility = View.INVISIBLE
 
-                val dashboardIntent = Intent(this, Dashboard::class.java)
-                startActivity(dashboardIntent)
+                val loginIntent = Intent(this, Login::class.java)
+                startActivity(loginIntent)
             } else {
                 Toast.makeText(this, R.string.user_registered, Toast.LENGTH_SHORT).show()
 

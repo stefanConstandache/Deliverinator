@@ -29,4 +29,6 @@
     <string name="link_not_sent">\"Link couldn\'t be sent \"</string>
     <string name="send">Send</string>
     <string name="verification_mail_sent">Verification Mail Sent</string>
+    <string name="email_not_verified">Email not verified!</string>
+    <string name="verify_now">Verify now</string>
 </resources>

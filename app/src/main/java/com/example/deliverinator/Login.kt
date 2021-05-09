@@ -12,17 +12,18 @@ import com.example.deliverinator.Utils.Companion.isValidPassword
 import com.google.firebase.auth.FirebaseAuth
 
 class Login : AppCompatActivity() {
-    lateinit var mEmail: EditText
-    lateinit var mPassword: EditText
-    lateinit var mLoginButton: Button
-    lateinit var mRegisterHere: TextView
-    lateinit var mForgotPassword: TextView
-    lateinit var mProgressBar: ProgressBar
-    lateinit var mAuth: FirebaseAuth
+    private lateinit var mEmail: EditText
+    private lateinit var mPassword: EditText
+    private lateinit var mLoginButton: Button
+    private lateinit var mRegisterHere: TextView
+    private lateinit var mForgotPassword: TextView
+    private lateinit var mProgressBar: ProgressBar
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
         mEmail = findViewById(R.id.login_email_editText)
         mPassword = findViewById(R.id.login_password_editText)
         mLoginButton = findViewById(R.id.login_button)
@@ -31,7 +32,9 @@ class Login : AppCompatActivity() {
         mProgressBar = findViewById(R.id.login_progressBar)
         mAuth = FirebaseAuth.getInstance()
 
-        if (mAuth.currentUser != null) {
+        val user = mAuth.currentUser
+
+        if (user != null && user.isEmailVerified) {
             val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
             startActivity(dashboardIntent)
             finish()
@@ -46,15 +49,21 @@ class Login : AppCompatActivity() {
     fun launchDashboard(view: View) {
         val email = mEmail.text.toString().trim()
         val password = mPassword.text.toString().trim()
+        val user = mAuth.currentUser
+        val isEmailVerified = user?.isEmailVerified
 
         mProgressBar.visibility = View.VISIBLE
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if (it.isSuccessful) {
+            if (it.isSuccessful && isEmailVerified == true) {
                 Toast.makeText(this, R.string.login_logged_in, Toast.LENGTH_SHORT).show()
 
                 val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
                 startActivity(dashboardIntent)
+
+                mProgressBar.visibility = View.INVISIBLE
+            } else if (isEmailVerified == false) {
+                Toast.makeText(this, R.string.email_not_verified, Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
             } else {
@@ -78,8 +87,7 @@ class Login : AppCompatActivity() {
             .setPositiveButton(R.string.send) { _, _ ->
                 val mail = mailField.text.toString().trim()
 
-                mAuth
-                    .sendPasswordResetEmail(mail)
+                mAuth.sendPasswordResetEmail(mail)
                     .addOnSuccessListener {
                         Toast.makeText(this, R.string.reset_link_sent, Toast.LENGTH_SHORT)
                             .show()
