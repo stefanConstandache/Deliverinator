@@ -10,13 +10,12 @@
         android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/register_button"
         android:onClick="launchDashBoard"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/register_button"
+        app:layout_constraintBottom_toTopOf="@+id/register_login_here"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <TextView
         android:id="@+id/register_app_name"
@@ -24,11 +23,10 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/register_button"
+        app:layout_constraintBottom_toTopOf="@+id/register_full_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/register_full_name"
@@ -37,10 +35,8 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/register_email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_app_name"
-        app:layout_constraintVertical_bias="0.100000024" />
+        app:layout_constraintTop_toBottomOf="@+id/register_app_name" />
 
     <EditText
         android:id="@+id/register_email"
@@ -49,7 +45,6 @@
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/register_phone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_full_name" />
 
@@ -60,7 +55,6 @@
         android:inputType="phone"
         app:layout_constraintBottom_toTopOf="@+id/register_password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_email" />
 
@@ -71,7 +65,6 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/register_confirm_password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_phone" />
 
@@ -80,9 +73,8 @@
         style="@style/login_editText"
         android:hint="@string/register_confirm_password"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/register_button"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_password" />
 
@@ -90,14 +82,12 @@
         android:id="@+id/register_login_here"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="Already registered? Login here"
         android:onClick="launchLoginActivity"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/already_registered"
+        app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/register_button" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -109,4 +99,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/register_login_here" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="174dp"
+        android:layout_height="94dp"
+        app:layout_constraintBottom_toTopOf="@+id/register_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/register_confirm_password">
+
+        <RadioButton
+            android:id="@+id/radioButtonClient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/register_as_client" />
+
+        <RadioButton
+            android:id="@+id/radioButtonRestaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_as_restaurant" />
+
+    </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

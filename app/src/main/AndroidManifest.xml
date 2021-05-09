@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverinator">
-        <activity android:name=".Dashboard"></activity>
+        <activity android:name=".RestaurantDashboard"></activity>
+        <activity android:name=".AdminDashboard" />
+        <activity android:name=".Dashboard" />
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"></activity>
+        <activity android:name=".Register" />
     </application>
 
 </manifest>
