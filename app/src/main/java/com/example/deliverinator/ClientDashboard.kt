@@ -1,13 +1,13 @@
 package com.example.deliverinator
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 
-class AdminDashboard : AppCompatActivity() {
+class ClientDashboard : AppCompatActivity() {
     private lateinit var mHello: TextView
     private lateinit var mAuth: FirebaseAuth
 
@@ -18,7 +18,7 @@ class AdminDashboard : AppCompatActivity() {
         mHello = findViewById(R.id.client_dashboard_textView)
         mAuth = FirebaseAuth.getInstance()
 
-        mHello.text = "Hello admin ${mAuth.currentUser?.email}"
+        mHello.text = "Hello client ${mAuth.currentUser?.email}"
     }
 
     fun launchLogin(view: View) {
