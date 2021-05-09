@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverinator">
-        <activity android:name=".RestaurantDashboard"></activity>
+        <activity android:name=".RestaurantDashboard" />
         <activity android:name=".AdminDashboard" />
         <activity android:name=".Dashboard" />
         <activity android:name=".Login">

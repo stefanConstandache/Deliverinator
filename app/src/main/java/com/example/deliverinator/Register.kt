@@ -17,17 +17,17 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class Register : AppCompatActivity() {
-    lateinit var mFullName: EditText
-    lateinit var mEmail: EditText
-    lateinit var mPassword: EditText
-    lateinit var mConfirmPassword: EditText
-    lateinit var mPhone: EditText
-    lateinit var mRegisterBtn: Button
-    lateinit var mAuth: FirebaseAuth
-    lateinit var mStore: FirebaseFirestore
-    lateinit var mLoginBtn: TextView
-    lateinit var mProgressBar: ProgressBar
-    lateinit var mRadioGroup: RadioGroup
+    private lateinit var mFullName: EditText
+    private lateinit var mEmail: EditText
+    private lateinit var mPassword: EditText
+    private lateinit var mConfirmPassword: EditText
+    private lateinit var mPhone: EditText
+    private lateinit var mRegisterBtn: Button
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mLoginBtn: TextView
+    private lateinit var mProgressBar: ProgressBar
+    private lateinit var mStore: FirebaseFirestore
+    private lateinit var mRadioGroup: RadioGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,9 +93,20 @@ class Register : AppCompatActivity() {
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(this, getString(R.string.registration_completed), Toast.LENGTH_SHORT).show()
-
+                // Send verification link
                 val user = mAuth.currentUser
+
+                user?.sendEmailVerification()
+                    ?.addOnSuccessListener {
+                        Toast.makeText(this, R.string.verification_mail_sent, Toast.LENGTH_SHORT).show()
+                    }
+                    ?.addOnFailureListener { e ->
+                        Toast.makeText(this, getString(R.string.link_not_sent) + e.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                Toast.makeText(this, R.string.registration_completed, Toast.LENGTH_SHORT).show()
+
                 if (user != null) {
                     val radioButton: RadioButton = findViewById(mRadioGroup.checkedRadioButtonId)
                     val docRef: DocumentReference = mStore.collection("Users").document(user.uid)
@@ -121,7 +132,7 @@ class Register : AppCompatActivity() {
                 startActivity(loginIntent)
                 finish()
             } else {
-                Toast.makeText(this, getString(R.string.user_registered), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.user_registered, Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
             }

@@ -23,4 +23,15 @@
     <string name="already_registered">Already registered? Login here</string>
     <string name="register_as_client">Register as Client</string>
     <string name="register_as_restaurant">Register as Restaurant</string>
+    <string name="login_forgot_password">Forgot password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="reset_link_sent">Reset Link Sent!</string>
+    <string name="link_not_sent">\"Link couldn\'t be sent \"</string>
+    <string name="send">Send</string>
+    <string name="verification_mail_sent">Verification Mail Sent</string>
+    <string name="email_not_verified">Email not verified!</string>
+    <string name="verify_now">Verify now</string>
 </resources>
