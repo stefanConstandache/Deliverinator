@@ -20,4 +20,7 @@
     <string name="register_invalid_phone">Invalid phone number</string>
     <string name="registration_completed">Registration Completed</string>
     <string name="user_registered">User already registered!</string>
+    <string name="already_registered">Already registered? Login here</string>
+    <string name="register_as_client">Register as Client</string>
+    <string name="register_as_restaurant">Register as Restaurant</string>
 </resources>

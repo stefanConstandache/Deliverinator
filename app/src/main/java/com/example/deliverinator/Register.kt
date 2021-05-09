@@ -10,6 +10,11 @@ import com.example.deliverinator.Utils.Companion.isValidEmail
 import com.example.deliverinator.Utils.Companion.isValidPassword
 import com.example.deliverinator.Utils.Companion.isValidPhone
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import java.util.*
+import kotlin.collections.HashMap
 
 class Register : AppCompatActivity() {
     lateinit var mFullName: EditText
@@ -19,8 +24,10 @@ class Register : AppCompatActivity() {
     lateinit var mPhone: EditText
     lateinit var mRegisterBtn: Button
     lateinit var mAuth: FirebaseAuth
+    lateinit var mStore: FirebaseFirestore
     lateinit var mLoginBtn: TextView
     lateinit var mProgressBar: ProgressBar
+    lateinit var mRadioGroup: RadioGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +42,8 @@ class Register : AppCompatActivity() {
         mLoginBtn = findViewById(R.id.register_login_here)
         mProgressBar = findViewById(R.id.progressBar)
         mAuth = FirebaseAuth.getInstance()
+        mStore = FirebaseFirestore.getInstance()
+        mRadioGroup = findViewById(R.id.radioGroup)
 
         if (mAuth.currentUser != null) {
             val dashboardIntent = Intent(this, Dashboard::class.java)
@@ -86,10 +95,31 @@ class Register : AppCompatActivity() {
             if (it.isSuccessful) {
                 Toast.makeText(this, getString(R.string.registration_completed), Toast.LENGTH_SHORT).show()
 
+                val user = mAuth.currentUser
+                if (user != null) {
+                    val radioButton: RadioButton = findViewById(mRadioGroup.checkedRadioButtonId)
+                    val docRef: DocumentReference = mStore.collection("Users").document(user.uid)
+                    val userInfo = HashMap<String, Any>()
+
+                    userInfo["FullName"] = fullName
+                    userInfo["UserEmail"] = email
+                    userInfo["PhoneNumber"] = phone
+
+                    // 0 means admin, 1 means user, 2 means restaurant
+                    if (radioButton.text == "Register as Client"){
+                        userInfo["UserType"] = "1"
+                    } else {
+                        userInfo["UserType"] = "2"
+                    }
+
+                    docRef.set(userInfo)
+                }
+
                 mProgressBar.visibility = View.INVISIBLE
 
-                val dashboardIntent = Intent(this, Dashboard::class.java)
-                startActivity(dashboardIntent)
+                val loginIntent = Intent(this, Login::class.java)
+                startActivity(loginIntent)
+                finish()
             } else {
                 Toast.makeText(this, getString(R.string.user_registered), Toast.LENGTH_SHORT).show()
 

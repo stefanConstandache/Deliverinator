@@ -8,6 +8,9 @@ import android.widget.*
 import com.example.deliverinator.Utils.Companion.isValidEmail
 import com.example.deliverinator.Utils.Companion.isValidPassword
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Login : AppCompatActivity() {
     lateinit var mEmail: EditText
@@ -16,6 +19,7 @@ class Login : AppCompatActivity() {
     lateinit var mRegisterHere: TextView
     lateinit var mProgressBar: ProgressBar
     lateinit var mAuth: FirebaseAuth
+    lateinit var mStore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,7 @@ class Login : AppCompatActivity() {
         mRegisterHere = findViewById(R.id.login_register_here_textView)
         mProgressBar = findViewById(R.id.login_progressBar)
         mAuth = FirebaseAuth.getInstance()
+        mStore = FirebaseFirestore.getInstance()
 
         if (mAuth.currentUser != null) {
             val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
@@ -59,10 +64,27 @@ class Login : AppCompatActivity() {
             if (it.isSuccessful) {
                 Toast.makeText(this, getString(R.string.login_logged_in), Toast.LENGTH_SHORT).show()
 
-                val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
-                startActivity(dashboardIntent)
-
                 mProgressBar.visibility = View.INVISIBLE
+
+                val user = mAuth.currentUser
+                if (user != null) {
+                    val docRef: DocumentReference =
+                        mStore.collection("Users").document(user.uid)
+                    docRef.get().addOnSuccessListener { docSnap ->
+                        if (docSnap.getString("UserType") != "0") {
+                            val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
+                            startActivity(dashboardIntent)
+                        } else if (docSnap.getString("UserType") != "1") {
+                            val dashboardIntent = Intent(applicationContext, Dashboard::class.java)
+                            startActivity(dashboardIntent)
+                        } else if (docSnap.getString("UserType") != "2") {
+                            val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
+                            startActivity(dashboardIntent)
+                        }
+                    }
+                }
+
+                finish()
             } else {
                 Toast.makeText(this, getString(R.string.login_incorrect), Toast.LENGTH_SHORT).show()
 
