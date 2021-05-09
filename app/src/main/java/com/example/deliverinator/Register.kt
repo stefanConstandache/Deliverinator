@@ -84,14 +84,26 @@ class Register : AppCompatActivity() {
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener {
             if (it.isSuccessful) {
-                Toast.makeText(this, getString(R.string.registration_completed), Toast.LENGTH_SHORT).show()
+                // Send verification link
+                val user = mAuth.currentUser
+
+                user?.sendEmailVerification()
+                    ?.addOnSuccessListener {
+                        Toast.makeText(this, R.string.verification_mail_sent, Toast.LENGTH_SHORT).show()
+                    }
+                    ?.addOnFailureListener { e ->
+                        Toast.makeText(this, getString(R.string.link_not_sent) + e.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                Toast.makeText(this, R.string.registration_completed, Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
 
                 val dashboardIntent = Intent(this, Dashboard::class.java)
                 startActivity(dashboardIntent)
             } else {
-                Toast.makeText(this, getString(R.string.user_registered), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.user_registered, Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
             }

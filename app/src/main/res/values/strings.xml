@@ -28,4 +28,5 @@
     <string name="reset_link_sent">Reset Link Sent!</string>
     <string name="link_not_sent">\"Link couldn\'t be sent \"</string>
     <string name="send">Send</string>
+    <string name="verification_mail_sent">Verification Mail Sent</string>
 </resources>

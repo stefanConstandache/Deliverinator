@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 class Dashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dash_board)
+        setContentView(R.layout.activity_dashboard)
     }
 
     fun launchLogin(view: View) {
