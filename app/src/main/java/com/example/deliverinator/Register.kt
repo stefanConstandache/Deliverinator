@@ -24,7 +24,6 @@ class Register : AppCompatActivity() {
     private lateinit var mLoginBtn: TextView
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mStore: FirebaseFirestore
-    private lateinit var mRadioGroup: RadioGroup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,6 @@ class Register : AppCompatActivity() {
         mProgressBar = findViewById(R.id.progressBar)
         mAuth = FirebaseAuth.getInstance()
         mStore = FirebaseFirestore.getInstance()
-        mRadioGroup = findViewById(R.id.radioGroup)
 
         if (mAuth.currentUser != null) {
             val dashboardIntent = Intent(this, ClientDashboard::class.java)
@@ -110,7 +108,6 @@ class Register : AppCompatActivity() {
             val user = mAuth.currentUser
 
             if (user != null) {
-                val radioButton: RadioButton = findViewById(mRadioGroup.checkedRadioButtonId)
                 val docRef: DocumentReference = mStore.collection("Users").document(user.uid)
                 val userInfo = HashMap<String, Any>()
 
@@ -119,11 +116,7 @@ class Register : AppCompatActivity() {
                 userInfo["PhoneNumber"] = phone
 
                 // 0 means admin, 1 means user, 2 means restaurant
-                if (radioButton.text == "Register as Client"){
-                    userInfo["UserType"] = "1"
-                } else {
-                    userInfo["UserType"] = "2"
-                }
+                userInfo["UserType"] = 1
 
                 docRef.set(userInfo)
 

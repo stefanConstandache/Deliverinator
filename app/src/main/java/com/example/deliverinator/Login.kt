@@ -41,17 +41,17 @@ class Login : AppCompatActivity() {
 
             docRef.get().addOnSuccessListener { docSnap ->
                 when {
-                    docSnap.getString("UserType") == "0" -> {
+                    docSnap.get("UserType") == 0 -> {
                         val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.getString("UserType") == "1" -> {
+                    docSnap.get("UserType") == 1 -> {
                         val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.getString("UserType") == "2" -> {
+                    docSnap.get("UserType") == 2 -> {
                         val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
@@ -87,17 +87,17 @@ class Login : AppCompatActivity() {
 
                     docRef.get().addOnSuccessListener { docSnap ->
                         when {
-                            docSnap.getString("UserType") == "0" -> {
+                            docSnap.get("UserType") == 0 -> {
                                 val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.getString("UserType") == "1" -> {
+                            docSnap.get("UserType") == 1 -> {
                                 val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.getString("UserType") == "2" -> {
+                            docSnap.get("UserType") == 2 -> {
                                 val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
