@@ -2,6 +2,7 @@ package com.example.deliverinator
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -57,8 +58,6 @@ class Login : AppCompatActivity() {
                     }
                 }
             }
-
-            finish()
         }
     }
 
@@ -70,6 +69,11 @@ class Login : AppCompatActivity() {
     fun launchDashboard(view: View) {
         val email = mEmail.text.toString().trim()
         val password = mPassword.text.toString().trim()
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, R.string.login_provide, Toast.LENGTH_SHORT).show()
+            return
+        }
 
         mProgressBar.visibility = View.VISIBLE
 
@@ -103,10 +107,7 @@ class Login : AppCompatActivity() {
                             }
                         }
                     }
-
-                    finish()
                 }
-
                 false -> {
                     Toast.makeText(this, R.string.email_not_verified, Toast.LENGTH_SHORT).show()
 
