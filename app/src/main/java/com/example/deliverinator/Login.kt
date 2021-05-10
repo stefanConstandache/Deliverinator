@@ -41,17 +41,17 @@ class Login : AppCompatActivity() {
 
             docRef.get().addOnSuccessListener { docSnap ->
                 when {
-                    docSnap.get("UserType") == 0 -> {
+                    docSnap.getString("UserType") == "0" -> {
                         val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.get("UserType") == 1 -> {
+                    docSnap.getString("UserType") == "1" -> {
                         val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.get("UserType") == 2 -> {
+                    docSnap.getString("UserType") == "2" -> {
                         val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
@@ -87,17 +87,17 @@ class Login : AppCompatActivity() {
 
                     docRef.get().addOnSuccessListener { docSnap ->
                         when {
-                            docSnap.get("UserType") == 0 -> {
+                            docSnap.getString("UserType") == "0" -> {
                                 val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.get("UserType") == 1 -> {
+                            docSnap.getString("UserType") == "1" -> {
                                 val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.get("UserType") == 2 -> {
+                            docSnap.getString("UserType") == "2" -> {
                                 val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
@@ -106,7 +106,6 @@ class Login : AppCompatActivity() {
 
                     finish()
                 }
-
                 false -> {
                     Toast.makeText(this, R.string.email_not_verified, Toast.LENGTH_SHORT).show()
 

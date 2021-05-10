@@ -8,17 +8,13 @@ import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 
 class AdminDashboard : AppCompatActivity() {
-    private lateinit var mHello: TextView
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_client_dashboard)
+        setContentView(R.layout.activity_admin_dashboard)
 
-        mHello = findViewById(R.id.client_dashboard_textView)
         mAuth = FirebaseAuth.getInstance()
-
-        mHello.text = "Hello admin ${mAuth.currentUser?.email}"
     }
 
     fun launchLogin(view: View) {
