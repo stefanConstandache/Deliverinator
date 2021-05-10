@@ -2,6 +2,7 @@ package com.example.deliverinator
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -34,24 +35,23 @@ class Login : AppCompatActivity() {
         mStore = FirebaseFirestore.getInstance()
 
         val user = mAuth.currentUser
-
         if (user != null && user.isEmailVerified) {
             val docRef: DocumentReference =
                 mStore.collection("Users").document(user.uid)
 
             docRef.get().addOnSuccessListener { docSnap ->
                 when {
-                    docSnap.get("UserType") == 0 -> {
+                    docSnap.getString("UserType") == "0" -> {
                         val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.get("UserType") == 1 -> {
+                    docSnap.getString("UserType") == "1" -> {
                         val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.get("UserType") == 2 -> {
+                    docSnap.getString("UserType") == "2" -> {
                         val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                         startActivity(dashboardIntent)
                     }

@@ -13,9 +13,9 @@ class AdminDashboard : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_client_dashboard)
+        setContentView(R.layout.activity_admin_dashboard)
 
-        mHello = findViewById(R.id.client_dashboard_textView)
+        mHello = findViewById(R.id.admin_dashboard_textView)
         mAuth = FirebaseAuth.getInstance()
 
         mHello.text = "Hello admin ${mAuth.currentUser?.email}"

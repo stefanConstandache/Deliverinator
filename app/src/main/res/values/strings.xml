@@ -34,4 +34,6 @@
     <string name="verification_mail_sent">Verification Mail Sent</string>
     <string name="email_not_verified">Email not verified!</string>
     <string name="verify_now">Verify now</string>
+    <string name="admin_add">Add</string>
+    <string name="admin_delete">Delete</string>
 </resources>
