@@ -34,8 +34,10 @@
     <string name="verification_mail_sent">Verification Mail Sent</string>
     <string name="email_not_verified">Email not verified!</string>
     <string name="verify_now">Verify now</string>
-    <string name="profile">Profile</string>
     <string name="menu">Menu</string>
     <string name="orders">Orders</string>
     <string name="login_provide">Please provide username and password</string>
+    <string name="client_menu_account">Account</string>
+    <string name="client_menu_restaurant">Restaurants</string>
+    <string name="client_menu_cart">Cart</string>
 </resources>
