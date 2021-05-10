@@ -35,6 +35,7 @@ class Login : AppCompatActivity() {
         mStore = FirebaseFirestore.getInstance()
 
         val user = mAuth.currentUser
+
         if (user != null && user.isEmailVerified) {
             val docRef: DocumentReference =
                 mStore.collection("Users").document(user.uid)

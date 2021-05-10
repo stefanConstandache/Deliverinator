@@ -8,19 +8,15 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_height="56dp"
-        app:menu="@menu/client_dashboard_menu"/>
+        app:menu="@menu/client_dashboard_menu" />
 
     <Button
         android:id="@+id/client_dashboard_logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="launchLogin"
-        android:text="@string/dashboard_logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/dashboard_logout" />
 
 </RelativeLayout>
