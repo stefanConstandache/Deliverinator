@@ -36,11 +36,10 @@
     <string name="verify_now">Verify now</string>
     <string name="admin_add">Add</string>
     <string name="admin_delete">Delete</string>
-    <string name="restaurant_menu_menu">Menu</string>
-    <string name="restaurant_menu_orders">Orders</string>
+    <string name="menu">Menu</string>
+    <string name="orders">Orders</string>
     <string name="login_provide">Please provide username and password</string>
     <string name="client_menu_account">Account</string>
     <string name="client_menu_restaurant">Restaurants</string>
     <string name="client_menu_cart">Cart</string>
-    <string name="restaurant_menu_account">Account</string>
 </resources>

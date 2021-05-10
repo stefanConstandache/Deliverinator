@@ -4,16 +4,15 @@
 
     <item
         android:id="@+id/restaurant_dashboard_menu_profile"
-        android:icon="@drawable/ic_account"
-        android:title="@string/restaurant_menu_account" />
+        android:title="@string/profile" />
 
     <item
         android:id="@+id/restaurant_dashboard_menu_menu"
         android:icon="@drawable/ic_menu"
-        android:title="@string/restaurant_menu_menu" />
+        android:title="@string/menu" />
 
     <item
         android:id="@+id/restaurant_dashboard_menu_orders"
         android:icon="@drawable/ic_orders"
-        android:title="@string/restaurant_menu_orders" />
+        android:title="@string/orders" />
 </menu>

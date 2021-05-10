@@ -35,24 +35,23 @@ class Login : AppCompatActivity() {
         mStore = FirebaseFirestore.getInstance()
 
         val user = mAuth.currentUser
-
         if (user != null && user.isEmailVerified) {
             val docRef: DocumentReference =
                 mStore.collection("Users").document(user.uid)
 
             docRef.get().addOnSuccessListener { docSnap ->
                 when {
-                    docSnap.get("UserType") == 0 -> {
+                    docSnap.getString("UserType") == "0" -> {
                         val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.get("UserType") == 1 -> {
+                    docSnap.getString("UserType") == "1" -> {
                         val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
 
-                    docSnap.get("UserType") == 2 -> {
+                    docSnap.getString("UserType") == "2" -> {
                         val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                         startActivity(dashboardIntent)
                     }
@@ -91,17 +90,17 @@ class Login : AppCompatActivity() {
 
                     docRef.get().addOnSuccessListener { docSnap ->
                         when {
-                            docSnap.get("UserType") == 0 -> {
+                            docSnap.getString("UserType") == "0" -> {
                                 val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.get("UserType") == 1 -> {
+                            docSnap.getString("UserType") == "1" -> {
                                 val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.get("UserType") == 2 -> {
+                            docSnap.getString("UserType") == "2" -> {
                                 val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }

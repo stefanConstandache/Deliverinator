@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:onClick="launchLogin"
         android:text="@string/dashboard_logout" />
-
+  
     <TextView
         android:id="@+id/restaurant_dashboard_textView"
         android:layout_width="wrap_content"
