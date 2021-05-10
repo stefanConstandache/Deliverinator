@@ -14,7 +14,6 @@ class AdminDashboard : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_dashboard)
 
-        mHello = findViewById(R.id.admin_dashboard_textView)
         mAuth = FirebaseAuth.getInstance()
     }
 
