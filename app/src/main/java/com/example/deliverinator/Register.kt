@@ -116,7 +116,7 @@ class Register : AppCompatActivity() {
                 userInfo["PhoneNumber"] = phone
 
                 // 0 means admin, 1 means user, 2 means restaurant
-                userInfo["UserType"] = 1
+                userInfo["UserType"] = "1"
 
                 docRef.set(userInfo)
 

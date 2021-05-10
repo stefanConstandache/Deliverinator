@@ -106,7 +106,6 @@ class Login : AppCompatActivity() {
 
                     finish()
                 }
-
                 false -> {
                     Toast.makeText(this, R.string.email_not_verified, Toast.LENGTH_SHORT).show()
 
