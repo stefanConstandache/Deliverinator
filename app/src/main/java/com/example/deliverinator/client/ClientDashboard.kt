@@ -25,7 +25,7 @@ class ClientDashboard : AppCompatActivity() {
         setContentView(R.layout.activity_client_dashboard)
 
         mAuth = FirebaseAuth.getInstance()
-        mMainFrame = findViewById(R.id.main_frame)
+        mMainFrame = findViewById(R.id.client_dashboard_frame)
         mMenuNavigation = findViewById(R.id.client_dashboard_menu)
         mAccountFragment = AccountFragment()
         mRestaurantsFragment = RestaurantsFragment()
@@ -59,8 +59,7 @@ class ClientDashboard : AppCompatActivity() {
 
     private fun setFragment(fragment: Fragment) {
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-
-        fragmentTransaction.replace(R.id.main_frame, fragment)
+        fragmentTransaction.replace(R.id.client_dashboard_frame, fragment)
         fragmentTransaction.commit()
     }
 
