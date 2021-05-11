@@ -21,12 +21,10 @@
         android:text="@string/dashboard_logout" />
 
     <FrameLayout
-        android:id="@+id/main_frame"
+        android:id="@+id/client_dashboard_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/client_dashboard_menu"
-        android:layout_below="@id/client_dashboard_logout_button">
-
-    </FrameLayout>
+        android:layout_below="@id/client_dashboard_logout_button" />
 
 </RelativeLayout>
