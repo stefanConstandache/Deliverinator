@@ -1,9 +1,11 @@
-package com.example.deliverinator
+package com.example.deliverinator.admin
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.deliverinator.Login
+import com.example.deliverinator.R
 import com.google.firebase.auth.FirebaseAuth
 
 class AdminDashboard : AppCompatActivity() {
