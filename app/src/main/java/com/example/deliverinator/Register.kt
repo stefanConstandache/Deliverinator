@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.deliverinator.Utils.Companion.hideKeyboard
 import com.example.deliverinator.Utils.Companion.isValidEmail
 import com.example.deliverinator.Utils.Companion.isValidPassword
 import com.example.deliverinator.Utils.Companion.isValidPhone
@@ -39,12 +40,6 @@ class Register : AppCompatActivity() {
         mProgressBar = findViewById(R.id.progressBar)
         mAuth = FirebaseAuth.getInstance()
         mStore = FirebaseFirestore.getInstance()
-
-        if (mAuth.currentUser != null) {
-            val dashboardIntent = Intent(this, ClientDashboard::class.java)
-            startActivity(dashboardIntent)
-            finish()
-        }
     }
 
     fun launchLoginActivity(view: View) {
@@ -58,6 +53,8 @@ class Register : AppCompatActivity() {
         val password = mPassword.text.toString().trim()
         val confirmPassword = mConfirmPassword.text.toString().trim()
         val phone = mPhone.text.toString().trim()
+
+        hideKeyboard()
 
         if (TextUtils.isEmpty(fullName)) {
             mFullName.error = getString(R.string.register_empty_field)
@@ -99,8 +96,6 @@ class Register : AppCompatActivity() {
                         Toast.makeText(this, getString(R.string.link_not_sent) + e.message, Toast.LENGTH_SHORT)
                             .show()
                     }
-
-                Toast.makeText(this, R.string.registration_completed, Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this, R.string.user_registered, Toast.LENGTH_SHORT).show()
             }
