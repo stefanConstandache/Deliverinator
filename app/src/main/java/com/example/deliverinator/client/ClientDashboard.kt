@@ -31,8 +31,8 @@ class ClientDashboard : AppCompatActivity() {
         mRestaurantsFragment = RestaurantsFragment()
         mCartFragment = CartFragment()
 
-        setFragment(mRestaurantsFragment)
         mMenuNavigation.selectedItemId = R.id.restaurant_menu
+        setFragment(mRestaurantsFragment)
 
         mMenuNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -51,9 +51,7 @@ class ClientDashboard : AppCompatActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
 
-                else -> {
-                    return@setOnNavigationItemSelectedListener false
-                }
+                else -> return@setOnNavigationItemSelectedListener false
             }
         }
 

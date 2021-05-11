@@ -12,9 +12,6 @@ class AccountFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
     }
 
     override fun onCreateView(
@@ -24,5 +21,4 @@ class AccountFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.client_fragment_account, container, false)
     }
-
 }
