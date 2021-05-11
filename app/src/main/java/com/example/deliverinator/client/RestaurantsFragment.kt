@@ -21,6 +21,6 @@ class RestaurantsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_restaurants, container, false)
+        return inflater.inflate(R.layout.client_fragment_restaurants, container, false)
     }
 }
