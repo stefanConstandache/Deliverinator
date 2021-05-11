@@ -3,12 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/account_menu"
         android:icon="@drawable/ic_account"
         android:title="@string/client_menu_account" />
     <item
+        android:id="@+id/restaurant_menu"
         android:icon="@drawable/ic_restaurant"
         android:title="@string/client_menu_restaurant" />
     <item
+        android:id="@+id/cart_menu"
         android:icon="@drawable/ic_cart"
         android:title="@string/client_menu_cart" />
 </menu>
