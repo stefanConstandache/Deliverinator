@@ -32,7 +32,8 @@ class RestaurantDashboard : AppCompatActivity() {
         mMenuFragment = MenuFragment()
         mOrdersFragment = OrdersFragment()
 
-        setFragment(mAccountFragment)
+        mNavigationView.selectedItemId = R.id.restaurant_dashboard_menu_menu
+        setFragment(mMenuFragment)
 
         mNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
