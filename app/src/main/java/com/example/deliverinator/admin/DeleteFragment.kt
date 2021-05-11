@@ -1,14 +1,13 @@
-package com.example.deliverinator.client
+package com.example.deliverinator.admin
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.deliverinator.R
 
-class RestaurantsFragment : Fragment() {
-
+class DeleteFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -18,6 +17,6 @@ class RestaurantsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.client_fragment_restaurants, container, false)
+        return inflater.inflate(R.layout.admin_fragment_delete, container, false)
     }
 }

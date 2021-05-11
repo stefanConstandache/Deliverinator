@@ -15,16 +15,17 @@
         android:onClick="launchLogin"
         android:text="@string/dashboard_logout" />
 
-    <TextView
-        android:id="@+id/admin_dashboard_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/admin_dashboard_navigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/admin_dashboard_menu" />
+
+    <FrameLayout
+        android:id="@+id/admin_dashboard_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/admin_dashboard_navigationView" />
 
 </RelativeLayout>
