@@ -109,6 +109,7 @@ class Register : AppCompatActivity() {
                 userInfo["FullName"] = fullName
                 userInfo["UserEmail"] = email
                 userInfo["PhoneNumber"] = phone
+                userInfo["Address"] = ""
 
                 // 0 means admin, 1 means user, 2 means restaurant
                 userInfo["UserType"] = "1"
