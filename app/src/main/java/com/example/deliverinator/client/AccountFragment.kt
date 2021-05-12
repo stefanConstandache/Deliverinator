@@ -1,14 +1,13 @@
 package com.example.deliverinator.client
 
 import android.os.Bundle
-import android.text.Editable
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.deliverinator.R
+import com.example.deliverinator.Utils
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,12 +47,14 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
         }
 
         val user = mAuth.currentUser
+
         val docRef: DocumentReference =
             mStore.collection("Users").document(user!!.uid)
 
+        mEmail.text = user.email
+
         docRef.get().addOnSuccessListener { docSnap ->
             mFullName.setText(docSnap.getString("FullName"), TextView.BufferType.EDITABLE)
-            mEmail.text = docSnap.getString("UserEmail")
 
             if (docSnap.getString("Address") != null) {
                 mAddress.setText(docSnap.getString("Address"), TextView.BufferType.EDITABLE)
@@ -83,7 +84,11 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
                         .show()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(context, getString(R.string.link_not_sent) + it.message, Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        context,
+                        getString(R.string.link_not_sent) + it.message,
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 }
         }
@@ -94,30 +99,51 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
         val address = mAddress.text
         val phone = mPhone.text
         docRef.get().addOnSuccessListener { docSnap ->
-            mProgressBar.visibility = View.VISIBLE
-
             if (fullName.toString() == docSnap.getString("FullName") &&
                 address.toString() == docSnap.getString("Address") &&
-                phone.toString() == docSnap.getString("PhoneNumber")) {
+                phone.toString() == docSnap.getString("PhoneNumber")
+            ) {
+                mProgressBar.visibility = View.VISIBLE
 
-                Toast.makeText(context, "No changes to be made", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.no_changes, Toast.LENGTH_SHORT).show()
 
                 mProgressBar.visibility = View.INVISIBLE
             } else {
+                if (fullName.isEmpty()) {
+                    mFullName.error = getString(R.string.empty_field)
+                    return@addOnSuccessListener
+                }
+
+                if (address.isEmpty()) {
+                    mAddress.error = getString(R.string.empty_field)
+                    return@addOnSuccessListener
+                }
+
+                if (phone.isEmpty()) {
+                    mPhone.error = getString(R.string.empty_field)
+                    return@addOnSuccessListener
+                }
+
+                if (!Utils.isValidPhone(phone.toString())) {
+                    mPhone.error = getString(R.string.invalid_phone)
+                    return@addOnSuccessListener
+                }
+
+                mProgressBar.visibility = View.VISIBLE
+
                 val userInfo = HashMap<String, Any>()
+
                 userInfo["FullName"] = fullName.toString()
                 userInfo["PhoneNumber"] = phone.toString()
                 userInfo["Address"] = address.toString()
 
-                Log.d("aloo", "partially good")
-
                 docRef.update(userInfo).addOnSuccessListener {
-                    Toast.makeText(context, "Information has been updated", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.updated_account, Toast.LENGTH_SHORT).show()
 
                     mProgressBar.visibility = View.INVISIBLE
                 }
+
             }
         }
     }
-
 }

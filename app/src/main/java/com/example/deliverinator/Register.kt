@@ -57,7 +57,7 @@ class Register : AppCompatActivity() {
         hideKeyboard()
 
         if (TextUtils.isEmpty(fullName)) {
-            mFullName.error = getString(R.string.register_empty_field)
+            mFullName.error = getString(R.string.empty_field)
             return
         }
 
@@ -67,7 +67,7 @@ class Register : AppCompatActivity() {
         }
 
         if (!isValidPhone(phone)) {
-            mPhone.error = getString(R.string.register_invalid_phone)
+            mPhone.error = getString(R.string.invalid_phone)
             return
         }
 
