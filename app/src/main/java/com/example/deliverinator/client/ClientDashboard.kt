@@ -25,14 +25,14 @@ class ClientDashboard : AppCompatActivity() {
         setContentView(R.layout.activity_client_dashboard)
 
         mAuth = FirebaseAuth.getInstance()
-        mMainFrame = findViewById(R.id.main_frame)
+        mMainFrame = findViewById(R.id.client_dashboard_frame)
         mMenuNavigation = findViewById(R.id.client_dashboard_menu)
         mAccountFragment = AccountFragment()
         mRestaurantsFragment = RestaurantsFragment()
         mCartFragment = CartFragment()
 
-        setFragment(mRestaurantsFragment)
         mMenuNavigation.selectedItemId = R.id.restaurant_menu
+        setFragment(mRestaurantsFragment)
 
         mMenuNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -51,9 +51,7 @@ class ClientDashboard : AppCompatActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
 
-                else -> {
-                    return@setOnNavigationItemSelectedListener false
-                }
+                else -> return@setOnNavigationItemSelectedListener false
             }
         }
 
@@ -61,8 +59,7 @@ class ClientDashboard : AppCompatActivity() {
 
     private fun setFragment(fragment: Fragment) {
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-
-        fragmentTransaction.replace(R.id.main_frame, fragment)
+        fragmentTransaction.replace(R.id.client_dashboard_frame, fragment)
         fragmentTransaction.commit()
     }
 
