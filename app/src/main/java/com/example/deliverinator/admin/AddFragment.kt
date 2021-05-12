@@ -29,7 +29,6 @@ class AddFragment : Fragment() {
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mStore: FirebaseFirestore
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -131,5 +130,3 @@ class AddFragment : Fragment() {
 
 
 }
-
-
