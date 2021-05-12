@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 
 val passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+\$).{8,}\$".toRegex()
 val phoneRegex = "(\\+4|)?(07[0-8]{1}[0-9]{1}){1}?([0-9]{3}){2}\$".toRegex()
+const val IMAGE_PICK_CODE = 1000
+const val PERMISSION_CODE = 1001
 
 class Utils {
 
