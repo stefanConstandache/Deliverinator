@@ -56,7 +56,7 @@ class AddFragment : Fragment() {
             val phone = mPhone.text.toString().trim()
 
             if (TextUtils.isEmpty(fullName)) {
-                mFullName.error = getString(R.string.register_empty_field)
+                mFullName.error = getString(R.string.empty_field)
                 return@setOnClickListener
             }
 
@@ -66,7 +66,7 @@ class AddFragment : Fragment() {
             }
 
             if (!Utils.isValidPhone(phone)) {
-                mPhone.error = getString(R.string.register_invalid_phone)
+                mPhone.error = getString(R.string.invalid_phone)
                 return@setOnClickListener
             }
 
