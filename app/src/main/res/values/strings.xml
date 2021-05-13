@@ -48,4 +48,7 @@
     <string name="apply_changes">Apply changes</string>
     <string name="updated_account">Information has been updated</string>
     <string name="no_changes">No changes to be made</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="add_a_restaurant">Add a restaurant</string>
+    <string name="delete_a_restaurant">Delete a restaurant</string>
 </resources>
