@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignRight="@id/admin_dashboard_frame"
         android:onClick="launchLogin"
         android:text="@string/dashboard_logout" />
 
