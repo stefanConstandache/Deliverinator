@@ -10,11 +10,18 @@ import androidx.fragment.app.Fragment
 
 val passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+\$).{8,}\$".toRegex()
 val phoneRegex = "(\\+4|)?(07[0-8][0-9])?([0-9]{3}){2}\$".toRegex()
+
 const val IMAGE_PICK_CODE = 1000
 const val PERMISSION_CODE = 1001
 
-class Utils {
+const val USERS = "Users"
+const val NAME = "Name"
+const val EMAIL = "Email"
+const val PHONE_NUMBER = "PhoneNumber"
+const val ADDRESS = "Address"
+const val USER_TYPE = "UserType"
 
+class Utils {
     companion object {
         fun isValidEmail(email: String): Boolean =
             !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches()

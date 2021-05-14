@@ -7,29 +7,28 @@
     tools:context=".admin.AddFragment">
 
     <EditText
-        android:id="@+id/admin_add_full_name"
+        android:id="@+id/admin_add_name"
         style="@style/login_editText"
-        android:hint="@string/register_full_name"
+        android:hint="@string/restaurant_name"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@id/admin_add_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_add_app_name"
-        app:layout_constraintBottom_toTopOf="@id/admin_add_email"/>
+        app:layout_constraintTop_toBottomOf="@+id/admin_add_app_name" />
 
     <TextView
         android:id="@+id/admin_add_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_a_restaurant"
         android:layout_marginTop="50dp"
+        android:text="@string/add_a_restaurant"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/admin_add_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/admin_add_full_name"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/admin_add_email"
@@ -40,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/admin_add_full_name" />
+        app:layout_constraintTop_toBottomOf="@+id/admin_add_name" />
 
     <EditText
         android:id="@+id/admin_add_phone"
@@ -76,14 +75,13 @@
 
     <Button
         android:id="@+id/admin_add_button"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register_button"
+        app:layout_constraintBottom_toTopOf="@id/admin_progressBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/admin_progressBar"
-        app:layout_constraintTop_toBottomOf="@+id/admin_add_confirm_password"/>
+        app:layout_constraintTop_toBottomOf="@+id/admin_add_confirm_password" />
 
     <ProgressBar
         android:id="@+id/admin_progressBar"

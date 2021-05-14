@@ -25,8 +25,7 @@ class SplashScreen : AppCompatActivity() {
         val user = mAuth.currentUser
 
         if (user != null && user.isEmailVerified) {
-            val docRef: DocumentReference =
-                mStore.collection("Users").document(user.uid)
+            val docRef = mStore.collection("Users").document(user.uid)
 
             docRef.get().addOnSuccessListener { docSnap ->
                 val dashboardIntent: Intent? = when {
@@ -40,7 +39,13 @@ class SplashScreen : AppCompatActivity() {
                     startActivity(dashboardIntent)
                     finish()
                 } else {
-                    Toast.makeText(this, "Wrong User Type", Toast.LENGTH_SHORT).show()
+                    mAuth.signOut()
+
+                    val loginIntent = Intent(this, Login::class.java)
+                    startActivity(loginIntent)
+                    finish()
+
+                    Toast.makeText(this, R.string.wrong_user_type, Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
