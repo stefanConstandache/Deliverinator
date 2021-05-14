@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClientDashboard">
+    tools:context=".client.ClientDashboard">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/client_dashboard_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -18,5 +19,12 @@
         android:layout_height="wrap_content"
         android:onClick="launchLogin"
         android:text="@string/dashboard_logout" />
+
+    <FrameLayout
+        android:id="@+id/client_dashboard_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/client_dashboard_menu"
+        android:layout_below="@id/client_dashboard_logout_button" />
 
 </RelativeLayout>

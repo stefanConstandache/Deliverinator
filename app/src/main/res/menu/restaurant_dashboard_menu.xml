@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/restaurant_dashboard_menu_profile"
+        android:id="@+id/restaurant_dashboard_menu_account"
         android:icon="@drawable/ic_account"
         android:title="@string/restaurant_menu_account" />
 

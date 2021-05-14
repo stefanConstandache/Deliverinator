@@ -4,30 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RestaurantDashboard">
+    tools:context=".restaurant.RestaurantDashboard">
 
     <Button
         android:id="@+id/restaurant_dashboard_logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:onClick="launchLogin"
         android:text="@string/dashboard_logout" />
 
-    <TextView
-        android:id="@+id/restaurant_dashboard_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/restaurant_dashboard_logout_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/restaurant_dashboard_navigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/restaurant_dashboard_menu" />
+
+    <FrameLayout
+        android:id="@+id/restaurant_dashboard_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/restaurant_dashboard_navigationView"
+        android:layout_below="@id/restaurant_dashboard_logout_button" />
 
 </RelativeLayout>

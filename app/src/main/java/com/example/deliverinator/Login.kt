@@ -2,11 +2,14 @@ package com.example.deliverinator
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.deliverinator.Utils.Companion.hideKeyboard
+import com.example.deliverinator.admin.AdminDashboard
+import com.example.deliverinator.client.ClientDashboard
+import com.example.deliverinator.restaurant.RestaurantDashboard
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -33,32 +36,6 @@ class Login : AppCompatActivity() {
         mProgressBar = findViewById(R.id.login_progressBar)
         mAuth = FirebaseAuth.getInstance()
         mStore = FirebaseFirestore.getInstance()
-
-        val user = mAuth.currentUser
-
-        if (user != null && user.isEmailVerified) {
-            val docRef: DocumentReference =
-                mStore.collection("Users").document(user.uid)
-
-            docRef.get().addOnSuccessListener { docSnap ->
-                when {
-                    docSnap.getString("UserType") == "0" -> {
-                        val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
-                        startActivity(dashboardIntent)
-                    }
-
-                    docSnap.getString("UserType") == "1" -> {
-                        val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
-                        startActivity(dashboardIntent)
-                    }
-
-                    docSnap.getString("UserType") == "2" -> {
-                        val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
-                        startActivity(dashboardIntent)
-                    }
-                }
-            }
-        }
     }
 
     fun launchRegisterActivity(view: View) {
@@ -69,6 +46,8 @@ class Login : AppCompatActivity() {
     fun launchDashboard(view: View) {
         val email = mEmail.text.toString().trim()
         val password = mPassword.text.toString().trim()
+
+        hideKeyboard()
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, R.string.login_provide, Toast.LENGTH_SHORT).show()
@@ -86,22 +65,21 @@ class Login : AppCompatActivity() {
 
                     mProgressBar.visibility = View.INVISIBLE
 
-                    val docRef: DocumentReference =
-                        mStore.collection("Users").document(user.uid)
+                    val docRef = mStore.collection(USERS).document(user.uid)
 
                     docRef.get().addOnSuccessListener { docSnap ->
                         when {
-                            docSnap.getString("UserType") == "0" -> {
+                            docSnap.getString(USER_TYPE) == "0" -> {
                                 val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.getString("UserType") == "1" -> {
+                            docSnap.getString(USER_TYPE) == "1" -> {
                                 val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.getString("UserType") == "2" -> {
+                            docSnap.getString(USER_TYPE) == "2" -> {
                                 val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }

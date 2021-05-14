@@ -4,27 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminDashboard">
+    tools:context=".admin.AdminDashboard">
 
     <Button
         android:id="@+id/admin_dashboard_logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignRight="@id/admin_dashboard_frame"
         android:onClick="launchLogin"
         android:text="@string/dashboard_logout" />
 
-    <TextView
-        android:id="@+id/admin_dashboard_textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/admin_dashboard_navigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/admin_dashboard_menu" />
+
+    <FrameLayout
+        android:id="@+id/admin_dashboard_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/admin_dashboard_navigationView" />
 
 </RelativeLayout>

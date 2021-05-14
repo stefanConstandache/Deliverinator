@@ -16,8 +16,8 @@
     <string name="invalid_password">Invalid Password!</string>
     <string name="register_invalid_password">Password must be 8 characters long and contain at least one number and one uppercase</string>
     <string name="register_invalid_confirm_password">Passwords must match</string>
-    <string name="register_empty_field">Field cannot be empty</string>
-    <string name="register_invalid_phone">Invalid phone number</string>
+    <string name="empty_field">Field cannot be empty</string>
+    <string name="invalid_phone">Invalid phone number</string>
     <string name="registration_completed">Registration Completed</string>
     <string name="user_registered">User already registered!</string>
     <string name="already_registered">Already registered? Login here</string>
@@ -29,7 +29,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="reset_link_sent">Reset Link Sent!</string>
-    <string name="link_not_sent">\"Link couldn\'t be sent \"</string>
+    <string name="link_not_sent">Link couldn\'t be sent</string>
     <string name="send">Send</string>
     <string name="verification_mail_sent">Verification Mail Sent</string>
     <string name="email_not_verified">Email not verified!</string>
@@ -43,4 +43,18 @@
     <string name="client_menu_restaurant">Restaurants</string>
     <string name="client_menu_cart">Cart</string>
     <string name="restaurant_menu_account">Account</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_password">Change password</string>
+    <string name="apply_changes">Apply changes</string>
+    <string name="updated_account">Information has been updated</string>
+    <string name="no_changes">No changes to be made</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="add_a_restaurant">Add a restaurant</string>
+    <string name="delete_a_restaurant">Delete a restaurant</string>
+    <string name="no_description">Click to add description</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="wrong_user_type">Wrong User Type</string>
+    <string name="add_description">Add description</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
 </resources>
