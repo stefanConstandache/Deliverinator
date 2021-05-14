@@ -44,74 +44,78 @@ class AddFragment : Fragment() {
         mStore = FirebaseFirestore.getInstance()
 
         mAdminAddBtn.setOnClickListener {
-            val name = mName.text.toString().trim()
-            val email = mEmail.text.toString().trim()
-            val password = mPassword.text.toString().trim()
-            val confirmPassword = mConfirmPassword.text.toString().trim()
-            val phone = mPhone.text.toString().trim()
-
-            if (TextUtils.isEmpty(name)) {
-                mName.error = getString(R.string.empty_field)
-                return@setOnClickListener
-            }
-
-            if (!Utils.isValidEmail(email)) {
-                mEmail.error = getString(R.string.invalid_email)
-                return@setOnClickListener
-            }
-
-            if (!Utils.isValidPhone(phone)) {
-                mPhone.error = getString(R.string.invalid_phone)
-                return@setOnClickListener
-            }
-
-            if (!Utils.isValidPassword(password)) {
-                mPassword.error = getString(R.string.register_invalid_password)
-                return@setOnClickListener
-            }
-
-            if (confirmPassword != password) {
-                mConfirmPassword.error = getString(R.string.register_invalid_confirm_password)
-                return@setOnClickListener
-            }
-
-            mProgressBar.visibility = View.VISIBLE
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val user = mAuth.currentUser
-                    user?.sendEmailVerification()
-                        ?.addOnSuccessListener {
-                            Toast.makeText(activity, R.string.verification_mail_sent, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                        ?.addOnFailureListener { e ->
-                            Toast.makeText(activity, getString(R.string.link_not_sent) + e.message, Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                } else {
-                    Toast.makeText(activity, R.string.user_registered, Toast.LENGTH_SHORT).show()
-                }
-            }.addOnSuccessListener {
-                val user = mAuth.currentUser
-
-                if (user != null) {
-                    val docRef = mStore.collection(USERS).document(user.uid)
-                    val userInfo = HashMap<String, Any>()
-
-                    userInfo[NAME] = name
-                    userInfo[EMAIL] = email
-                    userInfo[PHONE_NUMBER] = phone
-
-                    // 0 means admin, 1 means user, 2 means restaurant
-                    userInfo[USER_TYPE] = "2"
-
-                    docRef.set(userInfo)
-
-                    mProgressBar.visibility = View.INVISIBLE
-                }
-            }
+            addRestaurant()
         }
 
         return view
+    }
+
+    private fun addRestaurant() {
+        val name = mName.text.toString().trim()
+        val email = mEmail.text.toString().trim()
+        val password = mPassword.text.toString().trim()
+        val confirmPassword = mConfirmPassword.text.toString().trim()
+        val phone = mPhone.text.toString().trim()
+
+        if (TextUtils.isEmpty(name)) {
+            mName.error = getString(R.string.empty_field)
+            return
+        }
+
+        if (!Utils.isValidEmail(email)) {
+            mEmail.error = getString(R.string.invalid_email)
+            return
+        }
+
+        if (!Utils.isValidPhone(phone)) {
+            mPhone.error = getString(R.string.invalid_phone)
+            return
+        }
+
+        if (!Utils.isValidPassword(password)) {
+            mPassword.error = getString(R.string.register_invalid_password)
+            return
+        }
+
+        if (confirmPassword != password) {
+            mConfirmPassword.error = getString(R.string.register_invalid_confirm_password)
+            return
+        }
+
+        mProgressBar.visibility = View.VISIBLE
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+            if (it.isSuccessful) {
+                val user = mAuth.currentUser
+                user?.sendEmailVerification()
+                    ?.addOnSuccessListener {
+                        Toast.makeText(activity, R.string.verification_mail_sent, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    ?.addOnFailureListener { e ->
+                        Toast.makeText(activity, getString(R.string.link_not_sent) + e.message, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+            } else {
+                Toast.makeText(activity, R.string.user_registered, Toast.LENGTH_SHORT).show()
+            }
+        }.addOnSuccessListener {
+            val user = mAuth.currentUser
+
+            if (user != null) {
+                val docRef = mStore.collection(USERS).document(user.uid)
+                val userInfo = HashMap<String, Any>()
+
+                userInfo[NAME] = name
+                userInfo[EMAIL] = email
+                userInfo[PHONE_NUMBER] = phone
+
+                // 0 means admin, 1 means user, 2 means restaurant
+                userInfo[USER_TYPE] = "2"
+
+                docRef.set(userInfo)
+
+                mProgressBar.visibility = View.INVISIBLE
+            }
+        }
     }
 }

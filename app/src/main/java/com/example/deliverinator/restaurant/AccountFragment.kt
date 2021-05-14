@@ -43,7 +43,9 @@ class AccountFragment : Fragment() {
         val user = mAuth.currentUser
         val docRef = mStore.collection(USERS).document(user!!.uid)
 
-        docRef.get().addOnSuccessListener { mRestaurantName.text = it.getString(NAME) }
+        docRef.get().addOnSuccessListener {
+            mRestaurantName.text = it.getString(NAME)
+        }
 
         mDescription.setOnClickListener {
             setDescription(it)
@@ -54,26 +56,30 @@ class AccountFragment : Fragment() {
         }
 
         mAccountImageView.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val permission = context?.let { context ->
-                    ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
-                }
-
-                if (permission == PackageManager.PERMISSION_DENIED) {
-                    // Request permission
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-                    // Show pop-up
-                    requestPermissions(permissions, PERMISSION_CODE)
-                } else {
-                    chooseImageFromGallery()
-                }
-            } else {
-                chooseImageFromGallery()
-            }
+            chooseImage()
         }
 
         return view
+    }
+
+    private fun chooseImage() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val permission = context?.let { context ->
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+
+            if (permission == PackageManager.PERMISSION_DENIED) {
+                // Request permission
+                val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+                // Show pop-up
+                requestPermissions(permissions, PERMISSION_CODE)
+            } else {
+                chooseImageFromGallery()
+            }
+        } else {
+            chooseImageFromGallery()
+        }
     }
 
     private fun sendChangePasswordEmail() {

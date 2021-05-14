@@ -44,7 +44,6 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
         }
 
         val user = mAuth.currentUser
-
         val docRef = mStore.collection(USERS).document(user!!.uid)
 
         mEmail.text = user.email
