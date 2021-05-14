@@ -103,16 +103,16 @@ class Register : AppCompatActivity() {
             val user = mAuth.currentUser
 
             if (user != null) {
-                val docRef: DocumentReference = mStore.collection("Users").document(user.uid)
+                val docRef: DocumentReference = mStore.collection(USERS).document(user.uid)
                 val userInfo = HashMap<String, Any>()
 
-                userInfo["FullName"] = fullName
-                userInfo["UserEmail"] = email
-                userInfo["PhoneNumber"] = phone
-                userInfo["Address"] = ""
+                userInfo[NAME] = fullName
+                userInfo[EMAIL] = email
+                userInfo[PHONE_NUMBER] = phone
+                userInfo[ADDRESS] = ""
 
                 // 0 means admin, 1 means user, 2 means restaurant
-                userInfo["UserType"] = "1"
+                userInfo[USER_TYPE] = "1"
 
                 docRef.set(userInfo)
 

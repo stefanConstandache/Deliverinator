@@ -29,7 +29,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="reset_link_sent">Reset Link Sent!</string>
-    <string name="link_not_sent">\"Link couldn\'t be sent \"</string>
+    <string name="link_not_sent">Link couldn\'t be sent</string>
     <string name="send">Send</string>
     <string name="verification_mail_sent">Verification Mail Sent</string>
     <string name="email_not_verified">Email not verified!</string>
@@ -51,4 +51,10 @@
     <string name="permission_denied">Permission denied</string>
     <string name="add_a_restaurant">Add a restaurant</string>
     <string name="delete_a_restaurant">Delete a restaurant</string>
+    <string name="no_description">Click to add description</string>
+    <string name="restaurant_name">Restaurant Name</string>
+    <string name="wrong_user_type">Wrong User Type</string>
+    <string name="add_description">Add description</string>
+    <string name="set">Set</string>
+    <string name="cancel">Cancel</string>
 </resources>

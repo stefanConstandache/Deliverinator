@@ -6,15 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.deliverinator.R
-import com.example.deliverinator.Utils
+import com.example.deliverinator.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 class AccountFragment : Fragment(R.layout.client_fragment_account) {
-
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStore: FirebaseFirestore
     private lateinit var mFullName: EditText
@@ -47,22 +44,20 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
         }
 
         val user = mAuth.currentUser
-
-        val docRef: DocumentReference =
-            mStore.collection("Users").document(user!!.uid)
+        val docRef = mStore.collection(USERS).document(user!!.uid)
 
         mEmail.text = user.email
 
         docRef.get().addOnSuccessListener { docSnap ->
-            mFullName.setText(docSnap.getString("FullName"), TextView.BufferType.EDITABLE)
+            mFullName.setText(docSnap.getString(NAME), TextView.BufferType.EDITABLE)
 
-            if (docSnap.getString("Address") != null) {
-                mAddress.setText(docSnap.getString("Address"), TextView.BufferType.EDITABLE)
+            if (docSnap.getString(ADDRESS) != null) {
+                mAddress.setText(docSnap.getString(ADDRESS), TextView.BufferType.EDITABLE)
             } else {
                 mAddress.setText("", TextView.BufferType.EDITABLE)
             }
 
-            mPhone.setText(docSnap.getString("PhoneNumber"), TextView.BufferType.EDITABLE)
+            mPhone.setText(docSnap.getString(PHONE_NUMBER), TextView.BufferType.EDITABLE)
         }
 
         mApplyButton.setOnClickListener {
@@ -74,21 +69,16 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
 
     private fun launchChangePassword(view: View) {
         val user = mAuth.currentUser
-        val docRef: DocumentReference =
-            mStore.collection("Users").document(user!!.uid)
+        val docRef = mStore.collection(USERS).document(user!!.uid)
 
         docRef.get().addOnSuccessListener { docSnap ->
-            mAuth.sendPasswordResetEmail(docSnap.getString("UserEmail")!!)
+            mAuth.sendPasswordResetEmail(docSnap.getString(EMAIL)!!)
                 .addOnSuccessListener {
                     Toast.makeText(context, R.string.reset_link_sent, Toast.LENGTH_SHORT)
                         .show()
                 }
                 .addOnFailureListener {
-                    Toast.makeText(
-                        context,
-                        getString(R.string.link_not_sent) + it.message,
-                        Toast.LENGTH_LONG
-                    )
+                    Toast.makeText(context, getString(R.string.link_not_sent) + it.message, Toast.LENGTH_LONG)
                         .show()
                 }
         }
@@ -98,10 +88,11 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
         val fullName = mFullName.text
         val address = mAddress.text
         val phone = mPhone.text
+
         docRef.get().addOnSuccessListener { docSnap ->
-            if (fullName.toString() == docSnap.getString("FullName") &&
-                address.toString() == docSnap.getString("Address") &&
-                phone.toString() == docSnap.getString("PhoneNumber")
+            if (fullName.toString() == docSnap.getString(NAME) &&
+                address.toString() == docSnap.getString(ADDRESS) &&
+                phone.toString() == docSnap.getString(PHONE_NUMBER)
             ) {
                 mProgressBar.visibility = View.VISIBLE
 
@@ -133,16 +124,15 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
 
                 val userInfo = HashMap<String, Any>()
 
-                userInfo["FullName"] = fullName.toString()
-                userInfo["PhoneNumber"] = phone.toString()
-                userInfo["Address"] = address.toString()
+                userInfo[NAME] = fullName.toString()
+                userInfo[PHONE_NUMBER] = phone.toString()
+                userInfo[ADDRESS] = address.toString()
 
                 docRef.update(userInfo).addOnSuccessListener {
                     Toast.makeText(context, R.string.updated_account, Toast.LENGTH_SHORT).show()
 
                     mProgressBar.visibility = View.INVISIBLE
                 }
-
             }
         }
     }
