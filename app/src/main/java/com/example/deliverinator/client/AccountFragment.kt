@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.example.deliverinator.*
+import com.example.deliverinator.Utils.Companion.hideKeyboard
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -127,6 +128,8 @@ class AccountFragment : Fragment(R.layout.client_fragment_account) {
                 userInfo[NAME] = fullName.toString()
                 userInfo[PHONE_NUMBER] = phone.toString()
                 userInfo[ADDRESS] = address.toString()
+
+                hideKeyboard()
 
                 docRef.update(userInfo).addOnSuccessListener {
                     Toast.makeText(context, R.string.updated_account, Toast.LENGTH_SHORT).show()
