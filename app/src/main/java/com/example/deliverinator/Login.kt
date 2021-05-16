@@ -65,22 +65,21 @@ class Login : AppCompatActivity() {
 
                     mProgressBar.visibility = View.INVISIBLE
 
-                    val docRef: DocumentReference =
-                        mStore.collection("Users").document(user.uid)
+                    val docRef = mStore.collection(USERS).document(user.uid)
 
                     docRef.get().addOnSuccessListener { docSnap ->
                         when {
-                            docSnap.getString("UserType") == "0" -> {
+                            docSnap.getString(USER_TYPE) == "0" -> {
                                 val dashboardIntent = Intent(applicationContext, AdminDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.getString("UserType") == "1" -> {
+                            docSnap.getString(USER_TYPE) == "1" -> {
                                 val dashboardIntent = Intent(applicationContext, ClientDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
 
-                            docSnap.getString("UserType") == "2" -> {
+                            docSnap.getString(USER_TYPE) == "2" -> {
                                 val dashboardIntent = Intent(applicationContext, RestaurantDashboard::class.java)
                                 startActivity(dashboardIntent)
                             }
