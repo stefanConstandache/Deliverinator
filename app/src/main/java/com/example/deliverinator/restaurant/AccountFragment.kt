@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +16,14 @@ import androidx.fragment.app.Fragment
 import com.example.deliverinator.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.restaurant_fragment_account.view.*
 
 class AccountFragment : Fragment() {
     private lateinit var mAccountImageView: ImageView
     private lateinit var mRestaurantName: TextView
     private lateinit var mDescription: TextView
     private lateinit var mChangePassword: Button
+    private lateinit var mChooseImage: Button
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStore: FirebaseFirestore
 
@@ -33,10 +34,11 @@ class AccountFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.restaurant_fragment_account, container, false)
 
-        mAccountImageView = view.findViewById(R.id.account_fragment_imageView)
-        mRestaurantName = view.findViewById(R.id.account_fragment_name)
-        mDescription = view.findViewById(R.id.account_fragment_description)
-        mChangePassword = view.findViewById(R.id.account_fragment_button)
+        mAccountImageView = view.account_fragment_imageView
+        mRestaurantName = view.account_fragment_name
+        mDescription = view.account_fragment_description
+        mChangePassword = view.account_fragment_change_button
+        mChooseImage = view.account_fragment_choose_button
         mAuth  = FirebaseAuth.getInstance()
         mStore = FirebaseFirestore.getInstance()
 
@@ -55,7 +57,7 @@ class AccountFragment : Fragment() {
             sendChangePasswordEmail()
         }
 
-        mAccountImageView.setOnClickListener {
+        mChooseImage.setOnClickListener {
             chooseImage()
         }
 
