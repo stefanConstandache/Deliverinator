@@ -3,22 +3,29 @@ package com.example.deliverinator.restaurant
 import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.IMAGE_PICK_CODE
+import com.example.deliverinator.MENU_ITEMS
 import com.example.deliverinator.PERMISSION_CODE
 import com.example.deliverinator.R
-import kotlinx.android.synthetic.main.restaurant_add_item_dialog.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.restaurant_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
 
@@ -26,6 +33,9 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mAdapter: MenuAdapter
     private lateinit var mMenuItems: ArrayList<MenuItem>
     private lateinit var mDialogImageView: ImageView
+    private lateinit var mStorageRef: StorageReference
+    private lateinit var mDatabaseRef: DatabaseReference
+    private lateinit var mImageUri: Uri
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +46,8 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
         mMenuItems = generateDummyList()
         mAdapter = MenuAdapter(mMenuItems, this)
+        mStorageRef = FirebaseStorage.getInstance().getReference(MENU_ITEMS)
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(MENU_ITEMS)
 
         view.restaurant_fragment_recyclerView.adapter = mAdapter
         view.restaurant_fragment_recyclerView.layoutManager = LinearLayoutManager(context)
@@ -62,11 +74,13 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         builder.setTitle(R.string.add_item)
             .setPositiveButton(R.string.add) { _, _ ->
                 val newItem = MenuItem(
-                    R.drawable.pizza, // De schimbat
+                    mImageUri,
                     dialogLayout.restaurant_add_name.text.toString(),
                     dialogLayout.restaurant_add_description.text.toString(),
                     true
                 )
+
+                uploadFile()
 
                 mMenuItems.add(newItem)
                 mAdapter.notifyItemInserted(mMenuItems.size - 1)
@@ -78,21 +92,46 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
         dialog.setView(dialogLayout)
         dialog.show()
+    }
 
-        dialog.setOnShowListener {
-        }
+    private fun uploadFile() {
+        val fileReference = mStorageRef.child(System.currentTimeMillis().toString() + "." +
+                getFileExtension(mImageUri))
+
+        fileReference.putFile(mImageUri)
+            .addOnSuccessListener {
+                val upload = UploadMenuItem(it.storage.downloadUrl.toString())
+                val uploadId = mDatabaseRef.push().key
+
+                if (uploadId != null) {
+                    mDatabaseRef.child(uploadId).setValue(upload)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+            .addOnProgressListener {
+                Toast.makeText(context, R.string.uploading_image, Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun getFileExtension(uri: Uri): String? {
+        val contentResolver = context?.contentResolver
+        val mime = MimeTypeMap.getSingleton()
+
+        return mime.getExtensionFromMimeType(contentResolver?.getType(uri))
     }
 
     private fun generateDummyList(): ArrayList<MenuItem> {
         val list = ArrayList<MenuItem>()
 
-        val burger = MenuItem(R.drawable.burger, "Burger", "Cel mai dulce si frumos burger", true)
+        /*val burger = MenuItem(R.drawable.burger, "Burger", "Cel mai dulce si frumos burger", true)
         val shaorma = MenuItem(R.drawable.shaorma, "Shaorma", "Shaorma cu de toate pentru fetele tunate", true)
         val pizza = MenuItem(R.drawable.pizza, "Pizza", "Pizza ca a lu' Tanti Mitza", true)
 
         list += burger
         list += shaorma
-        list += pizza
+        list += pizza*/
 
         return list
     }
@@ -149,6 +188,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             mDialogImageView.setImageURI(data?.data)
+            mImageUri = data?.data!!
         }
     }
 }

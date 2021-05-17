@@ -45,7 +45,7 @@ class MenuAdapter(
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         val currentItem = itemsList[position]
 
-        holder.itemImage.setImageResource(currentItem.imageResource)
+        holder.itemImage.setImageURI(currentItem.imageUri)
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
         holder.isAvailable.isChecked = currentItem.isAvailable

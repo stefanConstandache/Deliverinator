@@ -65,4 +65,5 @@
     <string name="item_description">Item Description</string>
     <string name="add_item">Add an item</string>
     <string name="choose_image">Choose Image</string>
+    <string name="uploading_image">Uploading image...</string>
 </resources>
