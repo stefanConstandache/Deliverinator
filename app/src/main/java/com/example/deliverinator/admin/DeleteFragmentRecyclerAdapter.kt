@@ -29,12 +29,12 @@ class DeleteFragmentRecyclerAdapter(
             val position = absoluteAdapterPosition
 
             if (position != RecyclerView.NO_POSITION) {
-                listener.onItemClick(position)
+                listener.onItemClick(position,view)
             }
         }
     }
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, view: View?)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminDeleteViewHolder {
 
