@@ -41,8 +41,6 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
     }
 
     private fun generateList(view:View):ArrayList<DeleteFragmentRecyclerItem> {
-        //var documents:List<User>
-
         list = ArrayList<DeleteFragmentRecyclerItem>()
         database.collection(RESTAURANTS).get()
             .addOnSuccessListener{documents ->
@@ -56,11 +54,6 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
                 view.admin_delete_recycler_view.layoutManager = LinearLayoutManager(context)
                 view.admin_delete_recycler_view.setHasFixedSize(true)
             }
-
-
-//        val list = ArrayList<DeleteFragmentRecyclerItem>()
-//        val item = DeleteFragmentRecyclerItem(R.drawable.sobolan, "Sobolan", "Dai 10 lei vomiti cat vrei")
-//        list += item
 
         return list
     }
