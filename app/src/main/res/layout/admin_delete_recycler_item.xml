@@ -42,7 +42,7 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_delete"
+            android:src="@drawable/ic_admin_delete"
             app:tint="@color/red" />
 
 
