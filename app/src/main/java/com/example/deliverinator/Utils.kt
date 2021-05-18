@@ -20,6 +20,8 @@ const val EMAIL = "Email"
 const val PHONE_NUMBER = "PhoneNumber"
 const val ADDRESS = "Address"
 const val USER_TYPE = "UserType"
+const val RESTAURANTS = "Restaurants"
+const val RESTAURANT_DESCRIPTION = "RestaurantDescription"
 
 class Utils {
     companion object {
