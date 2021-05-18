@@ -115,6 +115,12 @@ class AddFragment : Fragment() {
 
                 docRef.set(userInfo)
 
+                val restaurantRef = mStore.collection(RESTAURANTS).document(user.uid)
+                val restaurantInfo = HashMap<String, Any>()
+
+                restaurantInfo[NAME] = name
+                restaurantInfo[RESTAURANT_DESCRIPTION] = ""
+
                 mProgressBar.visibility = View.INVISIBLE
             }
         }
