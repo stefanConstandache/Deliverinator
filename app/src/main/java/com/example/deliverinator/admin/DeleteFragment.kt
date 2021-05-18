@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,8 @@ import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
 class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListener {
     lateinit var adapter: DeleteFragmentRecyclerAdapter
     lateinit var list:ArrayList<DeleteFragmentRecyclerItem>
+    var database = FirebaseFirestore.getInstance()
+    var auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +42,7 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
 
     private fun generateList(view:View):ArrayList<DeleteFragmentRecyclerItem> {
         //var documents:List<User>
-        val database = FirebaseFirestore.getInstance()
+
         list = ArrayList<DeleteFragmentRecyclerItem>()
         database.collection(RESTAURANTS).get()
             .addOnSuccessListener{documents ->
@@ -62,8 +65,33 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
         return list
     }
 
-    override fun onItemClick(position: Int) {
-        list.removeAt(position)
-        adapter.notifyItemRemoved(position)
+    override fun onItemClick(position: Int, view:View?) {
+        val deleteDialog = AlertDialog.Builder(view!!.context)
+        val restaurantName = list[position]
+
+        deleteDialog
+            .setTitle("Are you sure?")
+            .setNegativeButton("No", null)
+            .setPositiveButton("Yes") { _, _ ->
+                database.collection(RESTAURANTS).whereEqualTo(NAME, restaurantName.text1)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            database.collection(RESTAURANTS).document(document.id).delete()
+                            list.removeAt(position)
+                            adapter.notifyItemRemoved(position)
+                        }
+                    }
+
+                database.collection(USERS).whereEqualTo(NAME, restaurantName.text1)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (document in documents) {
+                            database.collection(USERS).document(document.id).delete()
+                        }
+                    }
+            }
+            .create()
+            .show()
     }
 }
