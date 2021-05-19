@@ -13,8 +13,8 @@ class MenuAdapter(
     private val context: Context,
     private val uploadsList: List<UploadMenuItem>,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder2>() {
-    inner class MenuViewHolder2(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+    inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val itemImage = itemView.restaurant_menu_item_image
         val itemName = itemView.restaurant_menu_item_name
         val itemDescription = itemView.restaurant_menu_item_description
@@ -37,13 +37,13 @@ class MenuAdapter(
         fun onItemClick(position: Int)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder2 {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.restaurant_menu_item, parent, false)
 
-        return MenuViewHolder2(view)
+        return MenuViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: MenuViewHolder2, position: Int) {
+    override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         val uploadCurrent = uploadsList[position]
 
         holder.itemName.text = uploadCurrent.itemName
