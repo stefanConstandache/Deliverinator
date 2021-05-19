@@ -14,7 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.deliverinator.*
+import com.example.deliverinator.Utils.Companion.hideKeyboard
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.restaurant_fragment_account.view.*
 
@@ -24,6 +26,8 @@ class AccountFragment : Fragment() {
     private lateinit var mDescription: TextView
     private lateinit var mChangePassword: Button
     private lateinit var mChooseImage: Button
+    private lateinit var mApplyChanges: Button
+    private lateinit var mProgressBar: ProgressBar
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStore: FirebaseFirestore
 
@@ -39,18 +43,24 @@ class AccountFragment : Fragment() {
         mDescription = view.account_fragment_description
         mChangePassword = view.account_fragment_change_button
         mChooseImage = view.account_fragment_choose_button
+        mApplyChanges = view.account_fragment_apply_changes
+        mProgressBar = view.account_fragment_progressBar
         mAuth  = FirebaseAuth.getInstance()
         mStore = FirebaseFirestore.getInstance()
 
         val user = mAuth.currentUser
-        val docRef = mStore.collection(USERS).document(user!!.uid)
+        val docRestaurantsRef = mStore.collection(RESTAURANTS).document(user!!.uid)
+        val docUsersRef = mStore.collection(USERS).document(user.uid)
 
-        docRef.get().addOnSuccessListener {
+        docRestaurantsRef.get().addOnSuccessListener {
             mRestaurantName.text = it.getString(NAME)
+            if (it.getString(RESTAURANT_DESCRIPTION) != "") {
+                mDescription.text = it.getString(RESTAURANT_DESCRIPTION)
+            }
         }
 
-        mDescription.setOnClickListener {
-            setDescription(it)
+        mApplyChanges.setOnClickListener {
+            applyChanges(docRestaurantsRef, docUsersRef)
         }
 
         mChangePassword.setOnClickListener {
@@ -62,6 +72,50 @@ class AccountFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun applyChanges(docRestaurantRef: DocumentReference, docUsersRef: DocumentReference) {
+        val restaurantName = mRestaurantName.text
+        val description = mDescription.text
+
+        docRestaurantRef.get().addOnSuccessListener { docSnap ->
+            if (restaurantName.toString() == docSnap.getString(NAME) &&
+                description.toString() == docSnap.getString(ADDRESS)
+            ) {
+                mProgressBar.visibility = View.VISIBLE
+
+                Toast.makeText(context, R.string.no_changes, Toast.LENGTH_SHORT).show()
+
+                mProgressBar.visibility = View.INVISIBLE
+            } else {
+                if (restaurantName.isEmpty()) {
+                    mRestaurantName.error = getString(R.string.empty_field)
+                    return@addOnSuccessListener
+                }
+
+                if (description.isEmpty()) {
+                    mDescription.error = getString(R.string.empty_field)
+                    return@addOnSuccessListener
+                }
+
+                mProgressBar.visibility = View.VISIBLE
+
+                val restaurantInfo = HashMap<String, Any>()
+
+                restaurantInfo[NAME] = restaurantName.toString()
+                restaurantInfo[RESTAURANT_DESCRIPTION] = description.toString()
+
+                hideKeyboard()
+
+                docRestaurantRef.update(restaurantInfo).addOnSuccessListener {
+                    docUsersRef.update(restaurantInfo).addOnSuccessListener {
+                        Toast.makeText(context, R.string.updated_account, Toast.LENGTH_SHORT).show()
+
+                        mProgressBar.visibility = View.INVISIBLE
+                    }
+                }
+            }
+        }
     }
 
     private fun chooseImage() {
@@ -94,28 +148,6 @@ class AccountFragment : Fragment() {
                 Toast.makeText(context, getString(R.string.link_not_sent) + it.message, Toast.LENGTH_LONG)
                     .show()
             }
-    }
-
-    private fun setDescription(it: View?) {
-        val descriptionField = EditText(it?.context)
-        val descriptionDialog = it?.context?.let { context -> AlertDialog.Builder(context) }
-
-        if (!mDescription.text.equals(getString(R.string.no_description))) {
-            descriptionField.setText(mDescription.text.toString())
-        }
-
-        descriptionDialog
-            ?.setTitle(R.string.add_description)
-            ?.setView(descriptionField)
-            ?.setPositiveButton(R.string.set) { _, _ ->
-                val description = descriptionField.text.toString().trim()
-
-                if (description.isEmpty()) {
-                    mDescription.text = getString(R.string.no_description)
-                } else {
-                    mDescription.text = description
-                }
-            }?.create()?.show()
     }
 
     private fun chooseImageFromGallery() {
