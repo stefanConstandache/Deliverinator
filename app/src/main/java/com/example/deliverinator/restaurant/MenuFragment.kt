@@ -3,13 +3,11 @@ package com.example.deliverinator.restaurant
 import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
-import android.content.ClipDescription
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +32,7 @@ const val foodUriString = "android.resource://com.example.deliverinator/drawable
 
 class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mAdapter: MenuAdapter
-    private lateinit var mMenuItems: ArrayList<MenuItem>
+    private lateinit var mMenuItems: ArrayList<UploadMenuItem>
     private lateinit var mDialogImageView: ImageView
     private lateinit var mItemName: TextView
     private lateinit var mItemDescription: TextView
@@ -49,14 +47,13 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.restaurant_fragment_menu, container, false)
+        val listener = this
 
         mAuth = FirebaseAuth.getInstance()
         mStorageRef = FirebaseStorage.getInstance().getReference(mAuth.currentUser?.uid!!)
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
 
         mMenuItems = ArrayList()
-
-        val x = this
 
         mDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -65,19 +62,17 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
                     if (upload != null) {
                         mMenuItems.add(
-                            MenuItem(
-                                Uri.parse(upload.imageUrl),
+                            UploadMenuItem(
+                                upload.imageUrl,
                                 upload.itemName,
                                 upload.itemDescription,
-                                true
+                                upload.isAvailable
                             )
                         )
                     }
-
-                    Toast.makeText(context, upload?.itemName!!, Toast.LENGTH_SHORT).show()
                 }
 
-                mAdapter = MenuAdapter(mMenuItems, x)
+                mAdapter = MenuAdapter(context!!, mMenuItems, listener)
 
                 view.restaurant_fragment_recyclerView.adapter = mAdapter
                 view.restaurant_fragment_recyclerView.layoutManager = LinearLayoutManager(context)
@@ -111,32 +106,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
         builder.setTitle(R.string.add_item)
             .setPositiveButton(R.string.add) { _, _ ->
-                val newItem: MenuItem?
-
-                if (mImageUri != null) {
-                    newItem = MenuItem(
-                        mImageUri!!,
-                        dialogLayout.restaurant_add_name.text.toString(),
-                        dialogLayout.restaurant_add_description.text.toString(),
-                        true
-                    )
-
-                    uploadFile()
-                } else {
-                    mImageUri = Uri.parse(foodUriString)
-
-                    newItem = MenuItem(
-                        mImageUri!!,
-                        dialogLayout.restaurant_add_name.text.toString(),
-                        dialogLayout.restaurant_add_description.text.toString(),
-                        true
-                    )
-                }
-
                 mImageUri = null
-
-                mMenuItems.add(newItem)
-                mAdapter.notifyItemInserted(mMenuItems.size - 1)
             }
             .setNegativeButton(R.string.cancel, null)
 
@@ -150,25 +120,45 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         val fileReference = mStorageRef.child(System.currentTimeMillis().toString() + "." +
                 getFileExtension(mImageUri!!))
 
-        fileReference.putFile(mImageUri!!)
-            .addOnSuccessListener {
-                val upload = UploadMenuItem(
-                    it.storage.downloadUrl.toString(),
-                    mItemName.text.toString().trim(),
-                    mItemDescription.text.toString().trim()
-                )
-                val uploadId = mDatabaseRef.push().key
+        if (mImageUri != null) {
+            fileReference.putFile(mImageUri!!)
+                .addOnSuccessListener {
+                    /*val upload = UploadMenuItem(
+                        it.storage.downloadUrl.toString(),
+                        mItemName.text.toString().trim(),
+                        mItemDescription.text.toString().trim(),
+                        true
+                    )
+                    val uploadId = mDatabaseRef.push().key
 
-                if (uploadId != null) {
-                    mDatabaseRef.child(uploadId).setValue(upload)
+                    if (uploadId != null) {
+                        mDatabaseRef.child(uploadId).setValue(upload)
+                    }*/
+                    val urlTask = it.storage.downloadUrl
+                    while (!urlTask.isSuccessful) {}
+
+                    val downloadUrl = urlTask.result
+
+                    val upload = UploadMenuItem(
+                        downloadUrl.toString(),
+                        mItemName.text.toString().trim(),
+                        mItemDescription.text.toString().trim(),
+                        true
+                    )
+
+                    val uploadId = mDatabaseRef.push().key
+
+                    if (uploadId != null) {
+                        mDatabaseRef.child(uploadId).setValue(upload)
+                    }
                 }
-            }
-            .addOnFailureListener {
-                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-            }
-            .addOnProgressListener {
-                Toast.makeText(context, R.string.uploading_image, Toast.LENGTH_SHORT).show()
-            }
+                .addOnFailureListener {
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+                .addOnProgressListener {
+                    Toast.makeText(context, R.string.uploading_image, Toast.LENGTH_SHORT).show()
+                }
+        }
     }
 
     private fun getFileExtension(uri: Uri): String? {
