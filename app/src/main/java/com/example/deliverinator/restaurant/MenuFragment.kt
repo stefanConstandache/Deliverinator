@@ -21,12 +21,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.IMAGE_PICK_CODE
 import com.example.deliverinator.PERMISSION_CODE
 import com.example.deliverinator.R
+import com.example.deliverinator.foodUriString
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.restaurant_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
+
+val defaultImageUri: Uri = Uri.parse(foodUriString)
 
 class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mAdapter: MenuAdapter
@@ -53,20 +56,17 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
         mMenuItems = ArrayList()
 
+        val x = context
+
         mDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
+                mMenuItems.clear()
+
                 for (postSnapshot in snapshot.children) {
                     val upload = postSnapshot.getValue(UploadMenuItem::class.java)
 
                     if (upload != null) {
-                        mMenuItems.add(
-                            UploadMenuItem(
-                                upload.imageUrl,
-                                upload.itemName,
-                                upload.itemDescription,
-                                upload.isAvailable
-                            )
-                        )
+                        mMenuItems.add(upload)
                     }
                 }
 
@@ -104,9 +104,16 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
         builder.setTitle(R.string.add_item)
             .setPositiveButton(R.string.add) { _, _ ->
+                if (mImageUri == null) {
+                    mImageUri = defaultImageUri
+                }
+
+                uploadFile()
                 mImageUri = null
             }
-            .setNegativeButton(R.string.cancel, null)
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                mImageUri = null
+            }
 
         val dialog = builder.create()
 
@@ -115,48 +122,53 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     }
 
     private fun uploadFile() {
+        if (mImageUri == defaultImageUri) {
+            val upload = UploadMenuItem(
+                null,
+                mItemName.text.toString().trim(),
+                mItemDescription.text.toString().trim(),
+                true
+            )
+
+            val uploadId = mDatabaseRef.push().key
+
+            if (uploadId != null) {
+                mDatabaseRef.child(uploadId).setValue(upload)
+            }
+
+            return
+        }
+
         val fileReference = mStorageRef.child(System.currentTimeMillis().toString() + "." +
                 getFileExtension(mImageUri!!))
 
-        if (mImageUri != null) {
-            fileReference.putFile(mImageUri!!)
-                .addOnSuccessListener {
-                    /*val upload = UploadMenuItem(
-                        it.storage.downloadUrl.toString(),
-                        mItemName.text.toString().trim(),
-                        mItemDescription.text.toString().trim(),
-                        true
-                    )
-                    val uploadId = mDatabaseRef.push().key
+        fileReference.putFile(mImageUri!!)
+            .addOnSuccessListener {
+                val urlTask = it.storage.downloadUrl
 
-                    if (uploadId != null) {
-                        mDatabaseRef.child(uploadId).setValue(upload)
-                    }*/
-                    val urlTask = it.storage.downloadUrl
-                    while (!urlTask.isSuccessful) {}
+                while (!urlTask.isSuccessful) {}
 
-                    val downloadUrl = urlTask.result
+                val downloadUrl = urlTask.result
 
-                    val upload = UploadMenuItem(
-                        downloadUrl.toString(),
-                        mItemName.text.toString().trim(),
-                        mItemDescription.text.toString().trim(),
-                        true
-                    )
+                val upload = UploadMenuItem(
+                    downloadUrl.toString(),
+                    mItemName.text.toString().trim(),
+                    mItemDescription.text.toString().trim(),
+                    true
+                )
 
-                    val uploadId = mDatabaseRef.push().key
+                val uploadId = mDatabaseRef.push().key
 
-                    if (uploadId != null) {
-                        mDatabaseRef.child(uploadId).setValue(upload)
-                    }
+                if (uploadId != null) {
+                    mDatabaseRef.child(uploadId).setValue(upload)
                 }
-                .addOnFailureListener {
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                }
-                .addOnProgressListener {
-                    Toast.makeText(context, R.string.uploading_image, Toast.LENGTH_SHORT).show()
-                }
-        }
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+            .addOnProgressListener {
+                Toast.makeText(context, R.string.uploading_image, Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun getFileExtension(uri: Uri): String? {

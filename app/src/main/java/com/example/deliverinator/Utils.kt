@@ -22,7 +22,7 @@ const val ADDRESS = "Address"
 const val USER_TYPE = "UserType"
 const val RESTAURANTS = "Restaurants"
 const val RESTAURANT_DESCRIPTION = "RestaurantDescription"
-const val MENU_ITEMS = "MenuItems"
+const val foodUriString = "android.resource://com.example.deliverinator/drawable/ic_food"
 
 class Utils {
     companion object {

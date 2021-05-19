@@ -1,6 +1,7 @@
 package com.example.deliverinator.restaurant
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,12 +51,21 @@ class MenuAdapter(
         holder.itemDescription.text = uploadCurrent.itemDescription
         holder.isAvailable.isChecked = uploadCurrent.isAvailable
 
-        Picasso.with(context)
-            .load(uploadCurrent.imageUrl)
-            .placeholder(R.drawable.ic_food)
-            .fit()
-            .centerCrop()
-            .into(holder.itemImage)
+        if (uploadCurrent.imageUrl == null) {
+            Picasso.with(context)
+                .load(R.drawable.ic_food)
+                .placeholder(R.drawable.ic_food)
+                .fit()
+                .centerCrop()
+                .into(holder.itemImage)
+        } else {
+            Picasso.with(context)
+                .load(uploadCurrent.imageUrl)
+                .placeholder(R.drawable.ic_food)
+                .fit()
+                .centerCrop()
+                .into(holder.itemImage)
+        }
     }
 
     override fun getItemCount(): Int = uploadsList.size
