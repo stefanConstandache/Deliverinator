@@ -56,8 +56,6 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
         mMenuItems = ArrayList()
 
-        val x = context
-
         mDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mMenuItems.clear()
