@@ -122,6 +122,8 @@ class AddFragment : Fragment() {
                 restaurantInfo[RESTAURANT_DESCRIPTION] = ""
                 restaurantRef.set(restaurantInfo)
 
+                restaurantRef.set(restaurantInfo)
+
                 mProgressBar.visibility = View.INVISIBLE
             }
         }
