@@ -28,8 +28,6 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.restaurant_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
 
-const val foodUriString = "android.resource://com.example.deliverinator/drawable/ic_food"
-
 class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mAdapter: MenuAdapter
     private lateinit var mMenuItems: ArrayList<UploadMenuItem>
