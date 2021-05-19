@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
 import com.example.deliverinator.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
@@ -13,8 +14,8 @@ class MenuAdapter(
     private val context: Context,
     private val uploadsList: List<UploadMenuItem>,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
-    inner class MenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+) : Adapter<MenuAdapter.MenuViewHolder>() {
+    inner class MenuViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
         val itemImage = itemView.restaurant_menu_item_image
         val itemName = itemView.restaurant_menu_item_name
         val itemDescription = itemView.restaurant_menu_item_description
@@ -27,7 +28,7 @@ class MenuAdapter(
         override fun onClick(view: View?) {
             val position = absoluteAdapterPosition
 
-            if (position != RecyclerView.NO_POSITION) {
+            if (position != NO_POSITION) {
                 listener.onItemClick(position)
             }
         }
@@ -50,12 +51,21 @@ class MenuAdapter(
         holder.itemDescription.text = uploadCurrent.itemDescription
         holder.isAvailable.isChecked = uploadCurrent.isAvailable
 
-        Picasso.with(context)
-            .load(uploadCurrent.imageUrl)
-            .placeholder(R.drawable.ic_food)
-            .fit()
-            .centerCrop()
-            .into(holder.itemImage)
+        if (uploadCurrent.imageUrl == null) {
+            Picasso.with(context)
+                .load(R.drawable.ic_food)
+                .placeholder(R.drawable.ic_food)
+                .fit()
+                .centerCrop()
+                .into(holder.itemImage)
+        } else {
+            Picasso.with(context)
+                .load(uploadCurrent.imageUrl)
+                .placeholder(R.drawable.ic_food)
+                .fit()
+                .centerCrop()
+                .into(holder.itemImage)
+        }
     }
 
     override fun getItemCount(): Int = uploadsList.size
