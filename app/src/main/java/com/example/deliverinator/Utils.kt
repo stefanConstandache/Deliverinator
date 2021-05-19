@@ -22,6 +22,7 @@ const val ADDRESS = "Address"
 const val USER_TYPE = "UserType"
 const val RESTAURANTS = "Restaurants"
 const val RESTAURANT_DESCRIPTION = "RestaurantDescription"
+const val MENU_ITEMS = "MenuItems"
 
 class Utils {
     companion object {
