@@ -1,6 +1,8 @@
 package com.example.deliverinator.admin
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +15,6 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.admin_fragment_delete.view.*
-
 
 class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListener {
     lateinit var adapter: DeleteFragmentRecyclerAdapter
@@ -29,12 +30,10 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
         val view = inflater.inflate(R.layout.admin_fragment_delete, container, false)
         list = generateList(view)
 
-        // Inflate the layout for this fragment
         return view
     }
 
     private fun generateList(view: View):ArrayList<DeleteFragmentRecyclerItem> {
-        //var documents:List<User>
 
         list = ArrayList<DeleteFragmentRecyclerItem>()
         database.collection(RESTAURANTS).get()
@@ -49,16 +48,16 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
                     list.add(item)
                 }
                 adapter = DeleteFragmentRecyclerAdapter(list, this)
+
                 view.admin_delete_recycler_view.adapter = adapter
                 view.admin_delete_recycler_view.layoutManager = LinearLayoutManager(context)
                 view.admin_delete_recycler_view.setHasFixedSize(true)
             }
 
-
         return list
     }
 
-    override fun onItemClick(position: Int, view: View?) {
+    override fun onItemClick(position: Int, view:View?) {
         val deleteDialog = AlertDialog.Builder(view!!.context)
         val restaurantName = list[position]
 
@@ -91,7 +90,6 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
 
                         }
                     }
-
 
             }
             .create()
