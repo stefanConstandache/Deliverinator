@@ -9,15 +9,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.*
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.firebase.firestore.auth.User
-import kotlinx.android.synthetic.main.admin_fragment_delete.*
 import kotlinx.android.synthetic.main.admin_fragment_delete.view.*
-import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
 
 class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListener {
     lateinit var adapter: DeleteFragmentRecyclerAdapter
@@ -33,23 +30,25 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
         val view = inflater.inflate(R.layout.admin_fragment_delete, container, false)
         list = generateList(view)
 
-
-
-
-        // Inflate the layout for this fragment
         return view
     }
 
-    private fun generateList(view:View):ArrayList<DeleteFragmentRecyclerItem> {
+    private fun generateList(view: View):ArrayList<DeleteFragmentRecyclerItem> {
+
         list = ArrayList<DeleteFragmentRecyclerItem>()
         database.collection(RESTAURANTS).get()
-            .addOnSuccessListener{documents ->
+            .addOnSuccessListener{ documents ->
                 for(document in documents) {
-                    val item = DeleteFragmentRecyclerItem(R.drawable.sobolan, document.getString(NAME)!!,
-                        document.getString(RESTAURANT_DESCRIPTION)!!)
+                    val item = DeleteFragmentRecyclerItem(
+                        R.drawable.sobolan, document.getString(
+                            NAME
+                        )!!,
+                        document.getString(RESTAURANT_DESCRIPTION)!!
+                    )
                     list.add(item)
                 }
-                adapter = DeleteFragmentRecyclerAdapter(list,this)
+                adapter = DeleteFragmentRecyclerAdapter(list, this)
+
                 view.admin_delete_recycler_view.adapter = adapter
                 view.admin_delete_recycler_view.layoutManager = LinearLayoutManager(context)
                 view.admin_delete_recycler_view.setHasFixedSize(true)
@@ -81,8 +80,17 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             database.collection(USERS).document(document.id).delete()
+
+//                            val options = FirebaseOptions.builder()
+//                                .setCredentials(GoogleCredentials.getApplicationDefault())
+//                                .build()
+//
+//                            FirebaseApp.initializeApp(options)
+//                            FirebaseAuth.getInstance().deleteUser(document.id);
+
                         }
                     }
+
             }
             .create()
             .show()
