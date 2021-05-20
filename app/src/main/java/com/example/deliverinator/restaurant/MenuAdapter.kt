@@ -1,13 +1,14 @@
 package com.example.deliverinator.restaurant
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.deliverinator.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
+
+const val EDIT_ITEM_ID = 1
+const val DELETE_ITEM_ID = 2
 
 class MenuAdapter(
     private val context: Context,
@@ -21,20 +22,20 @@ class MenuAdapter(
         val isAvailable = itemView.restaurant_menu_checkBox
 
         init {
-            itemView.restaurant_menu_delete.setOnClickListener(this)
+            itemView.restaurant_menu_more.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {
             val position = absoluteAdapterPosition
 
             if (position != NO_POSITION) {
-                listener.onItemClick(position)
+                listener.onItemClick(position, view)
             }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, view: View?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {

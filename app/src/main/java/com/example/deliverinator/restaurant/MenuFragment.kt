@@ -9,10 +9,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -31,7 +33,8 @@ import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
 
 val defaultImageUri: Uri = Uri.parse(foodUriString)
 
-class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
+class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener,
+    PopupMenu.OnMenuItemClickListener {
     private lateinit var mAdapter: MenuAdapter
     private lateinit var mMenuItems: ArrayList<UploadMenuItem>
     private lateinit var mDialogImageView: ImageView
@@ -176,9 +179,27 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         return mime.getExtensionFromMimeType(contentResolver?.getType(uri))
     }
 
-    override fun onItemClick(position: Int) {
-        mMenuItems.removeAt(position)
-        mAdapter.notifyItemRemoved(position)
+    override fun onItemClick(position: Int, view: View?) {
+        val popupMenu = PopupMenu(context, view)
+
+        popupMenu.setOnMenuItemClickListener(this)
+        popupMenu.inflate(R.menu.restaurant_menu_popup_menu)
+        popupMenu.show()
+    }
+
+    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+        when (menuItem?.itemId) {
+            R.id.edit_item -> {
+                Toast.makeText(context, "EDIT", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.delete_item -> {
+                Toast.makeText(context, "DELETE", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+
+        return false
     }
 
     private fun chooseImage() {
