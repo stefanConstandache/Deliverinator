@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.IMAGE_PICK_CODE
 import com.example.deliverinator.PERMISSION_CODE
 import com.example.deliverinator.R
+
 import com.example.deliverinator.foodUriString
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -48,6 +49,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.restaurant_fragment_menu, container, false)
+
         val listener = this
 
         mAuth = FirebaseAuth.getInstance()

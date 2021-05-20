@@ -24,6 +24,7 @@ const val RESTAURANTS = "Restaurants"
 const val RESTAURANT_DESCRIPTION = "RestaurantDescription"
 const val foodUriString = "android.resource://com.example.deliverinator/drawable/ic_food"
 
+
 class Utils {
     companion object {
         fun isValidEmail(email: String): Boolean =
