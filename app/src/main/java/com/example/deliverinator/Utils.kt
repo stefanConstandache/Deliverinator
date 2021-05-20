@@ -22,6 +22,7 @@ const val ADDRESS = "Address"
 const val USER_TYPE = "UserType"
 const val RESTAURANTS = "Restaurants"
 const val RESTAURANT_DESCRIPTION = "RestaurantDescription"
+const val RESTAURANT_IMAGE = "RestaurantImage"
 const val foodUriString = "android.resource://com.example.deliverinator/drawable/ic_food"
 
 class Utils {

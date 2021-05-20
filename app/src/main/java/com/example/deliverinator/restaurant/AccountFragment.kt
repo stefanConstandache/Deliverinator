@@ -4,19 +4,27 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.MimeTypeMap
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.deliverinator.*
 import com.example.deliverinator.Utils.Companion.hideKeyboard
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_fragment_account.view.*
 
 class AccountFragment : Fragment() {
@@ -29,6 +37,10 @@ class AccountFragment : Fragment() {
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStore: FirebaseFirestore
+    private lateinit var mStorageRef: StorageReference
+    private lateinit var mDocRestaurantsRef: DocumentReference
+    private lateinit var mDatabaseRef: DatabaseReference
+    private var mImageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,20 +58,32 @@ class AccountFragment : Fragment() {
         mProgressBar = view.account_fragment_progressBar
         mAuth  = FirebaseAuth.getInstance()
         mStore = FirebaseFirestore.getInstance()
+        mStorageRef = FirebaseStorage.getInstance().getReference(mAuth.currentUser?.uid!!)
+        mDocRestaurantsRef = mStore.collection(RESTAURANTS).document(mAuth.currentUser?.uid!!)
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
 
         val user = mAuth.currentUser
-        val docRestaurantsRef = mStore.collection(RESTAURANTS).document(user!!.uid)
-        val docUsersRef = mStore.collection(USERS).document(user.uid)
+        val docUsersRef = mStore.collection(USERS).document(user?.uid!!)
 
-        docRestaurantsRef.get().addOnSuccessListener {
+        mDocRestaurantsRef.get().addOnSuccessListener {
             mRestaurantName.text = it.getString(NAME)
-            if (it.getString(RESTAURANT_DESCRIPTION) != "") {
+
+            if (it.getString(RESTAURANT_DESCRIPTION)!!.isNotEmpty()) {
                 mDescription.text = it.getString(RESTAURANT_DESCRIPTION)
+            }
+
+            if (it.getString(RESTAURANT_IMAGE) != null) {
+                Picasso.with(context)
+                    .load(it.getString(RESTAURANT_IMAGE))
+                    .placeholder(R.drawable.ic_restaurant)
+                    .fit()
+                    .centerCrop()
+                    .into(view.account_fragment_imageView)
             }
         }
 
         mApplyChanges.setOnClickListener {
-            applyChanges(docRestaurantsRef, docUsersRef)
+            applyChanges(mDocRestaurantsRef, docUsersRef)
         }
 
         mChangePassword.setOnClickListener {
@@ -71,6 +95,36 @@ class AccountFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun uploadFile() {
+        val fileReference = mStorageRef.child(System.currentTimeMillis().toString() + "." +
+                getFileExtension(mImageUri!!))
+
+        fileReference.putFile(mImageUri!!)
+            .addOnSuccessListener {
+                val urlTask = it.storage.downloadUrl
+
+                while (!urlTask.isSuccessful) {}
+
+                val downloadUrl = urlTask.result
+                val restaurantImage = mutableMapOf(RESTAURANT_IMAGE to downloadUrl.toString())
+
+                mDocRestaurantsRef.set(restaurantImage, SetOptions.merge())
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+            .addOnProgressListener {
+                Toast.makeText(context, R.string.uploading_image, Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun getFileExtension(uri: Uri): String? {
+        val contentResolver = context?.contentResolver
+        val mime = MimeTypeMap.getSingleton()
+
+        return mime.getExtensionFromMimeType(contentResolver?.getType(uri))
     }
 
     private fun applyChanges(docRestaurantRef: DocumentReference, docUsersRef: DocumentReference) {
@@ -174,8 +228,15 @@ class AccountFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+        mImageUri = if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             mAccountImageView.setImageURI(data?.data)
+            data?.data
+        } else {
+            null
+        }
+
+        if (mImageUri != null) {
+            uploadFile()
         }
     }
 }
