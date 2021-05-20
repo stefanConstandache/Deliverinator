@@ -9,10 +9,12 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -41,6 +43,8 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStorageRef: StorageReference
     private lateinit var mDatabaseRef: DatabaseReference
+    private lateinit var mStorage: FirebaseStorage
+    private lateinit var mDBListener: ValueEventListener
     private var mImageUri: Uri? = null
 
     override fun onCreateView(
@@ -53,14 +57,18 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         val listener = this
 
         mAuth = FirebaseAuth.getInstance()
-        mStorageRef = FirebaseStorage.getInstance().getReference(mAuth.currentUser?.uid!!)
+        mStorage = FirebaseStorage.getInstance()
+        mStorageRef = mStorage.getReference(mAuth.currentUser?.uid!!)
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
 
         mMenuItems = ArrayList()
+        mAdapter = MenuAdapter(context!!, mMenuItems, listener)
 
-        val x = context
+        view.restaurant_fragment_recyclerView.adapter = mAdapter
+        view.restaurant_fragment_recyclerView.layoutManager = LinearLayoutManager(context)
+        view.restaurant_fragment_recyclerView.setHasFixedSize(true)
 
-        mDatabaseRef.addValueEventListener(object : ValueEventListener {
+        mDBListener = mDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 mMenuItems.clear()
 
@@ -68,15 +76,12 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                     val upload = postSnapshot.getValue(UploadMenuItem::class.java)
 
                     if (upload != null) {
+                        upload.key = postSnapshot.key
                         mMenuItems.add(upload)
                     }
                 }
 
-                mAdapter = MenuAdapter(context!!, mMenuItems, listener)
-
-                view.restaurant_fragment_recyclerView.adapter = mAdapter
-                view.restaurant_fragment_recyclerView.layoutManager = LinearLayoutManager(context)
-                view.restaurant_fragment_recyclerView.setHasFixedSize(true)
+                mAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -180,9 +185,46 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         return mime.getExtensionFromMimeType(contentResolver?.getType(uri))
     }
 
-    override fun onItemClick(position: Int) {
-        mMenuItems.removeAt(position)
-        mAdapter.notifyItemRemoved(position)
+    override fun onItemClick(position: Int, view: View?) {
+        val popupMenu = PopupMenu(context, view)
+
+        popupMenu.setOnMenuItemClickListener {
+            chooseOption(it, position)
+        }
+
+        popupMenu.inflate(R.menu.restaurant_menu_popup_menu)
+        popupMenu.show()
+    }
+
+    private fun chooseOption(menuItem: MenuItem?, position: Int): Boolean {
+        when (menuItem?.itemId) {
+            R.id.edit_item -> {
+                Toast.makeText(context, "EDIT", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            R.id.delete_item -> {
+                deleteItem(position)
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun deleteItem(position: Int) {
+        val selectedItem = mMenuItems[position]
+        val selectedKey = selectedItem.key
+
+        if (selectedItem.imageUrl != null) {
+            val imageRef = mStorage.getReferenceFromUrl(selectedItem.imageUrl!!)
+
+            imageRef.delete().addOnSuccessListener {
+                mDatabaseRef.child(selectedKey!!).removeValue()
+            }
+        } else {
+            mDatabaseRef.child(selectedKey!!).removeValue()
+        }
     }
 
     private fun chooseImage() {
@@ -234,5 +276,11 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
             mDialogImageView.setImageURI(data?.data)
             mImageUri = data?.data!!
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mDatabaseRef.removeEventListener(mDBListener)
     }
 }
