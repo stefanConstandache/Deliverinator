@@ -80,6 +80,14 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             database.collection(USERS).document(document.id).delete()
+
+//                            val options = FirebaseOptions.builder()
+//                                .setCredentials(GoogleCredentials.getApplicationDefault())
+//                                .build()
+//
+//                            FirebaseApp.initializeApp(options)
+//                            FirebaseAuth.getInstance().deleteUser(document.id);
+
                         }
                     }
 
