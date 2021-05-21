@@ -26,7 +26,6 @@ class AddFragment : Fragment() {
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mStore: FirebaseFirestore
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -84,6 +83,7 @@ class AddFragment : Fragment() {
         }
 
         mProgressBar.visibility = View.VISIBLE
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             if (it.isSuccessful) {
                 val user = mAuth.currentUser
@@ -120,15 +120,17 @@ class AddFragment : Fragment() {
 
                 restaurantInfo[NAME] = name
                 restaurantInfo[RESTAURANT_DESCRIPTION] = ""
+                restaurantInfo[EMAIL] = email
+
                 restaurantRef.set(restaurantInfo)
 
                 mProgressBar.visibility = View.INVISIBLE
+
                 mName.text.clear()
                 mEmail.text.clear()
                 mPassword.text.clear()
                 mConfirmPassword.text.clear()
                 mPhone.text.clear()
-
             }
         }
     }

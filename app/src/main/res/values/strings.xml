@@ -35,7 +35,7 @@
     <string name="email_not_verified">Email not verified!</string>
     <string name="verify_now">Verify now</string>
     <string name="add">Add</string>
-    <string name="admin_delete">Delete</string>
+    <string name="delete">Delete</string>
     <string name="restaurant_menu_menu">Menu</string>
     <string name="restaurant_menu_orders">Orders</string>
     <string name="login_provide">Please provide username and password</string>
@@ -55,6 +55,8 @@
     <string name="restaurant_name">Restaurant Name</string>
     <string name="wrong_user_type">Wrong User Type</string>
     <string name="add_description">Add description</string>
+    <string name="user_deleted">User account has been deleted</string>
+    <string name="user_deleted_error">User account couldn\'t be deleted</string>
     <string name="set">Set</string>
     <string name="cancel">Cancel</string>
     <string name="phone">Phone</string>
@@ -65,5 +67,7 @@
     <string name="item_description">Item Description</string>
     <string name="add_item">Add an item</string>
     <string name="choose_image">Choose Image</string>
+    <string name="delete_account">Delete Account</string>
     <string name="uploading_image">Uploading image...</string>
+    <string name="edit">Edit</string>
 </resources>
