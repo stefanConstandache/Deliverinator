@@ -34,10 +34,10 @@ class AccountFragment : Fragment() {
     private lateinit var mAccountImageView: ImageView
     private lateinit var mRestaurantName: TextView
     private lateinit var mDescription: TextView
-    private lateinit var mChangePassword: Button
+    private lateinit var mChangePassword: TextView
     private lateinit var mChooseImage: Button
     private lateinit var mApplyChanges: Button
-    private lateinit var mDeleteAccount: Button
+    private lateinit var mDeleteAccount: TextView
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStore: FirebaseFirestore
