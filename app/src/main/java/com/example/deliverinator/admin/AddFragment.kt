@@ -131,6 +131,7 @@ class AddFragment : Fragment() {
                 mPassword.text.clear()
                 mConfirmPassword.text.clear()
                 mPhone.text.clear()
+
             }
         }
     }
