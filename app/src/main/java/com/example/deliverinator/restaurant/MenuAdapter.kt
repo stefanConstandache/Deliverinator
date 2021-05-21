@@ -7,9 +7,6 @@ import com.example.deliverinator.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 
-const val EDIT_ITEM_ID = 1
-const val DELETE_ITEM_ID = 2
-
 class MenuAdapter(
     private val context: Context,
     private val uploadsList: List<UploadMenuItem>,

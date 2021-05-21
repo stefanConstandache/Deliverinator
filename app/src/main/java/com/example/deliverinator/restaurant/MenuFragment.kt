@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import android.widget.ImageView
@@ -82,6 +83,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                 }
 
                 mAdapter.notifyDataSetChanged()
+                view.restaurant_fragment_progressBar.visibility = INVISIBLE
             }
 
             override fun onCancelled(error: DatabaseError) {
