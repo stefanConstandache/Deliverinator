@@ -1,5 +1,6 @@
 package com.example.deliverinator.admin
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +9,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.restaurant.MenuAdapter
+import com.example.deliverinator.restaurant.UploadMenuItem
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.admin_delete_recycler_item.view.*
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 
 class DeleteFragmentRecyclerAdapter(
-    private val list: List<DeleteFragmentRecyclerItem>,
-    private val listener: DeleteFragmentRecyclerAdapter.OnItemClickListener
+    private val context: Context,
+    private val listener: DeleteFragmentRecyclerAdapter.OnItemClickListener,
+    private val uploadsList: List<DeleteFragmentRecyclerItem>,
 ) : RecyclerView.Adapter<DeleteFragmentRecyclerAdapter.AdminDeleteViewHolder>() {
 
     inner class AdminDeleteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
@@ -46,19 +50,30 @@ class DeleteFragmentRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: AdminDeleteViewHolder, position: Int) {
+        val uploadCurrent = uploadsList[position]
+        //val currentItem = list[position]
 
-        val currentItem = list[position]
+       // holder.itemImage.setImageResource(currentItem.imageResource)
+        holder.itemName.text = uploadCurrent.text1
+        holder.itemDescription.text = uploadCurrent.text2
 
-        holder.itemImage.setImageResource(currentItem.imageResource)
-        holder.itemName.text = currentItem.text1
-        holder.itemDescription.text = currentItem.text2
+        if (uploadCurrent.imageUrl == null) {
+            Picasso.with(context)
+                .load(R.drawable.ic_food)
+                .placeholder(R.drawable.ic_food)
+                .fit()
+                .centerCrop()
+                .into(holder.itemImage)
+        } else {
+            Picasso.with(context)
+                .load(uploadCurrent.imageUrl)
+                .placeholder(R.drawable.ic_food)
+                .fit()
+                .centerCrop()
+                .into(holder.itemImage)
+        }
     }
 
-    override fun getItemCount() = list.size
+    override fun getItemCount() = uploadsList.size
 
-    class DeleteFragmentRecyclerViewHolder (itemView: View): RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.admin_delete_restaurant_image_view)
-        val textView1:TextView = itemView.findViewById(R.id.admin_delete_restaurant_text_big)
-        val textView2:TextView = itemView.findViewById(R.id.admin_delete_restaurant_text_small)
-    }
 }
