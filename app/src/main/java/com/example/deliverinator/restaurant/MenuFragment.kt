@@ -46,8 +46,14 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mStorageRef: StorageReference
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mStorage: FirebaseStorage
-    private lateinit var mDBListener: ValueEventListener
     private var mImageUri: Uri? = null
+
+    companion object {
+        private lateinit var mDBListener: ValueEventListener
+
+        val DBListener
+            get() = mDBListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,7 +61,6 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.restaurant_fragment_menu, container, false)
-
         val listener = this
 
         mAuth = FirebaseAuth.getInstance()
@@ -213,9 +218,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         if (selectedItem.imageUrl != null) {
             val imageRef = mStorage.getReferenceFromUrl(selectedItem.imageUrl!!)
 
-            imageRef.delete().addOnSuccessListener {
-                Toast.makeText(context, "Image deleted", Toast.LENGTH_SHORT).show()
-            }
+            imageRef.delete()
         }
 
         fileReference.putFile(mImageUri!!)
