@@ -55,7 +55,6 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.restaurant_fragment_menu, container, false)
-
         val listener = this
 
         mAuth = FirebaseAuth.getInstance()
@@ -213,9 +212,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         if (selectedItem.imageUrl != null) {
             val imageRef = mStorage.getReferenceFromUrl(selectedItem.imageUrl!!)
 
-            imageRef.delete().addOnSuccessListener {
-                Toast.makeText(context, "Image deleted", Toast.LENGTH_SHORT).show()
-            }
+            imageRef.delete()
         }
 
         fileReference.putFile(mImageUri!!)
