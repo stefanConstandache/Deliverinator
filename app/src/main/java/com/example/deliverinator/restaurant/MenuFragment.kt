@@ -46,8 +46,14 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mStorageRef: StorageReference
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mStorage: FirebaseStorage
-    private lateinit var mDBListener: ValueEventListener
     private var mImageUri: Uri? = null
+
+    companion object {
+        private lateinit var mDBListener: ValueEventListener
+
+        val DBListener
+            get() = mDBListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
