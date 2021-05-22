@@ -4,15 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
-import com.example.deliverinator.restaurant.MenuAdapter
-import com.example.deliverinator.restaurant.UploadMenuItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.admin_delete_recycler_item.view.*
-import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 
 class DeleteFragmentRecyclerAdapter(
     private val context: Context,

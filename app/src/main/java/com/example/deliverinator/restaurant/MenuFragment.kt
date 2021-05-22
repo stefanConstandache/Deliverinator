@@ -21,11 +21,9 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.deliverinator.IMAGE_PICK_CODE
-import com.example.deliverinator.PERMISSION_CODE
+import com.example.deliverinator.*
 import com.example.deliverinator.R
 
-import com.example.deliverinator.foodUriString
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -46,6 +44,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mStorageRef: StorageReference
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mStorage: FirebaseStorage
+    private lateinit var mEmail: String
     private var mImageUri: Uri? = null
 
     companion object {
@@ -66,8 +65,8 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         mAuth = FirebaseAuth.getInstance()
         mStorage = FirebaseStorage.getInstance()
         mStorageRef = mStorage.getReference(mAuth.currentUser?.uid!!)
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
-
+        mEmail = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail)
         mMenuItems = ArrayList()
         mAdapter = MenuAdapter(context!!, mMenuItems, listener)
 
