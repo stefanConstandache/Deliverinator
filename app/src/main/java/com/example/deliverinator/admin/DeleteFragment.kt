@@ -1,32 +1,22 @@
 package com.example.deliverinator.admin
 
-import android.content.ContentValues.TAG
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.*
 import com.example.deliverinator.R
-import com.example.deliverinator.restaurant.MenuAdapter
-import com.example.deliverinator.restaurant.UploadMenuItem
-import com.example.deliverinator.restaurant.defaultImageUri
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.admin_fragment_delete.view.*
-import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
 
 class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListener {
     lateinit var adapter: DeleteFragmentRecyclerAdapter

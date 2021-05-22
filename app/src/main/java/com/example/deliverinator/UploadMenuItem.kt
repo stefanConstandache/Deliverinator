@@ -1,4 +1,4 @@
-package com.example.deliverinator.restaurant
+package com.example.deliverinator
 
 import com.google.firebase.database.Exclude
 

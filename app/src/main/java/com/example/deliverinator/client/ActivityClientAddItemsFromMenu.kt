@@ -6,91 +6,60 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.client.ClientAddItemAdapter
-import com.example.deliverinator.client.ClientAddItemItem
-import com.example.deliverinator.client.RestaurantItem
 import com.example.deliverinator.client.RestaurantItemAdapter
-import com.example.deliverinator.restaurant.UploadMenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.client_fragment_restaurants.view.*
-import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
+import kotlinx.android.synthetic.main.activity_client_add_items_from_menu.*
 
-class ActivityClientAddItemsFromMenu : AppCompatActivity() {
-    lateinit var adapter:ClientAddItemAdapter
-    var database = FirebaseFirestore.getInstance()
-    lateinit var itemsList:ArrayList<ClientAddItemItem>
-    private lateinit var auth: FirebaseAuth
-    private lateinit var storageRef: StorageReference
-    private lateinit var databaseRef: DatabaseReference
-    private lateinit var dbListener: ValueEventListener
+class ActivityClientAddItemsFromMenu : AppCompatActivity(),
+    RestaurantItemAdapter.OnItemClickListener, ClientAddItemAdapter.OnItemClickListener {
+    private lateinit var mAdapter: ClientAddItemAdapter
+    private lateinit var mItemsList: ArrayList<UploadMenuItem>
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mDatabaseRef: DatabaseReference
+    private lateinit var mDBListener: ValueEventListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client_add_items_from_menu)
-        val intent:Intent = intent
-        val restaurantName = intent.getStringExtra(NAME)
 
+        val intent: Intent = intent
+        val restaurantEmail = intent.getStringExtra(EMAIL)
 
+        mAuth = FirebaseAuth.getInstance()
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!)
+        mItemsList = ArrayList()
 
-        databaseRef = FirebaseDatabase.getInstance().getReference(auth.currentUser?.uid!!)
+        mAdapter = ClientAddItemAdapter(this, mItemsList, this)
 
-        //itemsList = generateDummyList(restaurantName)
-        findViewById<RecyclerView>(R.id.client_add_item_recyclerView).adapter = adapter
-        findViewById<RecyclerView>(R.id.client_add_item_recyclerView).layoutManager = LinearLayoutManager(this)
-        findViewById<RecyclerView>(R.id.client_add_item_recyclerView).setHasFixedSize(true)
+        client_add_item_recyclerView.adapter = mAdapter
+        client_add_item_recyclerView.layoutManager = LinearLayoutManager(this)
+        client_add_item_recyclerView.setHasFixedSize(true)
 
-        dbListener = databaseRef.addValueEventListener(object : ValueEventListener {
+        mDBListener = mDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                itemsList.clear()
+                mItemsList.clear()
 
                 for (postSnapshot in snapshot.children) {
-                    val upload = postSnapshot.getValue(ClientAddItemItem::class.java)
+                    val upload = postSnapshot.getValue(UploadMenuItem::class.java)
 
                     if (upload != null) {
-                       // upload.key = postSnapshot.key
-                        itemsList.add(upload)
+                        upload.key = postSnapshot.key
+                        mItemsList.add(upload)
                     }
                 }
 
-                adapter.notifyDataSetChanged()
-
+                mAdapter.notifyDataSetChanged()
             }
 
             override fun onCancelled(error: DatabaseError) {
-
+                Toast.makeText(this@ActivityClientAddItemsFromMenu, error.message, Toast.LENGTH_SHORT).show()
             }
-
-
         })
-
     }
 
-    private fun generateDummyList(restaurantName:String?): ArrayList<ClientAddItemItem> {
-
-        val list = ArrayList<ClientAddItemItem>()
-        database.collection(RESTAURANTS).get()
-            .addOnSuccessListener{ documents ->
-                for(document in documents) {
-                    val item = ClientAddItemItem(
-                        document.getString(RESTAURANT_IMAGE), document.getString(
-                            NAME
-                        )!!,
-                        document.getString(RESTAURANT_DESCRIPTION)!!
-                    )
-                    list.add(item)
-                }
-                adapter = ClientAddItemAdapter(this ,itemsList)
-//                findViewById<RecyclerView>(R.id.client_add_item_recyclerView).adapter = adapter
-//                findViewById<RecyclerView>(R.id.client_add_item_recyclerView).layoutManager = LinearLayoutManager(this)
-//                findViewById<RecyclerView>(R.id.client_add_item_recyclerView).setHasFixedSize(true)
-            }
-
-        return list
-
-
+    override fun onItemClick(position: Int, view: View?) {
+        Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show()
     }
 }

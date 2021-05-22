@@ -65,9 +65,10 @@ class RestaurantDashboard : AppCompatActivity() {
     }
 
     fun launchLogin(view: View) {
-        val mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
-        mDatabaseRef.removeEventListener(MenuFragment.DBListener)
+        val email = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
+        val databaseRef = FirebaseDatabase.getInstance().getReference(email)
 
+        databaseRef.removeEventListener(MenuFragment.DBListener)
         mAuth.signOut()
 
         val intent = Intent(this, Login::class.java)
