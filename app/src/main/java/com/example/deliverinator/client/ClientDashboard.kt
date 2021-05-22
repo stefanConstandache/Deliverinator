@@ -57,7 +57,7 @@ class ClientDashboard : AppCompatActivity() {
 
     }
 
-    private fun setFragment(fragment: Fragment) {
+    fun setFragment(fragment: Fragment) {
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.client_dashboard_frame, fragment)
         fragmentTransaction.commit()
