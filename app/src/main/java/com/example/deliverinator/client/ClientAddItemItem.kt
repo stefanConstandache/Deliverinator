@@ -1,6 +1,7 @@
 package com.example.deliverinator.client
 
-class RestaurantItem {
+class ClientAddItemItem {
+
     var imageUrl: String? = null
     var name: String? = null
     var description: String? = null
