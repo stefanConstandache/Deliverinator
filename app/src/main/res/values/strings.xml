@@ -72,4 +72,5 @@
     <string name="edit">Edit</string>
     <string name="update_item">Update item</string>
     <string name="update">Update</string>
+    <string name="leave_restaurant">Are you sure you want to leave the restaurant?</string>
 </resources>
