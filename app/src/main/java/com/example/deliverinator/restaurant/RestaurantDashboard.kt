@@ -10,6 +10,7 @@ import com.example.deliverinator.Login
 import com.example.deliverinator.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 
 class RestaurantDashboard : AppCompatActivity() {
     private lateinit var mNavigationView: BottomNavigationView
@@ -64,6 +65,10 @@ class RestaurantDashboard : AppCompatActivity() {
     }
 
     fun launchLogin(view: View) {
+        val email = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
+        val databaseRef = FirebaseDatabase.getInstance().getReference(email)
+
+        databaseRef.removeEventListener(MenuFragment.DBListener)
         mAuth.signOut()
 
         val intent = Intent(this, Login::class.java)

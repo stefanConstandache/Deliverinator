@@ -1,15 +1,22 @@
 package com.example.deliverinator.client
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.deliverinator.R
+import com.example.deliverinator.*
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.android.synthetic.main.client_fragment_restaurants.view.*
 
-class RestaurantsFragment : Fragment() {
+class RestaurantsFragment : Fragment(), RestaurantItemAdapter.OnItemClickListener {
+    private lateinit var mDatabase: FirebaseFirestore
+    private lateinit var mAdapter: RestaurantItemAdapter
+    private lateinit var mRestaurantsList: ArrayList<RestaurantItem>
+    private lateinit var mRestaurantsEmailList: ArrayList<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -17,23 +24,67 @@ class RestaurantsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.client_fragment_restaurants, container, false)
 
-        val restaurantsList = generateDummyList(10)
+        mDatabase = FirebaseFirestore.getInstance()
+        mRestaurantsList = getRestaurantsList()
+        mRestaurantsEmailList = ArrayList()
 
-        view.findViewById<RecyclerView>(R.id.client_restaurants_recycler_view).adapter = RestaurantItemAdapter(restaurantsList)
-        view.findViewById<RecyclerView>(R.id.client_restaurants_recycler_view).layoutManager = LinearLayoutManager(context)
+        mDatabase.collection(RESTAURANTS)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    mRestaurantsEmailList.add(document.getString(EMAIL)!!)
+                }
+            }
+
+        mAdapter = RestaurantItemAdapter(context!!, mRestaurantsList, this)
+
+        view.client_restaurants_recycler_view.adapter = mAdapter
+        view.client_restaurants_recycler_view.layoutManager = LinearLayoutManager(context)
+        view.client_restaurants_recycler_view.setHasFixedSize(true)
 
         return view
     }
 
-    private fun generateDummyList(size: Int): List<RestaurantItem> {
-        val list = ArrayList<RestaurantItem>()
+    private fun getRestaurantsEmails(): ArrayList<String> {
+        val list = ArrayList<String>()
 
-        for (i in 0 until size) {
-            val drawable = R.drawable.ic_restaurant
-            val item = RestaurantItem(drawable, "Restaurant $i", "Descriere $i")
-            list += item
-        }
+        mDatabase.collection(RESTAURANTS)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    list.add(document.getString(EMAIL)!!)
+                }
+            }
 
         return list
+    }
+
+    private fun getRestaurantsList(): ArrayList<RestaurantItem> {
+        val list = ArrayList<RestaurantItem>()
+
+        mDatabase.collection(RESTAURANTS).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val item = RestaurantItem(
+                        document.getString(RESTAURANT_IMAGE),
+                        document.getString(NAME)!!,
+                        document.getString(RESTAURANT_DESCRIPTION)!!
+                    )
+
+                    list.add(item)
+                }
+
+                mAdapter.notifyDataSetChanged()
+            }
+
+        return list
+    }
+
+    override fun onItemClick(position: Int, view: View?) {
+        val restaurantEmail = mRestaurantsEmailList[position].replace("[@.]".toRegex(), "_")
+        val intent = Intent(context, ActivityClientAddItemsFromMenu::class.java)
+
+        intent.putExtra(EMAIL, restaurantEmail)
+        startActivity(intent)
     }
 }
