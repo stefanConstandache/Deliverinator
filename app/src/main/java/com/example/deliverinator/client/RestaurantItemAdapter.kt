@@ -26,7 +26,7 @@ class RestaurantItemAdapter(
         val itemDescription = itemView.restaurant_description
 
         init {
-            itemView.restaurant_image_view.setOnClickListener(this)
+            itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View?) {

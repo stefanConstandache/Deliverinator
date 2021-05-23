@@ -65,7 +65,7 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onAddClick(position: Int, textView: TextView) {
-        if (textView.text.isEmpty()) {
+        if (textView.text == " ") {
             textView.text = "1"
         } else {
             textView.text = "${textView.text.toString().toInt() + 1}"
@@ -73,8 +73,8 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
     }
 
     override fun onRemoveClick(position: Int, textView: TextView) {
-        if (textView.text.isEmpty() || textView.text == "1") {
-            textView.text = ""
+        if (textView.text == " " || textView.text == "1") {
+            textView.text = " "
         } else {
             textView.text = "${textView.text.toString().toInt() - 1}"
         }
