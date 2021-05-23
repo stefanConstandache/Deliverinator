@@ -1,19 +1,19 @@
 package com.example.deliverinator
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.client.ClientAddItemAdapter
-import com.example.deliverinator.client.RestaurantItemAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_client_add_items_from_menu.*
 
-class ActivityClientAddItemsFromMenu : AppCompatActivity(),
-    RestaurantItemAdapter.OnItemClickListener, ClientAddItemAdapter.OnItemClickListener {
+class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter.OnItemClickListener {
     private lateinit var mAdapter: ClientAddItemAdapter
     private lateinit var mItemsList: ArrayList<UploadMenuItem>
     private lateinit var mAuth: FirebaseAuth
@@ -59,7 +59,20 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(),
         })
     }
 
-    override fun onItemClick(position: Int, view: View?) {
-        Toast.makeText(this, "Click", Toast.LENGTH_SHORT).show()
+    @SuppressLint("SetTextI18n")
+    override fun onAddClick(position: Int, textView: TextView) {
+        if (textView.text.isEmpty()) {
+            textView.text = "1"
+        } else {
+            textView.text = "${textView.text.toString().toInt() + 1}"
+        }
+    }
+
+    override fun onRemoveClick(position: Int, textView: TextView) {
+        if (textView.text.isEmpty() || textView.text == "1") {
+            textView.text = ""
+        } else {
+            textView.text = "${textView.text.toString().toInt() - 1}"
+        }
     }
 }
