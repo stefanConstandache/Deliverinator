@@ -15,22 +15,18 @@ class ClientAddItemAdapter (
     private val itemsList: ArrayList<UploadMenuItem>,
     private val listener: OnItemClickListener
 ):RecyclerView.Adapter<ClientAddItemAdapter.ClientAddItemViewHolder>(){
-    inner class ClientAddItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ClientAddItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val itemImage = itemView.client_add_item_image_view
         val itemName = itemView.client_add_item_name
         val itemDescription = itemView.client_add_item_description
         val itemQuantity = itemView.client_add_item_quantity
-
-        init {
-
-        }
-
-        override fun onClick(view: View?) {
-        }
+        val addView = itemView.client_add_item_add
+        val removeView = itemView.client_add_item_remove
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int, view: View?)
+        fun onAddClick(position: Int, view: View?)
+        fun onRemoveClick(position: Int, view: View?)
     }
 
     override fun onCreateViewHolder(
@@ -54,6 +50,14 @@ class ClientAddItemAdapter (
 
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
+
+        holder.addView.setOnClickListener {
+            listener.onAddClick(position, holder.itemQuantity)
+        }
+
+        holder.removeView.setOnClickListener {
+            listener.onRemoveClick(position, holder.itemQuantity)
+        }
 
         if (currentItem.imageUrl == null) {
             Picasso.with(context)
