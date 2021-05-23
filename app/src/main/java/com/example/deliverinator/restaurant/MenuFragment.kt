@@ -263,6 +263,18 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         popupMenu.show()
     }
 
+    override fun onCheckBoxClick(position: Int, state: Boolean) {
+        val selectedItem = mMenuItems[position]
+        val upload = UploadMenuItem(
+            selectedItem.imageUrl,
+            selectedItem.itemName,
+            selectedItem.itemDescription,
+            state
+        )
+
+        mDatabaseRef.child(selectedItem.key!!).setValue(upload)
+    }
+
     private fun chooseOption(menuItem: MenuItem?, position: Int, view: View?): Boolean {
         when (menuItem?.itemId) {
             R.id.edit_item -> {

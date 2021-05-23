@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
@@ -15,27 +16,17 @@ class MenuAdapter(
     private val uploadsList: List<UploadMenuItem>,
     private val listener: OnItemClickListener
 ) : Adapter<MenuAdapter.MenuViewHolder>() {
-    inner class MenuViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
+    inner class MenuViewHolder(itemView: View) : ViewHolder(itemView) {
         val itemImage = itemView.restaurant_menu_item_image
         val itemName = itemView.restaurant_menu_item_name
         val itemDescription = itemView.restaurant_menu_item_description
         val isAvailable = itemView.restaurant_menu_checkBox
-
-        init {
-            itemView.restaurant_menu_more.setOnClickListener(this)
-        }
-
-        override fun onClick(view: View?) {
-            val position = absoluteAdapterPosition
-
-            if (position != NO_POSITION) {
-                listener.onItemClick(position, view)
-            }
-        }
+        val moreActions = itemView.restaurant_menu_more
     }
 
     interface OnItemClickListener {
         fun onItemClick(position: Int, view: View?)
+        fun onCheckBoxClick(position: Int, state: Boolean)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
@@ -50,6 +41,14 @@ class MenuAdapter(
         holder.itemName.text = uploadCurrent.itemName
         holder.itemDescription.text = uploadCurrent.itemDescription
         holder.isAvailable.isChecked = uploadCurrent.isAvailable
+
+        holder.moreActions.setOnClickListener {
+            listener.onItemClick(position, it)
+        }
+
+        holder.isAvailable.setOnCheckedChangeListener { _, state ->
+            listener.onCheckBoxClick(position, state)
+        }
 
         if (uploadCurrent.imageUrl == null) {
             Picasso.with(context)

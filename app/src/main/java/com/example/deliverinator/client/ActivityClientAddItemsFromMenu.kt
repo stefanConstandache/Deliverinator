@@ -47,7 +47,10 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
 
                     if (upload != null) {
                         upload.key = postSnapshot.key
-                        mItemsList.add(upload)
+
+                        if (upload.isAvailable) {
+                            mItemsList.add(upload)
+                        }
                     }
                 }
 
