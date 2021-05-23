@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
@@ -25,8 +26,8 @@ class ClientAddItemAdapter (
     }
 
     interface OnItemClickListener {
-        fun onAddClick(position: Int, view: View?)
-        fun onRemoveClick(position: Int, view: View?)
+        fun onAddClick(position: Int, textView: TextView)
+        fun onRemoveClick(position: Int, textView: TextView)
     }
 
     override fun onCreateViewHolder(

@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.client.ClientAddItemAdapter
-import com.example.deliverinator.client.RestaurantItemAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_client_add_items_from_menu.*
@@ -61,9 +60,7 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onAddClick(position: Int, view: View?) {
-        val textView = view as TextView
-
+    override fun onAddClick(position: Int, textView: TextView) {
         if (textView.text.isEmpty()) {
             textView.text = "1"
         } else {
@@ -71,9 +68,7 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
         }
     }
 
-    override fun onRemoveClick(position: Int, view: View?) {
-        val textView = view as TextView
-
+    override fun onRemoveClick(position: Int, textView: TextView) {
         if (textView.text.isEmpty() || textView.text == "1") {
             textView.text = ""
         } else {
