@@ -19,15 +19,16 @@ class RestaurantItemAdapter(
     private val context: Context,
     private val exampleList: List<RestaurantItem>,
     private val listener: OnItemClickListener
-    ) : RecyclerView.Adapter<RestaurantItemAdapter.RestaurantItemViewHolder>() {
+) : RecyclerView.Adapter<RestaurantItemAdapter.RestaurantItemViewHolder>() {
     inner class RestaurantItemViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
+        val itemImage = itemView.restaurant_image_view
+        val itemName = itemView.restaurant_name
+        val itemDescription = itemView.restaurant_description
 
-        val itemImage = itemView.restaurant_menu_item_image
-        val itemName = itemView.restaurant_menu_item_name
-        val itemDescription = itemView.restaurant_menu_item_description
         init {
-            itemView.restaurant_menu_more.setOnClickListener(this)
+            itemView.restaurant_image_view.setOnClickListener(this)
         }
+
         override fun onClick(view: View?) {
             val position = absoluteAdapterPosition
 
@@ -40,8 +41,9 @@ class RestaurantItemAdapter(
     interface OnItemClickListener {
         fun onItemClick(position: Int, view: View?)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantItemViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.client_restaurants_item,
+        val itemView = LayoutInflater.from(context).inflate(R.layout.client_restaurants_item,
             parent, false)
 
         return RestaurantItemViewHolder(itemView)
@@ -71,10 +73,4 @@ class RestaurantItemAdapter(
     }
 
     override fun getItemCount() = exampleList.size
-
-//    class RestaurantItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//        val imageView: ImageView = itemView.findViewById(R.id.restaurant_image_view)
-//        val name: TextView = itemView.findViewById(R.id.restaurant_name)
-//        val description: TextView = itemView.findViewById(R.id.restaurant_description)
-//    }
 }

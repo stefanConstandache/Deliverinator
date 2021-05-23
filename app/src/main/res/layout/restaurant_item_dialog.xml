@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/restaurant_add_dialog_imageView"
+        android:id="@+id/restaurant_dialog_imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="8dp"
@@ -17,17 +16,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/restaurant_add_button"
+        android:id="@+id/restaurant_choose_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/choose_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_add_dialog_imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurant_dialog_imageView" />
 
     <EditText
-        android:id="@+id/restaurant_add_name"
+        android:id="@+id/restaurant_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -36,10 +35,10 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_add_button" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurant_choose_button" />
 
     <EditText
-        android:id="@+id/restaurant_add_description"
+        android:id="@+id/restaurant_item_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -51,5 +50,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/restaurant_add_name" />
+        app:layout_constraintTop_toBottomOf="@+id/restaurant_item_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

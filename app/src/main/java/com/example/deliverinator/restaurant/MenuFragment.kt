@@ -21,16 +21,15 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.deliverinator.IMAGE_PICK_CODE
-import com.example.deliverinator.PERMISSION_CODE
+import com.example.deliverinator.*
 import com.example.deliverinator.R
 
-import com.example.deliverinator.foodUriString
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import kotlinx.android.synthetic.main.restaurant_add_item_dialog.view.*
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.restaurant_item_dialog.view.*
 import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
 
 val defaultImageUri: Uri = Uri.parse(foodUriString)
@@ -45,8 +44,15 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mStorageRef: StorageReference
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mStorage: FirebaseStorage
-    private lateinit var mDBListener: ValueEventListener
+    private lateinit var mEmail: String
     private var mImageUri: Uri? = null
+
+    companion object {
+        private lateinit var mDBListener: ValueEventListener
+
+        val DBListener
+            get() = mDBListener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,14 +60,13 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.restaurant_fragment_menu, container, false)
-
         val listener = this
 
         mAuth = FirebaseAuth.getInstance()
         mStorage = FirebaseStorage.getInstance()
         mStorageRef = mStorage.getReference(mAuth.currentUser?.uid!!)
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
-
+        mEmail = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail)
         mMenuItems = ArrayList()
         mAdapter = MenuAdapter(context!!, mMenuItems, listener)
 
@@ -100,14 +105,13 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
 
     private fun addMenuItem(view: View) {
         val builder = AlertDialog.Builder(view.context)
-        val inflater = layoutInflater
-        val dialogLayout = inflater.inflate(R.layout.restaurant_add_item_dialog, null)
+        val dialogLayout = layoutInflater.inflate(R.layout.restaurant_item_dialog, null)
 
-        mDialogImageView = dialogLayout.restaurant_add_dialog_imageView
-        mItemName = dialogLayout.restaurant_add_name
-        mItemDescription = dialogLayout.restaurant_add_description
+        mDialogImageView = dialogLayout.restaurant_dialog_imageView
+        mItemName = dialogLayout.restaurant_item_name
+        mItemDescription = dialogLayout.restaurant_item_description
 
-        dialogLayout.restaurant_add_button.setOnClickListener {
+        dialogLayout.restaurant_choose_button.setOnClickListener {
             chooseImage()
         }
 
@@ -180,6 +184,67 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
             }
     }
 
+    private fun updateFile(selectedItem: UploadMenuItem, initialImageUri: Uri?) {
+        if (mImageUri == defaultImageUri) {
+            val upload = UploadMenuItem(
+                null,
+                mItemName.text.toString().trim(),
+                mItemDescription.text.toString().trim(),
+                true
+            )
+
+            mDatabaseRef.child(selectedItem.key!!).setValue(upload)
+
+            return
+        }
+
+        if (mImageUri == initialImageUri) {
+            val upload = UploadMenuItem(
+                mImageUri.toString(),
+                mItemName.text.toString().trim(),
+                mItemDescription.text.toString().trim(),
+                true
+            )
+
+            mDatabaseRef.child(selectedItem.key!!).setValue(upload)
+
+            return
+        }
+
+        val fileReference = mStorageRef.child(System.currentTimeMillis().toString() + "." +
+                getFileExtension(mImageUri!!))
+
+        if (selectedItem.imageUrl != null) {
+            val imageRef = mStorage.getReferenceFromUrl(selectedItem.imageUrl!!)
+
+            imageRef.delete()
+        }
+
+        fileReference.putFile(mImageUri!!)
+            .addOnSuccessListener {
+                val urlTask = it.storage.downloadUrl
+
+                while (!urlTask.isSuccessful) {}
+
+                val downloadUrl = urlTask.result
+
+                val upload = UploadMenuItem(
+                    downloadUrl.toString(),
+                    mItemName.text.toString().trim(),
+                    mItemDescription.text.toString().trim(),
+                    true
+                )
+
+                mDatabaseRef.child(selectedItem.key!!).setValue(upload)
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+            }
+            .addOnProgressListener {
+                Toast.makeText(context, R.string.uploading_image, Toast.LENGTH_SHORT).show()
+            }
+    }
+
     private fun getFileExtension(uri: Uri): String? {
         val contentResolver = context?.contentResolver
         val mime = MimeTypeMap.getSingleton()
@@ -191,17 +256,17 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         val popupMenu = PopupMenu(context, view)
 
         popupMenu.setOnMenuItemClickListener {
-            chooseOption(it, position)
+            chooseOption(it, position, view)
         }
 
         popupMenu.inflate(R.menu.restaurant_menu_popup_menu)
         popupMenu.show()
     }
 
-    private fun chooseOption(menuItem: MenuItem?, position: Int): Boolean {
+    private fun chooseOption(menuItem: MenuItem?, position: Int, view: View?): Boolean {
         when (menuItem?.itemId) {
             R.id.edit_item -> {
-                Toast.makeText(context, "EDIT", Toast.LENGTH_SHORT).show()
+                editItem(position, view)
                 return true
             }
 
@@ -212,6 +277,49 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         }
 
         return false
+    }
+
+    private fun editItem(position: Int, view: View?) {
+        val selectedItem = mMenuItems[position]
+        val builder = AlertDialog.Builder(view?.context)
+        val dialogLayout = layoutInflater.inflate(R.layout.restaurant_item_dialog, null)
+        val initialImageUri = if (selectedItem.imageUrl != null) Uri.parse(selectedItem.imageUrl) else null
+
+        mDialogImageView = dialogLayout.restaurant_dialog_imageView
+        mItemName = dialogLayout.restaurant_item_name
+        mItemDescription = dialogLayout.restaurant_item_description
+        mImageUri = initialImageUri
+
+        Picasso.with(view?.context)
+            .load(selectedItem.imageUrl)
+            .placeholder(R.drawable.ic_food)
+            .fit()
+            .centerCrop()
+            .into(mDialogImageView)
+        mItemName.text = selectedItem.itemName
+        mItemDescription.text = selectedItem.itemDescription
+
+        dialogLayout.restaurant_choose_button.setOnClickListener {
+            chooseImage()
+        }
+
+        builder.setTitle(R.string.update_item)
+            .setPositiveButton(R.string.update) { _, _ ->
+                if (mImageUri == null) {
+                    mImageUri = defaultImageUri
+                }
+
+                updateFile(selectedItem, initialImageUri)
+                mImageUri = initialImageUri
+            }
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                mImageUri = initialImageUri
+            }
+
+        val dialog = builder.create()
+
+        dialog.setView(dialogLayout)
+        dialog.show()
     }
 
     private fun deleteItem(position: Int) {

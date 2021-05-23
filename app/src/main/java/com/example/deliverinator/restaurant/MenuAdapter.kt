@@ -1,9 +1,12 @@
 package com.example.deliverinator.restaurant
 
 import android.content.Context
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.deliverinator.R
+import com.example.deliverinator.UploadMenuItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 

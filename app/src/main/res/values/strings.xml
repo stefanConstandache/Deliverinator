@@ -70,4 +70,6 @@
     <string name="delete_account">Delete Account</string>
     <string name="uploading_image">Uploading image...</string>
     <string name="edit">Edit</string>
+    <string name="update_item">Update item</string>
+    <string name="update">Update</string>
 </resources>
