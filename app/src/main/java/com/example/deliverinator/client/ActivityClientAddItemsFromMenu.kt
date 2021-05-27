@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.client.ClientAddItemAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -46,7 +47,10 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
 
                     if (upload != null) {
                         upload.key = postSnapshot.key
-                        mItemsList.add(upload)
+
+                        if (upload.isAvailable) {
+                            mItemsList.add(upload)
+                        }
                     }
                 }
 
@@ -61,7 +65,7 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
 
     @SuppressLint("SetTextI18n")
     override fun onAddClick(position: Int, textView: TextView) {
-        if (textView.text.isEmpty()) {
+        if (textView.text == " ") {
             textView.text = "1"
         } else {
             textView.text = "${textView.text.toString().toInt() + 1}"
@@ -69,10 +73,22 @@ class ActivityClientAddItemsFromMenu : AppCompatActivity(), ClientAddItemAdapter
     }
 
     override fun onRemoveClick(position: Int, textView: TextView) {
-        if (textView.text.isEmpty() || textView.text == "1") {
-            textView.text = ""
+        if (textView.text == " " || textView.text == "1") {
+            textView.text = " "
         } else {
             textView.text = "${textView.text.toString().toInt() - 1}"
         }
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialog.Builder(this)
+
+        builder.setMessage(R.string.leave_restaurant)
+            .setPositiveButton(R.string.yes) { _, _ ->
+                finish()
+            }
+            .setNegativeButton(R.string.no, null)
+            .create()
+            .show()
     }
 }

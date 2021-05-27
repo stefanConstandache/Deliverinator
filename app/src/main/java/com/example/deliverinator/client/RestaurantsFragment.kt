@@ -45,20 +45,6 @@ class RestaurantsFragment : Fragment(), RestaurantItemAdapter.OnItemClickListene
         return view
     }
 
-    private fun getRestaurantsEmails(): ArrayList<String> {
-        val list = ArrayList<String>()
-
-        mDatabase.collection(RESTAURANTS)
-            .get()
-            .addOnSuccessListener { documents ->
-                for (document in documents) {
-                    list.add(document.getString(EMAIL)!!)
-                }
-            }
-
-        return list
-    }
-
     private fun getRestaurantsList(): ArrayList<RestaurantItem> {
         val list = ArrayList<RestaurantItem>()
 
