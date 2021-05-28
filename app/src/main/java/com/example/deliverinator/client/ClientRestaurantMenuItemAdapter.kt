@@ -21,7 +21,7 @@ class ClientRestaurantMenuItemAdapter(
         val itemName = itemView.client_menu_item_name
         val itemDescription = itemView.client_menu_item_description
         val itemPrice = itemView.client_menu_item_price
-        val itemAddToCart = itemView.client_menu_item_add_to_cart
+        val itemAddToCart = itemView.client_menu_item_add
     }
 
     interface OnItemClickListener {

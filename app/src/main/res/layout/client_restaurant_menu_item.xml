@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
@@ -43,23 +44,45 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="8dp"
-            android:layout_toStartOf="@id/client_menu_item_add_to_cart"
-            android:text="10.00 LEI"
+            android:layout_toStartOf="@id/client_menu_item_add"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="10.00 RON" />
 
         <ImageButton
-            android:id="@+id/client_menu_item_add_to_cart"
+            android:id="@+id/client_menu_item_add"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_below="@id/client_menu_item_price"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
+            android:layout_below="@id/client_menu_item_description"
+            android:layout_toEndOf="@id/client_menu_item_image_view"
             android:background="#00FFFFFF"
             android:scaleX="1.25"
             android:scaleY="1.25"
-            app:srcCompat="@drawable/ic_add_circle" />
+            app:srcCompat="@drawable/ic_add" />
+
+        <TextView
+            android:id="@+id/client_menu_item_quantity"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/client_menu_item_description"
+            android:layout_alignTop="@id/client_menu_item_add"
+            android:layout_alignBottom="@id/client_menu_item_add"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/client_menu_item_add"
+            android:gravity="center"
+            tools:text="100" />
+
+        <ImageButton
+            android:id="@+id/client_menu_item_remove"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/client_menu_item_description"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/client_menu_item_quantity"
+            android:background="#00FFFFFF"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            app:srcCompat="@drawable/ic_remove" />
 
     </RelativeLayout>
 
