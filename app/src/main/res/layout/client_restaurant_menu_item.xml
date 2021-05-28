@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/client_menu_item_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_food" />
+
+        <TextView
+            android:id="@+id/client_menu_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/client_menu_item_image_view"
+            android:text="@string/item_name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/client_menu_item_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/client_menu_item_name"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@id/client_menu_item_price"
+            android:layout_toEndOf="@id/client_menu_item_image_view"
+            android:text="@string/item_description" />
+
+        <TextView
+            android:id="@+id/client_menu_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_toStartOf="@id/client_menu_item_add_to_cart"
+            android:text="10.00 LEI"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/client_menu_item_add_to_cart"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/client_menu_item_price"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
+            android:background="#00FFFFFF"
+            android:scaleX="1.25"
+            android:scaleY="1.25"
+            app:srcCompat="@drawable/ic_add_circle" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

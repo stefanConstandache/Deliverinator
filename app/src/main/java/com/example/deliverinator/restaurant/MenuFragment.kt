@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_item_dialog.view.*
 import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
+import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 
 val defaultImageUri: Uri = Uri.parse(foodUriString)
 
@@ -40,6 +41,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private lateinit var mDialogImageView: ImageView
     private lateinit var mItemName: TextView
     private lateinit var mItemDescription: TextView
+    private lateinit var mItemPrice: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStorageRef: StorageReference
     private lateinit var mDatabaseRef: DatabaseReference
@@ -110,27 +112,49 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         mDialogImageView = dialogLayout.restaurant_dialog_imageView
         mItemName = dialogLayout.restaurant_item_name
         mItemDescription = dialogLayout.restaurant_item_description
+        mItemPrice = dialogLayout.restaurant_item_price
 
         dialogLayout.restaurant_choose_button.setOnClickListener {
             chooseImage()
         }
 
         builder.setTitle(R.string.add_item)
-            .setPositiveButton(R.string.add) { _, _ ->
-                if (mImageUri == null) {
-                    mImageUri = defaultImageUri
-                }
-
-                uploadFile()
-                mImageUri = null
-            }
-            .setNegativeButton(R.string.cancel) { _, _ ->
-                mImageUri = null
-            }
+            .setPositiveButton(R.string.add, null)
+            .setNegativeButton(R.string.cancel, null)
 
         val dialog = builder.create()
 
         dialog.setView(dialogLayout)
+        dialog.setOnShowListener {
+            val addButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            val cancelButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+
+            addButton.setOnClickListener {
+                if (mImageUri == null) {
+                    mImageUri = defaultImageUri
+                }
+
+                if (mItemName.text.isEmpty()) {
+                    mItemName.error = getString(R.string.empty_field)
+                    return@setOnClickListener
+                }
+
+                if (mItemPrice.text.isEmpty()) {
+                    mItemPrice.error = getString(R.string.empty_field)
+                    return@setOnClickListener
+                }
+
+                uploadFile()
+                mImageUri = null
+                dialog.dismiss()
+            }
+
+            cancelButton.setOnClickListener {
+                mImageUri = null
+                dialog.dismiss()
+            }
+        }
+
         dialog.show()
     }
 
@@ -140,6 +164,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                 null,
                 mItemName.text.toString().trim(),
                 mItemDescription.text.toString().trim(),
+                mItemPrice.text.toString().trim().toDouble(),
                 true
             )
 
@@ -167,6 +192,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                     downloadUrl.toString(),
                     mItemName.text.toString().trim(),
                     mItemDescription.text.toString().trim(),
+                    mItemPrice.text.toString().trim().toDouble(),
                     true
                 )
 
@@ -190,6 +216,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                 null,
                 mItemName.text.toString().trim(),
                 mItemDescription.text.toString().trim(),
+                mItemPrice.text.toString().trim().toDouble(),
                 true
             )
 
@@ -203,6 +230,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                 mImageUri.toString(),
                 mItemName.text.toString().trim(),
                 mItemDescription.text.toString().trim(),
+                mItemPrice.text.toString().trim().toDouble(),
                 true
             )
 
@@ -232,6 +260,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                     downloadUrl.toString(),
                     mItemName.text.toString().trim(),
                     mItemDescription.text.toString().trim(),
+                    mItemPrice.text.toString().trim().toDouble()    ,
                     true
                 )
 
@@ -269,6 +298,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
             selectedItem.imageUrl,
             selectedItem.itemName,
             selectedItem.itemDescription,
+            selectedItem.itemPrice,
             state
         )
 
@@ -300,6 +330,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         mDialogImageView = dialogLayout.restaurant_dialog_imageView
         mItemName = dialogLayout.restaurant_item_name
         mItemDescription = dialogLayout.restaurant_item_description
+        mItemPrice = dialogLayout.restaurant_item_price
         mImageUri = initialImageUri
 
         Picasso.with(view?.context)
@@ -310,27 +341,49 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
             .into(mDialogImageView)
         mItemName.text = selectedItem.itemName
         mItemDescription.text = selectedItem.itemDescription
+        mItemPrice.text = selectedItem.itemPrice.toString()
 
         dialogLayout.restaurant_choose_button.setOnClickListener {
             chooseImage()
         }
 
         builder.setTitle(R.string.update_item)
-            .setPositiveButton(R.string.update) { _, _ ->
-                if (mImageUri == null) {
-                    mImageUri = defaultImageUri
-                }
-
-                updateFile(selectedItem, initialImageUri)
-                mImageUri = initialImageUri
-            }
-            .setNegativeButton(R.string.cancel) { _, _ ->
-                mImageUri = initialImageUri
-            }
+            .setPositiveButton(R.string.update, null)
+            .setNegativeButton(R.string.cancel, null)
 
         val dialog = builder.create()
 
         dialog.setView(dialogLayout)
+        dialog.setOnShowListener {
+            val updateButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+            val cancelButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+
+            updateButton.setOnClickListener {
+                if (mImageUri == null) {
+                    mImageUri = defaultImageUri
+                }
+
+                if (mItemName.text.isEmpty()) {
+                    mItemName.error = getString(R.string.empty_field)
+                    return@setOnClickListener
+                }
+
+                if (mItemPrice.text.isEmpty()) {
+                    mItemPrice.error = getString(R.string.empty_field)
+                    return@setOnClickListener
+                }
+
+                updateFile(selectedItem, initialImageUri)
+                mImageUri = initialImageUri
+                dialog.dismiss()
+            }
+
+            cancelButton.setOnClickListener {
+                mImageUri = initialImageUri
+                dialog.dismiss()
+            }
+        }
+
         dialog.show()
     }
 
