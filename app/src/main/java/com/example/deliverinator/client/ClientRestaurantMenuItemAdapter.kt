@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
@@ -25,8 +24,7 @@ class ClientRestaurantMenuItemAdapter(
     }
 
     interface OnItemClickListener {
-        fun onAddClick(position: Int, textView: TextView)
-        fun onRemoveClick(position: Int, textView: TextView)
+        fun onAddToCartClick(position: Int, view: View?)
     }
 
     override fun onCreateViewHolder(
@@ -51,7 +49,11 @@ class ClientRestaurantMenuItemAdapter(
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
         holder.itemPrice.text = currentItem.itemPrice.toString()
-        holder.itemPrice.append(" LEI")
+        holder.itemPrice.append(" RON")
+
+        holder.itemAddToCart.setOnClickListener {
+            listener.onAddToCartClick(position, it)
+        }
 
         if (currentItem.imageUrl == null) {
             Picasso.with(context)

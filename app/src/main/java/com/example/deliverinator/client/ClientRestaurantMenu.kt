@@ -1,10 +1,10 @@
 package com.example.deliverinator
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +19,7 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mDBListener: ValueEventListener
+    private lateinit var mCartItemsList: HashMap<UploadMenuItem, Int>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
         mAuth = FirebaseAuth.getInstance()
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!)
         mItemsList = ArrayList()
+        mCartItemsList = HashMap()
 
         mAdapter = ClientRestaurantMenuItemAdapter(this, mItemsList, this)
 
@@ -62,6 +64,8 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
         })
     }
 
+
+    /*
     @SuppressLint("SetTextI18n")
     override fun onAddClick(position: Int, textView: TextView) {
         if (textView.text == " ") {
@@ -77,6 +81,17 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
         } else {
             textView.text = "${textView.text.toString().toInt() - 1}"
         }
+    }
+    */
+
+    override fun onAddToCartClick(position: Int, view: View?) {
+        if (mCartItemsList[mItemsList[position]] == null) {
+            mCartItemsList[mItemsList[position]] = 1
+        } else {
+            mCartItemsList[mItemsList[position]] = mCartItemsList[mItemsList[position]]?.plus(1)!!
+        }
+
+        Toast.makeText(this, "${mCartItemsList[mItemsList[position]]} ${mItemsList[position].itemName} added", Toast.LENGTH_SHORT).show()
     }
 
     override fun onBackPressed() {
