@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
@@ -34,8 +34,18 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="80dp"
             android:layout_below="@id/restaurant_menu_item_name"
+            android:layout_toStartOf="@id/restaurant_menu_checkBox"
             android:layout_toEndOf="@id/restaurant_menu_item_image"
             android:text="@string/item_description" />
+
+        <TextView
+            android:id="@+id/restaurant_menu_item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/restaurant_menu_item_description"
+            android:layout_toEndOf="@id/restaurant_menu_item_image"
+            android:textStyle="bold"
+            tools:text="25.50 RON" />
 
         <CheckBox
             android:id="@+id/restaurant_menu_checkBox"
