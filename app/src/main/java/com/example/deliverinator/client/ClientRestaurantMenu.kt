@@ -2,11 +2,11 @@ package com.example.deliverinator
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.client.ClientRestaurantMenuItemAdapter
 import com.google.firebase.auth.FirebaseAuth
@@ -65,26 +65,31 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
     }
 
 
-    /*
-    @SuppressLint("SetTextI18n")
     override fun onAddClick(position: Int, textView: TextView) {
-        if (textView.text == " ") {
+        if (textView.text.isEmpty()) {
             textView.text = "1"
+            mCartItemsList[mItemsList[position]] = 1
         } else {
-            textView.text = "${textView.text.toString().toInt() + 1}"
+            val quantity = textView.text.toString().toInt() + 1
+
+            textView.text = "$quantity"
+            mCartItemsList[mItemsList[position]] = quantity
         }
     }
 
     override fun onRemoveClick(position: Int, textView: TextView) {
-        if (textView.text == " " || textView.text == "1") {
-            textView.text = " "
+        if (textView.text.isEmpty() || textView.text == "1") {
+            textView.text = ""
+            mCartItemsList[mItemsList[position]] = 0
         } else {
-            textView.text = "${textView.text.toString().toInt() - 1}"
+            val quantity = textView.text.toString().toInt() - 1
+
+            textView.text = "$quantity"
+            mCartItemsList[mItemsList[position]] = quantity
         }
     }
-    */
 
-    override fun onAddToCartClick(position: Int, view: View?) {
+    /*override fun onAddClick(position: Int) {
         if (mCartItemsList[mItemsList[position]] == null) {
             mCartItemsList[mItemsList[position]] = 1
         } else {
@@ -92,7 +97,7 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
         }
 
         Toast.makeText(this, "${mCartItemsList[mItemsList[position]]} ${mItemsList[position].itemName} added", Toast.LENGTH_SHORT).show()
-    }
+    }*/
 
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
