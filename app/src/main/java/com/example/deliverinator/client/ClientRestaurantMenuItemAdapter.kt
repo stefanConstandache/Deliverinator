@@ -9,20 +9,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.client_add_items_from_menu_item.view.*
+import kotlinx.android.synthetic.main.client_restaurant_menu_item.view.*
 
-class ClientAddItemAdapter (
+class ClientRestaurantMenuItemAdapter(
     private val context: Context,
     private val itemsList: ArrayList<UploadMenuItem>,
     private val listener: OnItemClickListener
-):RecyclerView.Adapter<ClientAddItemAdapter.ClientAddItemViewHolder>(){
-    inner class ClientAddItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val itemImage = itemView.client_add_item_image_view
-        val itemName = itemView.client_add_item_name
-        val itemDescription = itemView.client_add_item_description
-        val itemQuantity = itemView.client_add_item_quantity
-        val addView = itemView.client_add_item_add
-        val removeView = itemView.client_add_item_remove
+) : RecyclerView.Adapter<ClientRestaurantMenuItemAdapter.ClientAddItemViewHolder>() {
+    inner class ClientAddItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val itemImage = itemView.client_menu_item_image_view
+        val itemName = itemView.client_menu_item_name
+        val itemDescription = itemView.client_menu_item_description
+        val itemPrice = itemView.client_menu_item_price
+        val itemAddToCart = itemView.client_menu_item_add_to_cart
     }
 
     interface OnItemClickListener {
@@ -33,9 +32,9 @@ class ClientAddItemAdapter (
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): ClientAddItemAdapter.ClientAddItemViewHolder {
+    ): ClientRestaurantMenuItemAdapter.ClientAddItemViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
-            R.layout.client_add_items_from_menu_item,
+            R.layout.client_restaurant_menu_item,
             parent,
             false
         )
@@ -44,21 +43,15 @@ class ClientAddItemAdapter (
     }
 
     override fun onBindViewHolder(
-        holder: ClientAddItemAdapter.ClientAddItemViewHolder,
+        holder: ClientRestaurantMenuItemAdapter.ClientAddItemViewHolder,
         position: Int
     ) {
         val currentItem = itemsList[position]
 
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
-
-        holder.addView.setOnClickListener {
-            listener.onAddClick(position, holder.itemQuantity)
-        }
-
-        holder.removeView.setOnClickListener {
-            listener.onRemoveClick(position, holder.itemQuantity)
-        }
+        holder.itemPrice.text = currentItem.itemPrice.toString()
+        holder.itemPrice.append(" LEI")
 
         if (currentItem.imageUrl == null) {
             Picasso.with(context)

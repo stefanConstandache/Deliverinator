@@ -37,7 +37,6 @@ class AccountFragment : Fragment() {
     private lateinit var mChangePassword: TextView
     private lateinit var mChooseImage: Button
     private lateinit var mApplyChanges: Button
-    private lateinit var mDeleteAccount: TextView
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mStore: FirebaseFirestore
@@ -59,7 +58,6 @@ class AccountFragment : Fragment() {
         mChangePassword = view.account_fragment_change_button
         mChooseImage = view.account_fragment_choose_button
         mApplyChanges = view.account_fragment_apply_changes
-        mDeleteAccount = view.account_fragment_delete_account_button
         mProgressBar = view.account_fragment_progressBar
         mAuth  = FirebaseAuth.getInstance()
         mStore = FirebaseFirestore.getInstance()
@@ -99,10 +97,6 @@ class AccountFragment : Fragment() {
             sendChangePasswordEmail()
         }
 
-        mDeleteAccount.setOnClickListener {
-            deleteAccount(view)
-        }
-
         return view
     }
 
@@ -134,67 +128,6 @@ class AccountFragment : Fragment() {
         val mime = MimeTypeMap.getSingleton()
 
         return mime.getExtensionFromMimeType(contentResolver?.getType(uri))
-    }
-
-    private fun deleteAccount(view: View) {
-        val alertDialogContext = context
-        val layout = LinearLayout(context)
-        val deleteDialog = AlertDialog.Builder(view.context)
-        val user = mAuth.currentUser
-        val mailField = EditText(alertDialogContext)
-        val passwordField = EditText(alertDialogContext)
-
-        layout.orientation = LinearLayout.VERTICAL
-
-        mailField.hint = "Email"
-        passwordField.hint = "Password"
-        passwordField.transformationMethod = PasswordTransformationMethod.getInstance()
-
-        layout.addView(mailField)
-        layout.addView(passwordField)
-
-        deleteDialog.setView(layout)
-
-        deleteDialog
-            .setTitle("Delete Account")
-            .setMessage("Enter credentials to delete account.")
-            .setNegativeButton("Cancel", null)
-            .setPositiveButton("Delete Account") { _, _ ->
-                val mail = mailField.text.toString().trim()
-                val password = passwordField.text.toString().trim()
-                val credential = EmailAuthProvider.getCredential(mail, password)
-
-                user!!.reauthenticate(credential).addOnSuccessListener {
-                    mStore.collection(RESTAURANTS).whereEqualTo("Email", mail)
-                        .get()
-                        .addOnSuccessListener { documents ->
-                            for (document in documents) {
-                                mStore.collection(RESTAURANTS).document(document.id).delete()
-                            }
-                        }
-
-                    mStore.collection(USERS).whereEqualTo("Email", mail)
-                        .get()
-                        .addOnSuccessListener { documents ->
-                            for (document in documents) {
-                                mStore.collection(USERS).document(document.id).delete()
-                            }
-                        }
-
-                    user.delete().addOnSuccessListener {
-                        Toast.makeText(context, R.string.user_deleted, Toast.LENGTH_SHORT).show()
-
-                        mAuth.signOut()
-
-                        val intent = Intent(context, Login::class.java)
-                        startActivity(intent)
-                    }
-                } .addOnFailureListener {
-                    Toast.makeText(context, "Wrong credentials", Toast.LENGTH_SHORT).show()
-                }
-            }
-            .create()
-            .show()
     }
 
     private fun applyChanges(docRestaurantRef: DocumentReference, docUsersRef: DocumentReference) {
