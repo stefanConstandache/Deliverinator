@@ -1,5 +1,6 @@
 package com.example.deliverinator
 
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,7 +20,6 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mDBListener: ValueEventListener
     private lateinit var mCartItemsList: HashMap<UploadMenuItem, Int>
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +63,7 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
             }
         })
     }
+
 
     /*
     @SuppressLint("SetTextI18n")

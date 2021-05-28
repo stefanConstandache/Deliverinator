@@ -9,6 +9,7 @@ import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
+import kotlin.math.round
 
 class MenuAdapter(
     private val context: Context,
