@@ -2,7 +2,6 @@ package com.example.deliverinator.client
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,7 +67,7 @@ class RestaurantsFragment : Fragment(), RestaurantItemAdapter.OnItemClickListene
 
     override fun onItemClick(position: Int, view: View?) {
         val restaurantEmail = mRestaurantsEmailList[position].replace("[@.]".toRegex(), "_")
-        val intent = Intent(context, ActivityClientAddItemsFromMenu::class.java)
+        val intent = Intent(context, ClientRestaurantMenu::class.java)
 
         intent.putExtra(EMAIL, restaurantEmail)
         startActivity(intent)
