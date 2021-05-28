@@ -69,6 +69,7 @@ class RestaurantsFragment : Fragment(), RestaurantItemAdapter.OnItemClickListene
         val restaurantEmail = mRestaurantsEmailList[position].replace("[@.]".toRegex(), "_")
         val intent = Intent(context, ClientRestaurantMenu::class.java)
 
+
         intent.putExtra(EMAIL, restaurantEmail)
         startActivity(intent)
     }
