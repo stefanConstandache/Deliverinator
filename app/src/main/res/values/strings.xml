@@ -74,4 +74,5 @@
     <string name="update">Update</string>
     <string name="leave_restaurant">Are you sure you want to leave the restaurant?</string>
     <string name="item_price">Item price</string>
+    <string name="finish_order">Finish Order</string>
 </resources>

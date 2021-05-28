@@ -2,12 +2,15 @@ package com.example.deliverinator
 
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.deliverinator.client.Cart
 import com.example.deliverinator.client.ClientRestaurantMenuItemAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -25,7 +28,7 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.client_restaurant_menu)
 
-        val intent: Intent = intent
+        val intent = intent
         val restaurantEmail = intent.getStringExtra(EMAIL)
 
         mAuth = FirebaseAuth.getInstance()
@@ -65,33 +68,28 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
     }
 
 
-    /*
-    @SuppressLint("SetTextI18n")
     override fun onAddClick(position: Int, textView: TextView) {
-        if (textView.text == " ") {
+        if (textView.text.isEmpty()) {
             textView.text = "1"
+            mCartItemsList[mItemsList[position]] = 1
         } else {
-            textView.text = "${textView.text.toString().toInt() + 1}"
+            val quantity = textView.text.toString().toInt() + 1
+
+            textView.text = "$quantity"
+            mCartItemsList[mItemsList[position]] = quantity
         }
     }
 
     override fun onRemoveClick(position: Int, textView: TextView) {
-        if (textView.text == " " || textView.text == "1") {
-            textView.text = " "
+        if (textView.text.isEmpty() || textView.text == "1") {
+            textView.text = ""
+            mCartItemsList[mItemsList[position]] = 0
         } else {
-            textView.text = "${textView.text.toString().toInt() - 1}"
-        }
-    }
-    */
+            val quantity = textView.text.toString().toInt() - 1
 
-    override fun onAddToCartClick(position: Int, view: View?) {
-        if (mCartItemsList[mItemsList[position]] == null) {
-            mCartItemsList[mItemsList[position]] = 1
-        } else {
-            mCartItemsList[mItemsList[position]] = mCartItemsList[mItemsList[position]]?.plus(1)!!
+            textView.text = "$quantity"
+            mCartItemsList[mItemsList[position]] = quantity
         }
-
-        Toast.makeText(this, "${mCartItemsList[mItemsList[position]]} ${mItemsList[position].itemName} added", Toast.LENGTH_SHORT).show()
     }
 
     override fun onBackPressed() {
@@ -104,5 +102,13 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
             .setNegativeButton(R.string.no, null)
             .create()
             .show()
+    }
+
+    fun launchCart(view: View) {
+        val intent = Intent(this, Cart::class.java)
+        val bundle = bundleOf(CART_ITEMS to mCartItemsList)
+
+        intent.putExtra(CART_ITEMS, bundle)
+        startActivity(intent)
     }
 }

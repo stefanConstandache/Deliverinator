@@ -1,8 +1,9 @@
 package com.example.deliverinator
 
 import com.google.firebase.database.Exclude
+import java.io.Serializable
 
-class UploadMenuItem {
+class UploadMenuItem : Serializable {
     var imageUrl: String? = null
     var itemName: String? = null
     var itemDescription: String? = null

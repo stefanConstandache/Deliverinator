@@ -72,9 +72,11 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         mMenuItems = ArrayList()
         mAdapter = MenuAdapter(context!!, mMenuItems, listener)
 
-        view.restaurant_fragment_recyclerView.adapter = mAdapter
-        view.restaurant_fragment_recyclerView.layoutManager = LinearLayoutManager(context)
-        view.restaurant_fragment_recyclerView.setHasFixedSize(true)
+        view.restaurant_fragment_recyclerView.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(context)
+            setHasFixedSize(true)
+        }
 
         mDBListener = mDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -260,7 +262,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                     downloadUrl.toString(),
                     mItemName.text.toString().trim(),
                     mItemDescription.text.toString().trim(),
-                    mItemPrice.text.toString().trim().toDouble()    ,
+                    mItemPrice.text.toString().trim().toDouble(),
                     true
                 )
 
