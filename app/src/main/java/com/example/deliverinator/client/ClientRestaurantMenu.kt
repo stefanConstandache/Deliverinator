@@ -89,16 +89,6 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
         }
     }
 
-    /*override fun onAddClick(position: Int) {
-        if (mCartItemsList[mItemsList[position]] == null) {
-            mCartItemsList[mItemsList[position]] = 1
-        } else {
-            mCartItemsList[mItemsList[position]] = mCartItemsList[mItemsList[position]]?.plus(1)!!
-        }
-
-        Toast.makeText(this, "${mCartItemsList[mItemsList[position]]} ${mItemsList[position].itemName} added", Toast.LENGTH_SHORT).show()
-    }*/
-
     override fun onBackPressed() {
         val builder = AlertDialog.Builder(this)
 
