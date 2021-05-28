@@ -70,7 +70,7 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/client_menu_item_add"
             android:gravity="center"
-            tools:text="100" />
+            android:text="0" />
 
         <ImageButton
             android:id="@+id/client_menu_item_remove"

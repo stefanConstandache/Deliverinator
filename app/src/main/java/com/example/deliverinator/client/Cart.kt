@@ -1,7 +1,9 @@
 package com.example.deliverinator.client
 
 import android.os.Bundle
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.CART_ITEMS
@@ -17,7 +19,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
-        val items = intent.getBundleExtra(CART_ITEMS)!!.get(CART_ITEMS) as HashMap<UploadMenuItem, Int>
+        val items =
+            intent.getBundleExtra(CART_ITEMS)!!.get(CART_ITEMS) as HashMap<UploadMenuItem, Int>
 
         mItemsList = getItemsList(items)
         mCartItemAdapter = CartItemAdapter(this, mItemsList, this)
@@ -40,14 +43,27 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     override fun onItemDeleteClick(position: Int) {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
+        // Nu mere
+        mItemsList.removeAt(position)
     }
 
-    override fun onItemAddClick(position: Int) {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
+    override fun onItemAddClick(position: Int, textView: TextView) {
+        val quantity = textView.text.toString().toInt() + 1
+
+        textView.text = "$quantity"
+        mItemsList[position] = mItemsList[position].copy(second = quantity)
     }
 
-    override fun onItemRemoveClick(position: Int) {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
+    override fun onItemRemoveClick(position: Int, textView: TextView) {
+        if (textView.text.toString().toInt() > 1) {
+            val quantity = textView.text.toString().toInt() - 1
+
+            textView.text = "$quantity"
+            mItemsList[position] = mItemsList[position].copy(second = quantity)
+        }
+    }
+
+    override fun onBackPressed() {
+
     }
 }

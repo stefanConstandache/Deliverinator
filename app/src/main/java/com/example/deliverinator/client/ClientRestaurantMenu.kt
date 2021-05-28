@@ -16,7 +16,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.client_restaurant_menu.*
 
-class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapter.OnItemClickListener {
+class ClientRestaurantMenu : AppCompatActivity(),
+    ClientRestaurantMenuItemAdapter.OnItemClickListener {
     private lateinit var mAdapter: ClientRestaurantMenuItemAdapter
     private lateinit var mItemsList: ArrayList<UploadMenuItem>
     private lateinit var mAuth: FirebaseAuth
@@ -69,22 +70,17 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
 
 
     override fun onAddClick(position: Int, textView: TextView) {
-        if (textView.text.isEmpty()) {
-            textView.text = "1"
-            mCartItemsList[mItemsList[position]] = 1
-        } else {
-            val quantity = textView.text.toString().toInt() + 1
+        val quantity = textView.text.toString().toInt() + 1
 
-            textView.text = "$quantity"
-            mCartItemsList[mItemsList[position]] = quantity
-        }
+        textView.text = "$quantity"
+        mCartItemsList[mItemsList[position]] = quantity
     }
 
     override fun onRemoveClick(position: Int, textView: TextView) {
-        if (textView.text.isEmpty() || textView.text == "1") {
-            textView.text = ""
-            mCartItemsList[mItemsList[position]] = 0
-        } else {
+        if (textView.text == "1") {
+            textView.text = "0"
+            mCartItemsList.remove(mItemsList[position])
+        } else if (textView.text != "0") {
             val quantity = textView.text.toString().toInt() - 1
 
             textView.text = "$quantity"
@@ -105,10 +101,14 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
     }
 
     fun launchCart(view: View) {
-        val intent = Intent(this, Cart::class.java)
-        val bundle = bundleOf(CART_ITEMS to mCartItemsList)
+        if (mCartItemsList.isNotEmpty()) {
+            val intent = Intent(this, Cart::class.java)
+            val bundle = bundleOf(CART_ITEMS to mCartItemsList)
 
-        intent.putExtra(CART_ITEMS, bundle)
-        startActivity(intent)
+            intent.putExtra(CART_ITEMS, bundle)
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Your shopping cart is empty", Toast.LENGTH_SHORT).show()
+        }
     }
 }
