@@ -9,6 +9,7 @@ import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.client_restaurant_menu_item.view.*
+import java.lang.StringBuilder
 
 class ClientRestaurantMenuItemAdapter(
     private val context: Context,
@@ -48,8 +49,7 @@ class ClientRestaurantMenuItemAdapter(
 
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
-        holder.itemPrice.text = currentItem.itemPrice.toString()
-        holder.itemPrice.append(" RON")
+        holder.itemPrice.text = StringBuilder().append(currentItem.itemPrice).append(" RON")
 
         holder.itemAddToCart.setOnClickListener {
             listener.onAddToCartClick(position, it)

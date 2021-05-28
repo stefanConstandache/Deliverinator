@@ -260,7 +260,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
                     downloadUrl.toString(),
                     mItemName.text.toString().trim(),
                     mItemDescription.text.toString().trim(),
-                    mItemPrice.text.toString().trim().toDouble()    ,
+                    mItemPrice.text.toString().trim().toDouble(),
                     true
                 )
 
