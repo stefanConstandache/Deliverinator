@@ -26,7 +26,7 @@ const val RESTAURANTS = "Restaurants"
 const val RESTAURANT_DESCRIPTION = "RestaurantDescription"
 const val RESTAURANT_IMAGE = "RestaurantImage"
 const val foodUriString = "android.resource://com.example.deliverinator/drawable/ic_food"
-
+const val CART_ITEMS = "Cart Items"
 
 class Utils {
     companion object {

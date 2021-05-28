@@ -18,7 +18,6 @@ class ClientDashboard : AppCompatActivity() {
     private lateinit var mMainFrame: FrameLayout
     private lateinit var mAccountFragment: AccountFragment
     private lateinit var mRestaurantsFragment: RestaurantsFragment
-    private lateinit var mCartFragment: CartFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +28,6 @@ class ClientDashboard : AppCompatActivity() {
         mMenuNavigation = findViewById(R.id.client_dashboard_menu)
         mAccountFragment = AccountFragment()
         mRestaurantsFragment = RestaurantsFragment()
-        mCartFragment = CartFragment()
 
         mMenuNavigation.selectedItemId = R.id.restaurant_menu
         setFragment(mRestaurantsFragment)
@@ -46,18 +44,13 @@ class ClientDashboard : AppCompatActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
 
-                R.id.cart_menu -> {
-                    setFragment(mCartFragment)
-                    return@setOnNavigationItemSelectedListener true
-                }
-
                 else -> return@setOnNavigationItemSelectedListener false
             }
         }
 
     }
 
-    fun setFragment(fragment: Fragment) {
+    private fun setFragment(fragment: Fragment) {
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.client_dashboard_frame, fragment)
         fragmentTransaction.commit()

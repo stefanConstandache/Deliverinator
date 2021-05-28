@@ -3,11 +3,14 @@ package com.example.deliverinator
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.deliverinator.client.Cart
 import com.example.deliverinator.client.ClientRestaurantMenuItemAdapter
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -25,7 +28,7 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.client_restaurant_menu)
 
-        val intent: Intent = intent
+        val intent = intent
         val restaurantEmail = intent.getStringExtra(EMAIL)
 
         mAuth = FirebaseAuth.getInstance()
@@ -99,5 +102,13 @@ class ClientRestaurantMenu : AppCompatActivity(), ClientRestaurantMenuItemAdapte
             .setNegativeButton(R.string.no, null)
             .create()
             .show()
+    }
+
+    fun launchCart(view: View) {
+        val intent = Intent(this, Cart::class.java)
+        val bundle = bundleOf(CART_ITEMS to mCartItemsList)
+
+        intent.putExtra(CART_ITEMS, bundle)
+        startActivity(intent)
     }
 }
