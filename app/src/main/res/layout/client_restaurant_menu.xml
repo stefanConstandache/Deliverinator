@@ -15,6 +15,7 @@
         tools:listitem="@layout/client_restaurant_menu_item" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/client_restaurant_menu_finish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

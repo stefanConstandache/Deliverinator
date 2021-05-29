@@ -1,5 +1,12 @@
 package com.example.deliverinator.client
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -7,6 +14,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.*
 import com.example.deliverinator.Utils.Companion.format
@@ -21,6 +31,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     private lateinit var mCartItemAdapter: CartItemAdapter
     private lateinit var mDocReference: DocumentReference
     private var mCartItemsSum: Double = 0.0
+    private var mChannelId = "channel_id"
+    private val mNotificationId = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,6 +145,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
 
                     dialog.dismiss()
                     Toast.makeText(view.context, "TODO Notification sent!", Toast.LENGTH_SHORT).show()
+                    createNotificationChannel()
+                    sendNotification()
                 }
 
                 cancelButton.setOnClickListener {
@@ -146,5 +160,32 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
 
     override fun onBackPressed() {
         Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Notification Title"
+            val descriptionText = "Notification description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(mChannelId, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun sendNotification() {
+        val bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.splash_image)
+        val builder = NotificationCompat.Builder(this, mChannelId)
+            .setSmallIcon(R.drawable.splash_image)
+            .setContentTitle("Order sent!")
+            .setLargeIcon(bitmap)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+           // .setOngoing(true)
+        NotificationManagerCompat.from(this).run {
+            notify(mNotificationId, builder.build())
+        }
     }
 }
