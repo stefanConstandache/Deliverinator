@@ -10,6 +10,7 @@ import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.client_restaurant_menu_item.view.*
+import java.lang.StringBuilder
 
 class ClientRestaurantMenuItemAdapter(
     private val context: Context,
@@ -21,7 +22,9 @@ class ClientRestaurantMenuItemAdapter(
         val itemName = itemView.client_menu_item_name
         val itemDescription = itemView.client_menu_item_description
         val itemPrice = itemView.client_menu_item_price
-        val itemAddToCart = itemView.client_menu_item_add_to_cart
+        val itemAdd = itemView.client_menu_item_add
+        val itemRemove = itemView.client_menu_item_remove
+        val itemQuantity = itemView.client_menu_item_quantity
     }
 
     interface OnItemClickListener {
@@ -50,8 +53,15 @@ class ClientRestaurantMenuItemAdapter(
 
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
-        holder.itemPrice.text = currentItem.itemPrice.toString()
-        holder.itemPrice.append(" LEI")
+        holder.itemPrice.text = StringBuilder().append(currentItem.itemPrice).append(" RON")
+
+        holder.itemAdd.setOnClickListener {
+            listener.onAddClick(position, holder.itemQuantity)
+        }
+
+        holder.itemRemove.setOnClickListener {
+            listener.onRemoveClick(position, holder.itemQuantity)
+        }
 
         if (currentItem.imageUrl == null) {
             Picasso.with(context)

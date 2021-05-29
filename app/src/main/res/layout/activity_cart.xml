@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".client.RestaurantsFragment">
+    tools:context=".client.Cart">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/client_restaurants_recycler_view"
-        android:padding="4dp"
-        android:clipToPadding="false"
+        android:id="@+id/cart_items_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/client_cart_item"/>
+        android:clipToPadding="false"
+        android:padding="4dp"
+        tools:listitem="@layout/client_cart_item" />
 
 </FrameLayout>
