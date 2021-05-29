@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="4dp">
@@ -36,9 +37,9 @@
             android:layout_marginEnd="20dp"
             android:layout_toStartOf="@id/client_cart_delete"
             android:gravity="center"
-            android:text="10.00 LEI"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="10.00 RON" />
 
         <ImageButton
             android:id="@+id/client_cart_add"
@@ -77,7 +78,7 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@id/client_cart_add"
             android:gravity="center"
-            android:text="100" />
+            tools:text="100" />
 
     </RelativeLayout>
 

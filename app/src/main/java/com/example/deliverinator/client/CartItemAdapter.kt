@@ -4,15 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
 import kotlinx.android.synthetic.main.client_cart_item.view.*
 import com.squareup.picasso.Picasso
+import java.lang.StringBuilder
 
 class CartItemAdapter(
     private val context: Context,
-    private val cartList: List<UploadMenuItem>,
+    private val cartList: List<Pair<UploadMenuItem, Int>>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<CartItemAdapter.CartViewHolder>() {
         inner class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -22,13 +24,13 @@ class CartItemAdapter(
             val itemAdd = itemView.client_cart_add
             val itemRemove = itemView.client_cart_remove
             val itemDelete = itemView.client_cart_delete
-            // val itemQuantity = itemView.client_cart_item_quantity
+            val itemQuantity = itemView.client_cart_item_quantity
         }
 
     interface OnItemClickListener {
         fun onItemDeleteClick(position: Int)
-        fun onItemAddClick(position: Int)
-        fun onItemRemoveClick(position: Int)
+        fun onItemAddClick(position: Int, textView: TextView)
+        fun onItemRemoveClick(position: Int, textView: TextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -40,22 +42,23 @@ class CartItemAdapter(
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val currentItem = cartList[position]
 
-        holder.itemName.text = currentItem.itemName
-        holder.itemPrice.text = currentItem.itemPrice.toString()
+        holder.itemName.text = currentItem.first.itemName
+        holder.itemPrice.text = StringBuilder().append(currentItem.first.itemPrice).append(" RON")
+        holder.itemQuantity.text = currentItem.second.toString()
 
         holder.itemAdd.setOnClickListener {
-            listener.onItemAddClick(position)
+            listener.onItemAddClick(position, holder.itemQuantity)
         }
 
         holder.itemRemove.setOnClickListener {
-            listener.onItemRemoveClick(position)
+            listener.onItemRemoveClick(position, holder.itemQuantity)
         }
 
         holder.itemDelete.setOnClickListener {
             listener.onItemDeleteClick(position)
         }
 
-        if(currentItem.imageUrl == null) {
+        if(currentItem.first.imageUrl == null) {
             Picasso.with(context)
                 .load(R.drawable.ic_food)
                 .placeholder(R.drawable.ic_food)
@@ -64,7 +67,7 @@ class CartItemAdapter(
                 .into(holder.itemImage)
         } else {
             Picasso.with(context)
-                .load(currentItem.imageUrl)
+                .load(currentItem.first.imageUrl)
                 .placeholder(R.drawable.ic_food)
                 .fit()
                 .centerCrop()
