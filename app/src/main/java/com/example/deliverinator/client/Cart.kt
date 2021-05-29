@@ -73,11 +73,11 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     override fun onItemDeleteClick(position: Int) {
+        mCartItemsSum -= mItemsList[position].first.itemPrice * mItemsList[position].second
         mItemsList.removeAt(position)
         mCartItemAdapter.notifyDataSetChanged()
 
         if (mItemsList.isNotEmpty()) {
-            mCartItemsSum -= mItemsList[position].first.itemPrice * mItemsList[position].second
             setFABText(mCartItemsSum)
         } else {
             finish()

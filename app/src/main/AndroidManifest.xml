@@ -12,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliverinator">
-        <activity android:name=".client.Cart"></activity>
-        <activity android:name=".ClientRestaurantMenu" />
+        <activity android:name=".client.Cart" />
+        <activity android:name=".client.ClientRestaurantMenu" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">

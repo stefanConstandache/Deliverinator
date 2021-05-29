@@ -1,27 +1,18 @@
-package com.example.deliverinator
+package com.example.deliverinator.client
 
-
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.ContentProvider
-import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.deliverinator.client.Cart
-import com.example.deliverinator.client.ClientDashboard
-import com.example.deliverinator.client.ClientRestaurantMenuItemAdapter
+import com.example.deliverinator.CART_ITEMS
+import com.example.deliverinator.EMAIL
+import com.example.deliverinator.R
+import com.example.deliverinator.UploadMenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.client_restaurant_menu.*
@@ -34,7 +25,6 @@ class ClientRestaurantMenu : AppCompatActivity(),
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mDBListener: ValueEventListener
     private lateinit var mCartItemsList: HashMap<UploadMenuItem, Int>
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,5 +114,4 @@ class ClientRestaurantMenu : AppCompatActivity(),
             Toast.makeText(this, "Your shopping cart is empty", Toast.LENGTH_SHORT).show()
         }
     }
-
 }
