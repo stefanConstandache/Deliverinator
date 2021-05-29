@@ -13,6 +13,7 @@ class OrdersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.restaurant_fragment_orders, container, false)
+        val view = inflater.inflate(R.layout.restaurant_fragment_orders, container, false)
+        return view
     }
 }

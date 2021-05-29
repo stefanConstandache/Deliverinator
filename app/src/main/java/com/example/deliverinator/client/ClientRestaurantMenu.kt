@@ -70,7 +70,6 @@ class ClientRestaurantMenu : AppCompatActivity(),
         })
     }
 
-
     override fun onAddClick(position: Int, textView: TextView) {
         val quantity = textView.text.toString().toInt() + 1
 

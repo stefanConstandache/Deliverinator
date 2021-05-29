@@ -119,7 +119,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
 
         setResult(1, data)
         finish()
-    }
+
 
     fun launchAddressDialog(view: View) {
         val addressField = EditText(view.context)
