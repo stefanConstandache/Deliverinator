@@ -16,7 +16,8 @@ import java.lang.StringBuilder
 class ClientRestaurantMenuItemAdapter(
     private val context: Context,
     private val itemsList: ArrayList<UploadMenuItem>,
-    private val listener: OnItemClickListener
+    private val listener: OnItemClickListener,
+    private val itemsMap: HashMap<UploadMenuItem, Int>
 ) : RecyclerView.Adapter<ClientRestaurantMenuItemAdapter.ClientAddItemViewHolder>() {
     inner class ClientAddItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemImage = itemView.client_menu_item_image_view
@@ -55,6 +56,12 @@ class ClientRestaurantMenuItemAdapter(
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
         holder.itemPrice.text = StringBuilder().append(currentItem.itemPrice.format(2)).append(" RON")
+        if (itemsMap[currentItem] != null) {
+            holder.itemQuantity.text = itemsMap[currentItem].toString()
+        } else {
+            holder.itemQuantity.text = "0"
+        }
+
 
         holder.itemAdd.setOnClickListener {
             listener.onAddClick(position, holder.itemQuantity)
