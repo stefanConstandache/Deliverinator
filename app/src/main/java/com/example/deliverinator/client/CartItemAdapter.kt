@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
+import com.example.deliverinator.Utils.Companion.format
 import kotlinx.android.synthetic.main.client_cart_item.view.*
 import com.squareup.picasso.Picasso
 import java.lang.StringBuilder
@@ -43,7 +44,7 @@ class CartItemAdapter(
         val currentItem = cartList[position]
 
         holder.itemName.text = currentItem.first.itemName
-        holder.itemPrice.text = StringBuilder().append(currentItem.first.itemPrice).append(" RON")
+        holder.itemPrice.text = StringBuilder().append(currentItem.first.itemPrice.format(2)).append(" RON")
         holder.itemQuantity.text = currentItem.second.toString()
 
         holder.itemAdd.setOnClickListener {

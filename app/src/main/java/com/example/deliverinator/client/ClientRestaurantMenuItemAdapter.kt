@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
+import com.example.deliverinator.Utils.Companion.format
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.client_restaurant_menu_item.view.*
 import java.lang.StringBuilder
@@ -53,7 +54,7 @@ class ClientRestaurantMenuItemAdapter(
 
         holder.itemName.text = currentItem.itemName
         holder.itemDescription.text = currentItem.itemDescription
-        holder.itemPrice.text = StringBuilder().append(currentItem.itemPrice).append(" RON")
+        holder.itemPrice.text = StringBuilder().append(currentItem.itemPrice.format(2)).append(" RON")
 
         holder.itemAdd.setOnClickListener {
             listener.onAddClick(position, holder.itemQuantity)
