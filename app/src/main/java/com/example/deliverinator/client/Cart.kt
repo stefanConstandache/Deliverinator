@@ -114,15 +114,15 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
             val address = it.getString(ADDRESS)
             val message = if (address != null && address.isNotEmpty()) {
                 addressField.setText(address)
-                "Please confirm your address"
+                getString(R.string.confirm_adress)
             } else {
-                "Please provide an address"
+                getString(R.string.provide_adress)
             }
 
             val dialog = addressDialog.setTitle("Enter your address")
                 .setMessage(message)
                 .setView(addressField)
-                .setPositiveButton("Confirm", null)
+                .setPositiveButton(R.string.confirm, null)
                 .setNegativeButton(R.string.cancel, null)
                 .create()
 
@@ -134,7 +134,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                     val fieldText = addressField.text.toString().trim()
 
                     if (fieldText.isEmpty()) {
-                        addressField.error = "Field cannot be empty"
+                        addressField.error = getString(R.string.empty_field)
                         return@setOnClickListener
                     }
 
@@ -144,7 +144,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                     )
 
                     dialog.dismiss()
-                    Toast.makeText(view.context, "TODO Notification sent!", Toast.LENGTH_SHORT).show()
+                    // TODO: Inchis activitati
                     createNotificationChannel()
                     sendNotification()
                 }
