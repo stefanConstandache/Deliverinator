@@ -43,8 +43,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     override fun onItemDeleteClick(position: Int) {
-        // Nu mere
         mItemsList.removeAt(position)
+        mCartItemAdapter.notifyDataSetChanged()
     }
 
     override fun onItemAddClick(position: Int, textView: TextView) {
@@ -64,6 +64,6 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     override fun onBackPressed() {
-
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
     }
 }
