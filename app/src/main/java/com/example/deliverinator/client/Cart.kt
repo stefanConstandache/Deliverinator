@@ -106,6 +106,16 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         }
     }
 
+    override fun finish() {
+        Toast.makeText(this, "haloooo", Toast.LENGTH_SHORT).show()
+        super.finish()
+    }
+
+    override fun onBackPressed() {
+        this.finish()
+        //Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
+    }
+
     fun launchAddressDialog(view: View) {
         val addressField = EditText(view.context)
         val addressDialog = AlertDialog.Builder(view.context)
@@ -156,10 +166,6 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
 
             dialog.show()
         }
-    }
-
-    override fun onBackPressed() {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
     }
 
     private fun createNotificationChannel() {
