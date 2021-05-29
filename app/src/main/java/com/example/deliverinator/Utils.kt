@@ -49,5 +49,7 @@ class Utils {
             val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
         }
+
+        fun Double.format(decimalPlaces: Int) = "%.${decimalPlaces}f".format(this)
     }
 }

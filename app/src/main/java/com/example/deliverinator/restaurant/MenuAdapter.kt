@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
+import com.example.deliverinator.Utils.Companion.format
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 import kotlin.math.round
@@ -41,7 +42,7 @@ class MenuAdapter(
 
         holder.itemName.text = uploadCurrent.itemName
         holder.itemDescription.text = uploadCurrent.itemDescription
-        holder.itemPrice.text = StringBuilder().append(uploadCurrent.itemPrice).append(" RON")
+        holder.itemPrice.text = StringBuilder().append(uploadCurrent.itemPrice.format(2)).append(" RON")
         holder.isAvailable.isChecked = uploadCurrent.isAvailable
 
         holder.moreActions.setOnClickListener {
