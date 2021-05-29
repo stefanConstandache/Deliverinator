@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
@@ -28,8 +29,8 @@ class CartItemAdapter(
 
     interface OnItemClickListener {
         fun onItemDeleteClick(position: Int)
-        fun onItemAddClick(position: Int)
-        fun onItemRemoveClick(position: Int)
+        fun onItemAddClick(position: Int, textView: TextView)
+        fun onItemRemoveClick(position: Int, textView: TextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -46,11 +47,11 @@ class CartItemAdapter(
         holder.itemQuantity.text = currentItem.second.toString()
 
         holder.itemAdd.setOnClickListener {
-            listener.onItemAddClick(position)
+            listener.onItemAddClick(position, holder.itemQuantity)
         }
 
         holder.itemRemove.setOnClickListener {
-            listener.onItemRemoveClick(position)
+            listener.onItemRemoveClick(position, holder.itemQuantity)
         }
 
         holder.itemDelete.setOnClickListener {
