@@ -75,4 +75,7 @@
     <string name="leave_restaurant">Are you sure you want to leave the restaurant?</string>
     <string name="item_price">Item price</string>
     <string name="finish_order">Finish Order</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_adress">Please confirm your address</string>
+    <string name="provide_adress">Please provide an address</string>
 </resources>
