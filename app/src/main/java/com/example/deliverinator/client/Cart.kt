@@ -1,6 +1,7 @@
 package com.example.deliverinator.client
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -8,8 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.CART_ITEMS
 import com.example.deliverinator.R
 import com.example.deliverinator.UploadMenuItem
+import com.example.deliverinator.Utils.Companion.format
 import kotlinx.android.synthetic.main.activity_cart.*
 import java.lang.StringBuilder
+import java.text.DecimalFormat
 
 class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     private lateinit var mItemsList: ArrayList<Pair<UploadMenuItem, Int>>
@@ -38,7 +41,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     private fun setFABText(cartItemsSum: Double) {
-        cart_fab.text = StringBuilder("Order for ").append(cartItemsSum).append(" RON")
+        cart_fab.text = StringBuilder("Order for ").append(cartItemsSum.format(2)).append(" RON")
     }
 
     private fun getItemsList(items: HashMap<UploadMenuItem, Int>): ArrayList<Pair<UploadMenuItem, Int>> {
@@ -79,6 +82,10 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
             mCartItemsSum -= mItemsList[position].first.itemPrice
             setFABText(mCartItemsSum)
         }
+    }
+
+    fun showAddressDialog(view: View) {
+
     }
 
     override fun onBackPressed() {
