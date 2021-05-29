@@ -12,6 +12,17 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:padding="4dp"
-        tools:listitem="@layout/client_restaurant_menu_item"/>
+        tools:listitem="@layout/client_restaurant_menu_item" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/finish_order"
+        android:onClick="launchCart"
+        app:icon="@drawable/ic_cart" />
 
 </RelativeLayout>
