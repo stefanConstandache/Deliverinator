@@ -49,7 +49,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     private var mImageUri: Uri? = null
 
     companion object {
-        private lateinit var mDBListener: ValueEventListener
+        private var mDBListener: ValueEventListener? = null
 
         val DBListener
             get() = mDBListener
@@ -457,6 +457,8 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
     override fun onDestroy() {
         super.onDestroy()
 
-        mDatabaseRef.removeEventListener(mDBListener)
+        mDBListener?.let {
+            mDatabaseRef.removeEventListener(it)
+        }
     }
 }

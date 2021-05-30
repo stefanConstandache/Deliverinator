@@ -22,7 +22,7 @@ class OrdersFragment : Fragment(), OrdersItemAdapter.OnItemClickListener {
     private lateinit var mEmail: String
 
     companion object {
-        private lateinit var mDBListener: ValueEventListener
+        private var mDBListener: ValueEventListener? = null
 
         val DBListener
             get() = mDBListener

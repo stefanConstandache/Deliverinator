@@ -98,8 +98,12 @@ class RestaurantDashboard : AppCompatActivity() {
         val databaseRefOrders = FirebaseDatabase.getInstance().getReference(email).child(ORDERS)
 
         mDatabaseRef.removeEventListener(mDBListener)
-        databaseRefMenu.removeEventListener(MenuFragment.DBListener)
-        databaseRefOrders.removeEventListener(OrdersFragment.DBListener)
+        MenuFragment.DBListener?.let {
+            databaseRefMenu.removeEventListener(it)
+        }
+        OrdersFragment.DBListener?.let {
+            databaseRefOrders.removeEventListener(it)
+        }
         mAuth.signOut()
 
         val intent = Intent(this, Login::class.java)
