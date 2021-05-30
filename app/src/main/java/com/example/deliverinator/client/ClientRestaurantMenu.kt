@@ -2,7 +2,6 @@ package com.example.deliverinator.client
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -101,11 +100,12 @@ class ClientRestaurantMenu : AppCompatActivity(),
 
     fun launchCart(view: View) {
         if (mCartItemsList.isNotEmpty()) {
-            val intent = Intent(this, Cart::class.java)
+            val cartIntent = Intent(this, Cart::class.java)
             val bundle = bundleOf(CART_ITEMS to mCartItemsList)
 
-            intent.putExtra(CART_ITEMS, bundle)
-            startActivityForResult(intent, 1)
+            cartIntent.putExtra(CART_ITEMS, bundle)
+            cartIntent.putExtra(EMAIL, intent.getStringExtra(EMAIL))
+            startActivityForResult(cartIntent, 1)
         } else {
             Toast.makeText(this, "Your shopping cart is empty", Toast.LENGTH_SHORT).show()
         }
