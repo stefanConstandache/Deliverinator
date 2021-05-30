@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.deliverinator.Login
 import com.example.deliverinator.MENU_ITEMS
+import com.example.deliverinator.ORDERS
 import com.example.deliverinator.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -67,9 +68,11 @@ class RestaurantDashboard : AppCompatActivity() {
 
     fun launchLogin(view: View) {
         val email = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
-        val databaseRef = FirebaseDatabase.getInstance().getReference(email).child(MENU_ITEMS)
+        val databaseRefMenu = FirebaseDatabase.getInstance().getReference(email).child(MENU_ITEMS)
+        val databaseRefOrders = FirebaseDatabase.getInstance().getReference(email).child(ORDERS)
 
-        databaseRef.removeEventListener(MenuFragment.DBListener)
+        databaseRefMenu.removeEventListener(MenuFragment.DBListener)
+        databaseRefOrders.removeEventListener(OrdersFragment.DBListener)
         mAuth.signOut()
 
         val intent = Intent(this, Login::class.java)
