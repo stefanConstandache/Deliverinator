@@ -10,10 +10,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.deliverinator.CART_ITEMS
-import com.example.deliverinator.EMAIL
+import com.example.deliverinator.*
 import com.example.deliverinator.R
-import com.example.deliverinator.UploadMenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.client_restaurant_menu.*
@@ -35,7 +33,7 @@ class ClientRestaurantMenu : AppCompatActivity(),
         val restaurantEmail = intent.getStringExtra(EMAIL)
 
         mAuth = FirebaseAuth.getInstance()
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!)
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!).child(MENU_ITEMS)
         mItemsList = ArrayList()
         mCartItemsList = HashMap()
 
@@ -117,12 +115,14 @@ class ClientRestaurantMenu : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
             mCartItemsList.clear()
-            val items = data!!.getBundleExtra("Menu items")!!.get("Menu items") as HashMap<UploadMenuItem, Int>
+            val items = data!!.getBundleExtra(MENU_ITEMS)!!.get(MENU_ITEMS) as HashMap<UploadMenuItem, Int>
 
-            for (item in items) {
-                for (position in 0 until mItemsList.size) {
-                    if (item.key.itemName == mItemsList[position].itemName) {
-                        mCartItemsList[mItemsList[position]] = item.value
+            if (items.isNotEmpty()) {
+                for (item in items) {
+                    for (position in 0 until mItemsList.size) {
+                        if (item.key.itemName == mItemsList[position].itemName) {
+                            mCartItemsList[mItemsList[position]] = item.value
+                        }
                     }
                 }
             }
