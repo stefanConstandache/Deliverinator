@@ -2,7 +2,6 @@ package com.example.deliverinator.client
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -10,10 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.deliverinator.CART_ITEMS
-import com.example.deliverinator.EMAIL
+import com.example.deliverinator.*
 import com.example.deliverinator.R
-import com.example.deliverinator.UploadMenuItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.client_restaurant_menu.*
@@ -35,7 +32,7 @@ class ClientRestaurantMenu : AppCompatActivity(),
         val restaurantEmail = intent.getStringExtra(EMAIL)
 
         mAuth = FirebaseAuth.getInstance()
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!)
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!).child(MENU_ITEMS)
         mItemsList = ArrayList()
         mCartItemsList = HashMap()
 
@@ -103,11 +100,12 @@ class ClientRestaurantMenu : AppCompatActivity(),
 
     fun launchCart(view: View) {
         if (mCartItemsList.isNotEmpty()) {
-            val intent = Intent(this, Cart::class.java)
+            val cartIntent = Intent(this, Cart::class.java)
             val bundle = bundleOf(CART_ITEMS to mCartItemsList)
 
-            intent.putExtra(CART_ITEMS, bundle)
-            startActivityForResult(intent, 1)
+            cartIntent.putExtra(CART_ITEMS, bundle)
+            cartIntent.putExtra(EMAIL, intent.getStringExtra(EMAIL))
+            startActivityForResult(cartIntent, 1)
         } else {
             Toast.makeText(this, "Your shopping cart is empty", Toast.LENGTH_SHORT).show()
         }
@@ -117,12 +115,14 @@ class ClientRestaurantMenu : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1) {
             mCartItemsList.clear()
-            val items = data!!.getBundleExtra("Menu items")!!.get("Menu items") as HashMap<UploadMenuItem, Int>
+            val items = data!!.getBundleExtra(MENU_ITEMS)!!.get(MENU_ITEMS) as HashMap<UploadMenuItem, Int>
 
-            for (item in items) {
-                for (position in 0 until mItemsList.size) {
-                    if (item.key.itemName == mItemsList[position].itemName) {
-                        mCartItemsList[mItemsList[position]] = item.value
+            if (items.isNotEmpty()) {
+                for (item in items) {
+                    for (position in 0 until mItemsList.size) {
+                        if (item.key.itemName == mItemsList[position].itemName) {
+                            mCartItemsList[mItemsList[position]] = item.value
+                        }
                     }
                 }
             }

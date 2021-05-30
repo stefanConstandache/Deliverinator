@@ -21,15 +21,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.*
 import com.example.deliverinator.Utils.Companion.format
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.activity_cart.*
+import kotlinx.android.synthetic.main.client_cart_item.*
 
 class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     private lateinit var mItemsList: ArrayList<Pair<UploadMenuItem, Int>>
     private lateinit var mCartItemAdapter: CartItemAdapter
     private lateinit var mDocReference: DocumentReference
+    private lateinit var mEmail: String
+    private lateinit var mDatabaseRef: DatabaseReference
     private var mCartItemsSum: Double = 0.0
     private var mChannelId = "channel_id"
     private val mNotificationId = 101
@@ -45,6 +50,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
             .document(FirebaseAuth.getInstance().currentUser!!.uid)
         mItemsList = getItemsList(items)
         mCartItemAdapter = CartItemAdapter(this, mItemsList, this)
+        mEmail = intent.getStringExtra(EMAIL)!!
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(ORDERS)
         mCartItemsSum = mItemsList.sumByDouble {
             it.first.itemPrice * it.second
         }
@@ -80,7 +87,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         if (mItemsList.isNotEmpty()) {
             setFABText(mCartItemsSum)
         } else {
-            finish()
+            onBackPressed()
         }
     }
 
@@ -110,17 +117,19 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         val data = Intent(this, ClientRestaurantMenu::class.java)
         val items = HashMap<UploadMenuItem, Int>()
 
-        for (item in mItemsList) {
-            items[item.first] = item.second
+        if (mItemsList.isNotEmpty()) {
+            for (item in mItemsList) {
+                items[item.first] = item.second
+            }
         }
-        val bundle = bundleOf("Menu items" to items)
 
-        data.putExtra("Menu items", bundle)
+        val bundle = bundleOf(MENU_ITEMS to items)
+
+        data.putExtra(MENU_ITEMS, bundle)
 
         setResult(1, data)
         finish()
     }
-
 
     fun launchAddressDialog(view: View) {
         val addressField = EditText(view.context)
@@ -159,6 +168,20 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                         SetOptions.merge()
                     )
 
+                    val order = getOrderString(mItemsList)
+                    val upload = UploadOrder(
+                        docSnapshot.getString(NAME),
+                        fieldText,
+                        order,
+                        mCartItemsSum
+                    )
+
+                    val uploadId = mDatabaseRef.push().key
+
+                    if (uploadId != null) {
+                        mDatabaseRef.child(uploadId).setValue(upload)
+                    }
+
                     dialog.dismiss()
                     // TODO: Inchis activitati
                     createNotificationChannel()
@@ -174,8 +197,24 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         }
     }
 
+    private fun getOrderString(itemsList: ArrayList<Pair<UploadMenuItem, Int>>): String {
+        val builder = StringBuilder()
+
+        for (index in 0 until itemsList.size) {
+            val item = itemsList[index]
+
+            builder.append(item.second).append(" x ").append(item.first.itemName)
+
+            if (index != itemsList.size - 1) {
+                builder.append(", ")
+            }
+        }
+
+        return builder.toString()
+    }
+
     private fun createNotificationChannel() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Notification Title"
             val descriptionText = "Notification description"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -183,6 +222,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 description = descriptionText
             }
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -196,6 +236,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
            // .setOngoing(true)
+
         NotificationManagerCompat.from(this).run {
             notify(mNotificationId, builder.build())
         }
