@@ -21,8 +21,14 @@ class ClientRestaurantMenu : AppCompatActivity(),
     private lateinit var mItemsList: ArrayList<UploadMenuItem>
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabaseRef: DatabaseReference
-    private lateinit var mDBListener: ValueEventListener
     private lateinit var mCartItemsList: HashMap<UploadMenuItem, Int>
+
+    companion object{
+        private lateinit var mDBListener: ValueEventListener
+
+        val DBListener
+            get() = mDBListener
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

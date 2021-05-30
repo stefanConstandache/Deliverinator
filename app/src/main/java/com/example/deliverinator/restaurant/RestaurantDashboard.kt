@@ -7,7 +7,8 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +42,6 @@ class RestaurantDashboard : AppCompatActivity() {
 
         mNavigationView = findViewById(R.id.restaurant_dashboard_navigationView)
         mFrameLayout = findViewById(R.id.restaurant_dashboard_frame)
-
         mAuth = FirebaseAuth.getInstance()
         mEmail = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(ORDERS)
@@ -92,7 +92,7 @@ class RestaurantDashboard : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    fun launchLogin(view: View) {
+    private fun launchLogin() {
         val email = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
         val databaseRefMenu = FirebaseDatabase.getInstance().getReference(email).child(MENU_ITEMS)
         val databaseRefOrders = FirebaseDatabase.getInstance().getReference(email).child(ORDERS)
@@ -138,5 +138,18 @@ class RestaurantDashboard : AppCompatActivity() {
         NotificationManagerCompat.from(this).run {
             notify(mNotificationId, builder.build())
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.toolbar_logout -> launchLogin()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

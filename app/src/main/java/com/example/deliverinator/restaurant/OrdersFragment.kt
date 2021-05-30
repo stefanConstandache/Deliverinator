@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.restaurant_fragment_orders.view.*
 
-class OrdersFragment : Fragment(), OrdersItemAdapter.OnItemClickListener {
+class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mAdapter: OrdersItemAdapter
@@ -40,6 +40,7 @@ class OrdersFragment : Fragment(), OrdersItemAdapter.OnItemClickListener {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(ORDERS)
         mOrdersList = ArrayList()
         mAdapter = OrdersItemAdapter(context!!, mOrdersList, this)
+
 
         view.restaurant_fragment_orders_recyclerView.apply {
             adapter = mAdapter

@@ -2,6 +2,8 @@ package com.example.deliverinator.admin
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -56,12 +58,25 @@ class AdminDashboard : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    fun launchLogin(view: View) {
+    private fun launchLogin() {
         mAuth.signOut()
 
         val intent = Intent(this, Login::class.java)
         startActivity(intent)
 
         finish()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.toolbar_logout -> launchLogin()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }
