@@ -12,7 +12,6 @@ import com.example.deliverinator.admin.AdminDashboard
 import com.example.deliverinator.client.ClientDashboard
 import com.example.deliverinator.restaurant.RestaurantDashboard
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class Login : AppCompatActivity() {
@@ -107,9 +106,7 @@ class Login : AppCompatActivity() {
 
         mailField.text = mEmail.text
 
-
-        passwordResetDialog
-            .setTitle(R.string.reset_password)
+        passwordResetDialog.setTitle(R.string.reset_password)
             .setMessage(R.string.enter_your_email)
             .setView(mailField)
             .setPositiveButton(R.string.send) { _, _ ->
@@ -125,6 +122,7 @@ class Login : AppCompatActivity() {
                             .show()
                     }
             }
+            .setNegativeButton(R.string.cancel, null)
             .create()
             .show()
     }

@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".admin.AdminDashboard">
 
-    <Button
-        android:id="@+id/admin_dashboard_logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignRight="@id/admin_dashboard_frame"
-        android:onClick="launchLogin"
-        android:text="@string/dashboard_logout" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/admin_dashboard_navigationView"
         android:layout_width="match_parent"

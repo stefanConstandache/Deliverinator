@@ -2,6 +2,8 @@ package com.example.deliverinator.client
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -18,7 +20,6 @@ class ClientDashboard : AppCompatActivity() {
     private lateinit var mMainFrame: FrameLayout
     private lateinit var mAccountFragment: AccountFragment
     private lateinit var mRestaurantsFragment: RestaurantsFragment
-    private lateinit var mCartFragment: CartFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,6 @@ class ClientDashboard : AppCompatActivity() {
         mMenuNavigation = findViewById(R.id.client_dashboard_menu)
         mAccountFragment = AccountFragment()
         mRestaurantsFragment = RestaurantsFragment()
-        mCartFragment = CartFragment()
 
         mMenuNavigation.selectedItemId = R.id.restaurant_menu
         setFragment(mRestaurantsFragment)
@@ -46,11 +46,6 @@ class ClientDashboard : AppCompatActivity() {
                     return@setOnNavigationItemSelectedListener true
                 }
 
-                R.id.cart_menu -> {
-                    setFragment(mCartFragment)
-                    return@setOnNavigationItemSelectedListener true
-                }
-
                 else -> return@setOnNavigationItemSelectedListener false
             }
         }
@@ -63,12 +58,25 @@ class ClientDashboard : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    fun launchLogin(view: View) {
+    private fun launchLogin() {
         mAuth.signOut()
 
         val intent = Intent(this, Login::class.java)
         startActivity(intent)
 
         finish()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.toolbar_logout -> launchLogin()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

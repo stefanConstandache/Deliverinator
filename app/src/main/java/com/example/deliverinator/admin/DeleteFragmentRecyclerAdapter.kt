@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.admin_delete_recycler_item.view.*
 
 class DeleteFragmentRecyclerAdapter(
     private val context: Context,
-    private val listener: DeleteFragmentRecyclerAdapter.OnItemClickListener,
+    private val listener: OnItemClickListener,
     private val uploadsList: List<DeleteFragmentRecyclerItem>,
 ) : RecyclerView.Adapter<DeleteFragmentRecyclerAdapter.AdminDeleteViewHolder>() {
 
@@ -32,12 +32,12 @@ class DeleteFragmentRecyclerAdapter(
             }
         }
     }
+    
     interface OnItemClickListener {
         fun onItemClick(position: Int, view: View?)
     }
+    
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminDeleteViewHolder {
-
-
         val itemView = LayoutInflater.from(parent.context).
         inflate(R.layout.admin_delete_recycler_item, parent, false)
 
@@ -46,9 +46,7 @@ class DeleteFragmentRecyclerAdapter(
 
     override fun onBindViewHolder(holder: AdminDeleteViewHolder, position: Int) {
         val uploadCurrent = uploadsList[position]
-        //val currentItem = list[position]
 
-       // holder.itemImage.setImageResource(currentItem.imageResource)
         holder.itemName.text = uploadCurrent.text1
         holder.itemDescription.text = uploadCurrent.text2
 
@@ -70,5 +68,4 @@ class DeleteFragmentRecyclerAdapter(
     }
 
     override fun getItemCount() = uploadsList.size
-
 }

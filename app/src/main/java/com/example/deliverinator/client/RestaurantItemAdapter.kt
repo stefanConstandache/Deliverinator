@@ -4,20 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.deliverinator.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.client_restaurants_item.view.*
 import androidx.recyclerview.widget.RecyclerView.*
-import com.example.deliverinator.restaurant.MenuAdapter
-import kotlinx.android.synthetic.main.client_fragment_restaurants.view.*
-import kotlinx.android.synthetic.main.restaurant_menu_item.view.*
 
 class RestaurantItemAdapter(
     private val context: Context,
-    private val exampleList: List<RestaurantItem>,
+    private val restaurantsList: List<RestaurantItem>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<RestaurantItemAdapter.RestaurantItemViewHolder>() {
     inner class RestaurantItemViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
@@ -50,7 +45,7 @@ class RestaurantItemAdapter(
     }
 
     override fun onBindViewHolder(holder: RestaurantItemViewHolder, position: Int) {
-        val currentItem = exampleList[position]
+        val currentItem = restaurantsList[position]
 
         holder.itemName.text = currentItem.name
         holder.itemDescription.text = currentItem.description
@@ -72,5 +67,5 @@ class RestaurantItemAdapter(
         }
     }
 
-    override fun getItemCount() = exampleList.size
+    override fun getItemCount() = restaurantsList.size
 }
