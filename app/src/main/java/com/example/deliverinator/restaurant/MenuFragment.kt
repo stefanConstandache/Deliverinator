@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.*
 import com.example.deliverinator.R
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -68,7 +67,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         mStorage = FirebaseStorage.getInstance()
         mStorageRef = mStorage.getReference(mAuth.currentUser?.uid!!)
         mEmail = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail)
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(MENU_ITEMS)
         mMenuItems = ArrayList()
         mAdapter = MenuAdapter(context!!, mMenuItems, listener)
 

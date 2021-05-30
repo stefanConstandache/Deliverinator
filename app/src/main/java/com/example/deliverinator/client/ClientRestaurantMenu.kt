@@ -1,27 +1,16 @@
-package com.example.deliverinator
+package com.example.deliverinator.client
 
-
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.ContentProvider
-import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.deliverinator.client.Cart
-import com.example.deliverinator.client.ClientDashboard
-import com.example.deliverinator.client.ClientRestaurantMenuItemAdapter
+import com.example.deliverinator.*
+import com.example.deliverinator.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.client_restaurant_menu.*
@@ -35,7 +24,6 @@ class ClientRestaurantMenu : AppCompatActivity(),
     private lateinit var mDBListener: ValueEventListener
     private lateinit var mCartItemsList: HashMap<UploadMenuItem, Int>
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.client_restaurant_menu)
@@ -44,11 +32,11 @@ class ClientRestaurantMenu : AppCompatActivity(),
         val restaurantEmail = intent.getStringExtra(EMAIL)
 
         mAuth = FirebaseAuth.getInstance()
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!)
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(restaurantEmail!!).child(MENU_ITEMS)
         mItemsList = ArrayList()
         mCartItemsList = HashMap()
 
-        mAdapter = ClientRestaurantMenuItemAdapter(this, mItemsList, this)
+        mAdapter = ClientRestaurantMenuItemAdapter(this, mItemsList, this, mCartItemsList)
 
         client_restaurant_menu_recyclerView.adapter = mAdapter
         client_restaurant_menu_recyclerView.layoutManager = LinearLayoutManager(this)
@@ -78,7 +66,6 @@ class ClientRestaurantMenu : AppCompatActivity(),
             }
         })
     }
-
 
     override fun onAddClick(position: Int, textView: TextView) {
         val quantity = textView.text.toString().toInt() + 1
@@ -113,16 +100,34 @@ class ClientRestaurantMenu : AppCompatActivity(),
 
     fun launchCart(view: View) {
         if (mCartItemsList.isNotEmpty()) {
-            val intent = Intent(this, Cart::class.java)
+            val cartIntent = Intent(this, Cart::class.java)
             val bundle = bundleOf(CART_ITEMS to mCartItemsList)
 
-
-            intent.putExtra(CART_ITEMS, bundle)
-            startActivity(intent)
-
+            cartIntent.putExtra(CART_ITEMS, bundle)
+            cartIntent.putExtra(EMAIL, intent.getStringExtra(EMAIL))
+            startActivityForResult(cartIntent, 1)
         } else {
             Toast.makeText(this, "Your shopping cart is empty", Toast.LENGTH_SHORT).show()
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            mCartItemsList.clear()
+            val items = data!!.getBundleExtra(MENU_ITEMS)!!.get(MENU_ITEMS) as HashMap<UploadMenuItem, Int>
+
+            if (items.isNotEmpty()) {
+                for (item in items) {
+                    for (position in 0 until mItemsList.size) {
+                        if (item.key.itemName == mItemsList[position].itemName) {
+                            mCartItemsList[mItemsList[position]] = item.value
+                        }
+                    }
+                }
+            }
+
+            mAdapter.notifyDataSetChanged()
+        }
+    }
 }
