@@ -135,8 +135,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         val addressField = EditText(view.context)
         val addressDialog = AlertDialog.Builder(view.context)
 
-        mDocReference.get().addOnSuccessListener {
-            val address = it.getString(ADDRESS)
+        mDocReference.get().addOnSuccessListener { docSnapshot ->
+            val address = docSnapshot.getString(ADDRESS)
             val message = if (address != null && address.isNotEmpty()) {
                 addressField.setText(address)
                 getString(R.string.confirm_adress)
