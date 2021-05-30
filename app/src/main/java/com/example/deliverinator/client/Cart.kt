@@ -80,7 +80,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         if (mItemsList.isNotEmpty()) {
             setFABText(mCartItemsSum)
         } else {
-            finish()
+            onBackPressed()
         }
     }
 
@@ -110,16 +110,19 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         val data = Intent(this, ClientRestaurantMenu::class.java)
         val items = HashMap<UploadMenuItem, Int>()
 
-        for (item in mItemsList) {
-            items[item.first] = item.second
+        if (mItemsList.isNotEmpty()) {
+            for (item in mItemsList) {
+                items[item.first] = item.second
+            }
         }
-        val bundle = bundleOf("Menu items" to items)
 
-        data.putExtra("Menu items", bundle)
+        val bundle = bundleOf(MENU_ITEMS to items)
+
+        data.putExtra(MENU_ITEMS, bundle)
 
         setResult(1, data)
         finish()
-
+    }
 
     fun launchAddressDialog(view: View) {
         val addressField = EditText(view.context)
@@ -174,7 +177,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     }
 
     private fun createNotificationChannel() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Notification Title"
             val descriptionText = "Notification description"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -182,6 +185,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 description = descriptionText
             }
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
             notificationManager.createNotificationChannel(channel)
         }
     }
@@ -195,6 +199,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
            // .setOngoing(true)
+
         NotificationManagerCompat.from(this).run {
             notify(mNotificationId, builder.build())
         }

@@ -68,7 +68,7 @@ class MenuFragment : Fragment(), MenuAdapter.OnItemClickListener {
         mStorage = FirebaseStorage.getInstance()
         mStorageRef = mStorage.getReference(mAuth.currentUser?.uid!!)
         mEmail = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail)
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(MENU_ITEMS)
         mMenuItems = ArrayList()
         mAdapter = MenuAdapter(context!!, mMenuItems, listener)
 
