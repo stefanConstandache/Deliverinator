@@ -1,11 +1,9 @@
 package com.example.deliverinator.admin
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.MimeTypeMap
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,13 +36,12 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
         mStorageRef = FirebaseStorage.getInstance().getReference(mAuth.currentUser?.uid!!)
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
 
-
         return view
     }
 
     private fun generateList(view: View):ArrayList<DeleteFragmentRecyclerItem> {
 
-        list = ArrayList<DeleteFragmentRecyclerItem>()
+        list = ArrayList()
         database.collection(RESTAURANTS).get()
             .addOnSuccessListener{ documents ->
                 for(document in documents) {
@@ -89,27 +86,11 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
                     .addOnSuccessListener { documents ->
                         for (document in documents) {
                             database.collection(USERS).document(document.id).delete()
-
-//                            val options = FirebaseOptions.builder()
-//                                .setCredentials(GoogleCredentials.getApplicationDefault())
-//                                .build()
-//
-//                            FirebaseApp.initializeApp(options)
-//                            FirebaseAuth.getInstance().deleteUser(document.id);
-
                         }
                     }
 
             }
             .create()
             .show()
-    }
-
-
-    private fun getFileExtension(uri: Uri): String? {
-        val contentResolver = context?.contentResolver
-        val mime = MimeTypeMap.getSingleton()
-
-        return mime.getExtensionFromMimeType(contentResolver?.getType(uri))
     }
 }

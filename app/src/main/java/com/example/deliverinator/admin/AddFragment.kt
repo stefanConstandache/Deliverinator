@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.deliverinator.*
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AddFragment : Fragment() {
@@ -131,7 +130,6 @@ class AddFragment : Fragment() {
                 mPassword.text.clear()
                 mConfirmPassword.text.clear()
                 mPhone.text.clear()
-
             }
         }
     }

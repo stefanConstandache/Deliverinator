@@ -2,7 +2,8 @@ package com.example.deliverinator.restaurant
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -28,9 +29,7 @@ class RestaurantDashboard : AppCompatActivity() {
 
         mNavigationView = findViewById(R.id.restaurant_dashboard_navigationView)
         mFrameLayout = findViewById(R.id.restaurant_dashboard_frame)
-
         mAuth = FirebaseAuth.getInstance()
-
         mAccountFragment = AccountFragment()
         mMenuFragment = MenuFragment()
         mOrdersFragment = OrdersFragment()
@@ -66,7 +65,7 @@ class RestaurantDashboard : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
-    fun launchLogin(view: View) {
+    private fun launchLogin() {
         val email = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
         val databaseRefMenu = FirebaseDatabase.getInstance().getReference(email).child(MENU_ITEMS)
         val databaseRefOrders = FirebaseDatabase.getInstance().getReference(email).child(ORDERS)
@@ -79,5 +78,18 @@ class RestaurantDashboard : AppCompatActivity() {
         startActivity(intent)
 
         finish()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.toolbar_logout -> launchLogin()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

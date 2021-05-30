@@ -5,20 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.*
+
 import com.example.deliverinator.R
 import com.example.deliverinator.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
-import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.restaurant_fragment_recyclerView
 import kotlinx.android.synthetic.main.restaurant_fragment_orders.view.*
 
-class OrdersFragment : Fragment() {
+class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mAdapter: OrdersItemAdapter
@@ -43,7 +40,8 @@ class OrdersFragment : Fragment() {
         mEmail = mAuth.currentUser?.email!!.replace("[@.]".toRegex(), "_")
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(ORDERS)
         mOrdersList = ArrayList()
-        mAdapter = OrdersItemAdapter(context!!, mOrdersList)
+        mAdapter = OrdersItemAdapter(context!!, mOrdersList, this)
+
 
         view.restaurant_fragment_orders_recyclerView.apply {
             adapter = mAdapter
