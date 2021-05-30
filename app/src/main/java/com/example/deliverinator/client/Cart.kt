@@ -86,7 +86,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         if (mItemsList.isNotEmpty()) {
             setFABText(mCartItemsSum)
         } else {
-            finish()
+            onBackPressed()
         }
     }
 
@@ -116,9 +116,12 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         val data = Intent(this, ClientRestaurantMenu::class.java)
         val items = HashMap<UploadMenuItem, Int>()
 
-        for (item in mItemsList) {
-            items[item.first] = item.second
+        if (mItemsList.isNotEmpty()) {
+            for (item in mItemsList) {
+                items[item.first] = item.second
+            }
         }
+
         val bundle = bundleOf(MENU_ITEMS to items)
 
         data.putExtra(MENU_ITEMS, bundle)

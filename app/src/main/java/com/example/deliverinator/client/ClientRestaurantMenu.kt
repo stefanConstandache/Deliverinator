@@ -117,10 +117,12 @@ class ClientRestaurantMenu : AppCompatActivity(),
             mCartItemsList.clear()
             val items = data!!.getBundleExtra(MENU_ITEMS)!!.get(MENU_ITEMS) as HashMap<UploadMenuItem, Int>
 
-            for (item in items) {
-                for (position in 0 until mItemsList.size) {
-                    if (item.key.itemName == mItemsList[position].itemName) {
-                        mCartItemsList[mItemsList[position]] = item.value
+            if (items.isNotEmpty()) {
+                for (item in items) {
+                    for (position in 0 until mItemsList.size) {
+                        if (item.key.itemName == mItemsList[position].itemName) {
+                            mCartItemsList[mItemsList[position]] = item.value
+                        }
                     }
                 }
             }
