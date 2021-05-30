@@ -113,9 +113,9 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         for (item in mItemsList) {
             items[item.first] = item.second
         }
-        val bundle = bundleOf("Menu items" to items)
+        val bundle = bundleOf(MENU_ITEMS to items)
 
-        data.putExtra("Menu items", bundle)
+        data.putExtra(MENU_ITEMS, bundle)
 
         setResult(1, data)
         finish()
@@ -134,7 +134,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 getString(R.string.provide_adress)
             }
 
-            val dialog = addressDialog.setTitle("Enter your address")
+            val dialog = addressDialog.setTitle(R.string.enter_your_address)
                 .setMessage(message)
                 .setView(addressField)
                 .setPositiveButton(R.string.confirm, null)
