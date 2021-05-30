@@ -2,6 +2,7 @@ package com.example.deliverinator
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -101,6 +102,7 @@ class Login : AppCompatActivity() {
     fun launchForgotPasswordDialog(view: View) {
         val mailField = EditText(view.context)
         val passwordResetDialog = AlertDialog.Builder(view.context)
+
 
         mailField.text = mEmail.text
 

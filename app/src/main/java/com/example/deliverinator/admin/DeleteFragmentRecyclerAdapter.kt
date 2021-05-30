@@ -32,12 +32,12 @@ class DeleteFragmentRecyclerAdapter(
             }
         }
     }
+    
     interface OnItemClickListener {
         fun onItemClick(position: Int, view: View?)
     }
+    
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminDeleteViewHolder {
-
-
         val itemView = LayoutInflater.from(parent.context).
         inflate(R.layout.admin_delete_recycler_item, parent, false)
 
