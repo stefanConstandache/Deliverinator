@@ -36,8 +36,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     private lateinit var mEmail: String
     private lateinit var mDatabaseRef: DatabaseReference
     private var mCartItemsSum: Double = 0.0
-    private var mChannelId = "channel_id"
-    private val mNotificationId = 101
+    private var mChannelId: String = "CHANNEL_ID"
+    private val mNotificationId: Int = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,7 +144,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 getString(R.string.provide_adress)
             }
 
-            val dialog = addressDialog.setTitle("Enter your address")
+            val dialog = addressDialog.setTitle(R.string.enter_your_address)
                 .setMessage(message)
                 .setView(addressField)
                 .setPositiveButton(R.string.confirm, null)
@@ -239,7 +239,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         val bitmap = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.splash_image)
         val builder = NotificationCompat.Builder(this, mChannelId)
             .setSmallIcon(R.drawable.splash_image)
-            .setContentTitle("Order sent!")
+            .setContentTitle(getString(R.string.order_sent))
             .setLargeIcon(bitmap)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setAutoCancel(true)
