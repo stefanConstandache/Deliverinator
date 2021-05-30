@@ -69,9 +69,9 @@ class DeleteFragment : Fragment(), DeleteFragmentRecyclerAdapter.OnItemClickList
         val restaurantName = list[position]
 
         deleteDialog
-            .setTitle("Are you sure?")
-            .setNegativeButton(R.strings.no, null)
-            .setPositiveButton(R.strings.yes) { _, _ ->
+            .setTitle(R.string.are_you_sure)
+            .setNegativeButton(R.string.no, null)
+            .setPositiveButton(R.string.yes) { _, _ ->
                 database.collection(RESTAURANTS).whereEqualTo(NAME, restaurantName.text1)
                     .get()
                     .addOnSuccessListener { documents ->
