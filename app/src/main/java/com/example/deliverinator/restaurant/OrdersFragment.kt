@@ -80,16 +80,13 @@ class OrdersFragment : Fragment(), OrdersItemAdapter.OnItemClickListener {
         val order = mOrdersList[position]
         val selectedKey = order.key
 
-
         deleteDialog
-            .setTitle("The order is done?")
-            .setNegativeButton("No", null)
-            .setPositiveButton("Yes") { _, _ ->
+            .setTitle(R.string.is_the_order_done)
+            .setPositiveButton(R.string.yes) { _, _ ->
                 mDatabaseRef.child(selectedKey!!).removeValue()
             }
+            .setNegativeButton(R.string.no, null)
             .create()
             .show()
-
-
     }
 }

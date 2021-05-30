@@ -16,7 +16,7 @@ import java.lang.StringBuilder
 class OrdersItemAdapter (
     private val context: Context,
     private val ordersList: List<OrdersItem>,
-    private val listener:OnItemClickListener
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<OrdersItemAdapter.OrdersItemViewHolder>(){
     inner class OrdersItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         val itemName = itemView.restaurant_orders_name

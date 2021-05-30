@@ -79,4 +79,6 @@
     <string name="confirm_adress">Please confirm your address</string>
     <string name="provide_adress">Please provide an address</string>
     <string name="enter_your_address">Enter your address</string>
+    <string name="is_the_order_done">Is the order done?</string>
+    <string name="empty_cart">Your shopping cart is empty</string>
 </resources>
