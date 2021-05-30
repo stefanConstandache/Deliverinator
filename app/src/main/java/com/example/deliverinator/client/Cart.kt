@@ -106,15 +106,20 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         }
     }
 
-    override fun finish() {
-        Toast.makeText(this, "haloooo", Toast.LENGTH_SHORT).show()
-        super.finish()
-    }
-
     override fun onBackPressed() {
-        this.finish()
-        //Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show()
-    }
+        val data = Intent(this, ClientRestaurantMenu::class.java)
+        val items = HashMap<UploadMenuItem, Int>()
+
+        for (item in mItemsList) {
+            items[item.first] = item.second
+        }
+        val bundle = bundleOf("Menu items" to items)
+
+        data.putExtra("Menu items", bundle)
+
+        setResult(1, data)
+        finish()
+
 
     fun launchAddressDialog(view: View) {
         val addressField = EditText(view.context)

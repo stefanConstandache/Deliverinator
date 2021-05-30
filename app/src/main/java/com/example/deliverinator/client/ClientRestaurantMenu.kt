@@ -2,6 +2,7 @@ package com.example.deliverinator.client
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -38,7 +39,7 @@ class ClientRestaurantMenu : AppCompatActivity(),
         mItemsList = ArrayList()
         mCartItemsList = HashMap()
 
-        mAdapter = ClientRestaurantMenuItemAdapter(this, mItemsList, this)
+        mAdapter = ClientRestaurantMenuItemAdapter(this, mItemsList, this, mCartItemsList)
 
         client_restaurant_menu_recyclerView.adapter = mAdapter
         client_restaurant_menu_recyclerView.layoutManager = LinearLayoutManager(this)
@@ -105,12 +106,28 @@ class ClientRestaurantMenu : AppCompatActivity(),
             val intent = Intent(this, Cart::class.java)
             val bundle = bundleOf(CART_ITEMS to mCartItemsList)
 
-
             intent.putExtra(CART_ITEMS, bundle)
-            startActivity(intent)
-
+            startActivityForResult(intent, 1)
         } else {
             Toast.makeText(this, "Your shopping cart is empty", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            mCartItemsList.clear()
+            val items = data!!.getBundleExtra("Menu items")!!.get("Menu items") as HashMap<UploadMenuItem, Int>
+
+            for (item in items) {
+                for (position in 0 until mItemsList.size) {
+                    if (item.key.itemName == mItemsList[position].itemName) {
+                        mCartItemsList[mItemsList[position]] = item.value
+                    }
+                }
+            }
+
+            mAdapter.notifyDataSetChanged()
         }
     }
 }
