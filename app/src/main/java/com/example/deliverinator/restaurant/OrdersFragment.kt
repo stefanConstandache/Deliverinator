@@ -86,4 +86,12 @@ class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
             .create()
             .show()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mDBListener?.let {
+            mDatabaseRef.removeEventListener(it)
+        }
+    }
 }
