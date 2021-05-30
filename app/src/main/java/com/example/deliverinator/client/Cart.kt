@@ -2,7 +2,6 @@ package com.example.deliverinator.client
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -21,15 +20,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.deliverinator.*
 import com.example.deliverinator.Utils.Companion.format
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.activity_cart.*
+import kotlinx.android.synthetic.main.client_cart_item.*
 
 class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
     private lateinit var mItemsList: ArrayList<Pair<UploadMenuItem, Int>>
     private lateinit var mCartItemAdapter: CartItemAdapter
     private lateinit var mDocReference: DocumentReference
+    private lateinit var mEmail: String
+    private lateinit var mDatabaseRef: DatabaseReference
     private var mCartItemsSum: Double = 0.0
     private var mChannelId = "channel_id"
     private val mNotificationId = 101
@@ -45,6 +49,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
             .document(FirebaseAuth.getInstance().currentUser!!.uid)
         mItemsList = getItemsList(items)
         mCartItemAdapter = CartItemAdapter(this, mItemsList, this)
+        mEmail = intent.getStringExtra(EMAIL)!!
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(ORDERS)
         mCartItemsSum = mItemsList.sumByDouble {
             it.first.itemPrice * it.second
         }
@@ -128,8 +134,8 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
         val addressField = EditText(view.context)
         val addressDialog = AlertDialog.Builder(view.context)
 
-        mDocReference.get().addOnSuccessListener {
-            val address = it.getString(ADDRESS)
+        mDocReference.get().addOnSuccessListener { docSnapshot ->
+            val address = docSnapshot.getString(ADDRESS)
             val message = if (address != null && address.isNotEmpty()) {
                 addressField.setText(address)
                 getString(R.string.confirm_adress)
@@ -137,7 +143,7 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                 getString(R.string.provide_adress)
             }
 
-            val dialog = addressDialog.setTitle("Enter your address")
+            val dialog = addressDialog.setTitle(R.string.enter_your_address)
                 .setMessage(message)
                 .setView(addressField)
                 .setPositiveButton(R.string.confirm, null)
@@ -161,6 +167,20 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                         SetOptions.merge()
                     )
 
+                    val order = getOrderString(mItemsList)
+                    val upload = UploadOrder(
+                        docSnapshot.getString(NAME),
+                        fieldText,
+                        order,
+                        mCartItemsSum
+                    )
+
+                    val uploadId = mDatabaseRef.push().key
+
+                    if (uploadId != null) {
+                        mDatabaseRef.child(uploadId).setValue(upload)
+                    }
+
                     dialog.dismiss()
                     // TODO: Inchis activitati
                     createNotificationChannel()
@@ -174,6 +194,22 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
 
             dialog.show()
         }
+    }
+
+    private fun getOrderString(itemsList: ArrayList<Pair<UploadMenuItem, Int>>): String {
+        val builder = StringBuilder()
+
+        for (index in 0 until itemsList.size) {
+            val item = itemsList[index]
+
+            builder.append(item.second).append(" x ").append(item.first.itemName)
+
+            if (index != itemsList.size - 1) {
+                builder.append(", ")
+            }
+        }
+
+        return builder.toString()
     }
 
     private fun createNotificationChannel() {
