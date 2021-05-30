@@ -21,14 +21,19 @@ class ClientRestaurantMenu : AppCompatActivity(),
     private lateinit var mItemsList: ArrayList<UploadMenuItem>
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabaseRef: DatabaseReference
-    private lateinit var mDBListener: ValueEventListener
     private lateinit var mCartItemsList: HashMap<UploadMenuItem, Int>
+
+    companion object{
+        private lateinit var mDBListener: ValueEventListener
+
+        val DBListener
+            get() = mDBListener
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.client_restaurant_menu)
 
-        val intent = intent
         val restaurantEmail = intent.getStringExtra(EMAIL)
 
         mAuth = FirebaseAuth.getInstance()
@@ -91,6 +96,7 @@ class ClientRestaurantMenu : AppCompatActivity(),
 
         builder.setMessage(R.string.leave_restaurant)
             .setPositiveButton(R.string.yes) { _, _ ->
+                mDatabaseRef.removeEventListener(mDBListener)
                 finish()
             }
             .setNegativeButton(R.string.no, null)
@@ -107,7 +113,7 @@ class ClientRestaurantMenu : AppCompatActivity(),
             cartIntent.putExtra(EMAIL, intent.getStringExtra(EMAIL))
             startActivityForResult(cartIntent, 1)
         } else {
-            Toast.makeText(this, "Your shopping cart is empty", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.empty_cart, Toast.LENGTH_SHORT).show()
         }
     }
 

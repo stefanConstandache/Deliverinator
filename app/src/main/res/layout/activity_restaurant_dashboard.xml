@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".restaurant.RestaurantDashboard">
 
-    <Button
-        android:id="@+id/restaurant_dashboard_logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="launchLogin"
-        android:text="@string/dashboard_logout" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/restaurant_dashboard_navigationView"
         android:layout_width="match_parent"
@@ -24,7 +17,6 @@
         android:id="@+id/restaurant_dashboard_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/restaurant_dashboard_navigationView"
-        android:layout_below="@id/restaurant_dashboard_logout_button" />
+        android:layout_above="@id/restaurant_dashboard_navigationView" />
 
 </RelativeLayout>

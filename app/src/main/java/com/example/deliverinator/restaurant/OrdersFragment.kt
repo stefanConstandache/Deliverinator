@@ -1,7 +1,6 @@
 package com.example.deliverinator.restaurant
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +8,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.*
+
 import com.example.deliverinator.R
 import com.example.deliverinator.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.*
-import kotlinx.android.synthetic.main.restaurant_fragment_menu.view.restaurant_fragment_recyclerView
 import kotlinx.android.synthetic.main.restaurant_fragment_orders.view.*
 
-class OrdersFragment : Fragment(), OrdersItemAdapter.OnItemClickListener {
+class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mAdapter: OrdersItemAdapter
@@ -44,6 +41,7 @@ class OrdersFragment : Fragment(), OrdersItemAdapter.OnItemClickListener {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(ORDERS)
         mOrdersList = ArrayList()
         mAdapter = OrdersItemAdapter(context!!, mOrdersList, this)
+
 
         view.restaurant_fragment_orders_recyclerView.apply {
             adapter = mAdapter
@@ -80,16 +78,13 @@ class OrdersFragment : Fragment(), OrdersItemAdapter.OnItemClickListener {
         val order = mOrdersList[position]
         val selectedKey = order.key
 
-
         deleteDialog
-            .setTitle("The order is done?")
-            .setNegativeButton("No", null)
-            .setPositiveButton("Yes") { _, _ ->
+            .setTitle(R.string.is_the_order_done)
+            .setPositiveButton(R.string.yes) { _, _ ->
                 mDatabaseRef.child(selectedKey!!).removeValue()
             }
+            .setNegativeButton(R.string.no, null)
             .create()
             .show()
-
-
     }
 }

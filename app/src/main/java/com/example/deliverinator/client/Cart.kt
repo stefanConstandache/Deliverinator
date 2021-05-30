@@ -2,7 +2,6 @@ package com.example.deliverinator.client
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -23,6 +22,7 @@ import com.example.deliverinator.Utils.Companion.format
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -183,9 +183,17 @@ class Cart : AppCompatActivity(), CartItemAdapter.OnItemClickListener {
                     }
 
                     dialog.dismiss()
-                    // TODO: Inchis activitati
                     createNotificationChannel()
                     sendNotification()
+
+                    val restaurantEmail = intent.getStringExtra(EMAIL)
+                    val databaseRefMenu = FirebaseDatabase.getInstance().getReference(restaurantEmail!!).child(MENU_ITEMS)
+                    databaseRefMenu.removeEventListener(ClientRestaurantMenu.DBListener)
+
+                    val intent = Intent(this, ClientDashboard::class.java)
+                    startActivity(intent)
+
+                    finish()
                 }
 
                 cancelButton.setOnClickListener {
