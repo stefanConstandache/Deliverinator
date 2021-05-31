@@ -41,7 +41,6 @@ class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
         mOrdersList = ArrayList()
         mAdapter = OrdersItemAdapter(context!!, mOrdersList, this)
 
-
         view.restaurant_fragment_orders_recyclerView.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context!!)
