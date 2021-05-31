@@ -8,9 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-
+import com.example.deliverinator.ORDERS
 import com.example.deliverinator.R
-import com.example.deliverinator.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.restaurant_fragment_orders.view.*
@@ -22,8 +21,8 @@ class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
     private lateinit var mOrdersList: ArrayList<OrdersItem>
     private lateinit var mEmail: String
 
-    companion object{
-        private lateinit var mDBListener: ValueEventListener
+    companion object {
+        private var mDBListener: ValueEventListener? = null
 
         val DBListener
             get() = mDBListener
@@ -41,7 +40,6 @@ class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mEmail).child(ORDERS)
         mOrdersList = ArrayList()
         mAdapter = OrdersItemAdapter(context!!, mOrdersList, this)
-
 
         view.restaurant_fragment_orders_recyclerView.apply {
             adapter = mAdapter
@@ -86,5 +84,13 @@ class OrdersFragment : Fragment() , OrdersItemAdapter.OnItemClickListener {
             .setNegativeButton(R.string.no, null)
             .create()
             .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mDBListener?.let {
+            mDatabaseRef.removeEventListener(it)
+        }
     }
 }

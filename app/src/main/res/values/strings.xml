@@ -81,4 +81,7 @@
     <string name="enter_your_address">Enter your address</string>
     <string name="is_the_order_done">Is the order done?</string>
     <string name="empty_cart">Your shopping cart is empty</string>
+    <string name="order_sent">Order sent!</string>
+    <string name="new_orders_received">New Orders Received</string>
+    <string name="are_you_sure">Are you sure?</string>
 </resources>

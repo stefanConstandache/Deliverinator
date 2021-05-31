@@ -1,5 +1,6 @@
 package com.example.deliverinator.admin
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.admin_fragment_delete.view.*
 
-class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListener {
+class DeleteFragment : Fragment(), DeleteFragmentRecyclerAdapter.OnItemClickListener {
     lateinit var adapter: DeleteFragmentRecyclerAdapter
     lateinit var list:ArrayList<DeleteFragmentRecyclerItem>
     var database = FirebaseFirestore.getInstance()
@@ -36,12 +37,13 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
         mStorageRef = FirebaseStorage.getInstance().getReference(mAuth.currentUser?.uid!!)
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.currentUser?.uid!!)
 
+
         return view
     }
 
     private fun generateList(view: View):ArrayList<DeleteFragmentRecyclerItem> {
-
         list = ArrayList()
+
         database.collection(RESTAURANTS).get()
             .addOnSuccessListener{ documents ->
                 for(document in documents) {
@@ -68,9 +70,9 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
         val restaurantName = list[position]
 
         deleteDialog
-            .setTitle("Are you sure?")
-            .setNegativeButton("No", null)
-            .setPositiveButton("Yes") { _, _ ->
+            .setTitle(R.string.are_you_sure)
+            .setNegativeButton(R.string.no, null)
+            .setPositiveButton(R.string.yes) { _, _ ->
                 database.collection(RESTAURANTS).whereEqualTo(NAME, restaurantName.text1)
                     .get()
                     .addOnSuccessListener { documents ->
@@ -88,7 +90,6 @@ class DeleteFragment : Fragment(),DeleteFragmentRecyclerAdapter.OnItemClickListe
                             database.collection(USERS).document(document.id).delete()
                         }
                     }
-
             }
             .create()
             .show()
