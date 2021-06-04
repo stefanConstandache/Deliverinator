@@ -37,4 +37,5 @@
       
 ## Screenshots
 
-![Imgur](https://i.imgur.com/5BJohW2.jpg =250X250)
+![Imgur](https://i.imgur.com/5BJohW2.jpg){:class="img-responsive"}
+![Imgur](https://i.imgur.com/5BJohW2.jpg){:height="50%" width="50%"}
