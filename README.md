@@ -47,10 +47,11 @@
 **Client Dashboard**
 
   <img src="https://i.imgur.com/5oEVgUe.jpg" width="350" height="700"> <img src="https://i.imgur.com/8Csx4xu.jpg" width="350" height="700">
-  <img src="https://i.imgur.com/nk5iIH3.jpg" width="350" height="700"> <img src="https://i.imgur.com/w9V6KRe.jpg" width="350" height="700"> <img src="https://i.imgur.com/HUuxh0f.jpg" width="350" height="700">
+  <img src="https://i.imgur.com/nk5iIH3.jpg" width="350" height="700"> <img src="https://i.imgur.com/w9V6KRe.jpg" width="350" height="700">
+  <img src="https://i.imgur.com/HUuxh0f.jpg" width="350" height="700">
 
 **Restaurant Dashboard**
 
-  <img src="https://i.imgur.com/rKznnH9.jpg" width="350" height="700"> <img src="https://i.imgur.com/5xQsiqz.jpg" width="350" height="700"> <img src="https://i.imgur.com/IPfv2VI.jpg" width="350" height="700">
-  <img src="https://i.imgur.com/96RYKGB.jpg" width="350" height="700">
+  <img src="https://i.imgur.com/rKznnH9.jpg" width="350" height="700"> <img src="https://i.imgur.com/5xQsiqz.jpg" width="350" height="700">
+  <img src="https://i.imgur.com/IPfv2VI.jpg" width="350" height="700"> <img src="https://i.imgur.com/96RYKGB.jpg" width="350" height="700">
 
