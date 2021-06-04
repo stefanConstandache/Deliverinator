@@ -37,4 +37,4 @@
       
 ## Screenshots
 
-![Imgur](https://i.imgur.com/5BJohW2.jpg)
+![Imgur](https://i.imgur.com/5BJohW2.jpg = 250X250)
