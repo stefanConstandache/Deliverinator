@@ -37,4 +37,6 @@
       
 ## Screenshots
 
-![Imgur](https://i.imgur.com/5BJohW2.jpg){:height="50%" width="50%"}
+![Imgur](https://i.imgur.com/5BJohW2.jpg)
+
+<img src="https://i.imgur.com/5BJohW2.jpg" width="100" height="100">
