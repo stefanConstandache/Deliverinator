@@ -37,4 +37,4 @@
       
 ## Screenshots
 
-<img src="https://i.imgur.com/5BJohW2.jpg" width="300" height="700">
+<img src="https://i.imgur.com/5BJohW2.jpg" width="350" height="700">
