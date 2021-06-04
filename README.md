@@ -43,6 +43,7 @@
 
 **Admin Dashboard**
 
+<img src="https://i.imgur.com/q6Hu9WN.jpg" width="350" height="700"> <img src="https://i.imgur.com/h57N6Hr.jpg" width="350" height="700">
 
 **Client Dashboard**
 
@@ -54,4 +55,3 @@
 
   <img src="https://i.imgur.com/rKznnH9.jpg" width="350" height="700"> <img src="https://i.imgur.com/5xQsiqz.jpg" width="350" height="700">
   <img src="https://i.imgur.com/IPfv2VI.jpg" width="350" height="700"> <img src="https://i.imgur.com/96RYKGB.jpg" width="350" height="700">
-
