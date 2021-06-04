@@ -1,6 +1,6 @@
 # Deliverinator
 
-**Description**
+## Description
   - A team project made for Program Engineering class.
   - The project is a food delivery app made in Android Studio using Kotlin language.
   - We used Firebase as the database and cloud storage.
@@ -37,21 +37,21 @@
       
 ## Screenshots
 
-**Login and Register**
+### Login and Register
 
 <img src="https://i.imgur.com/5BJohW2.jpg" width="350" height="700"> <img src="https://i.imgur.com/e2jSXdp.jpg" width="350" height="700">
 
-**Admin Dashboard**
+### Admin Dashboard
 
 <img src="https://i.imgur.com/q6Hu9WN.jpg" width="350" height="700"> <img src="https://i.imgur.com/h57N6Hr.jpg" width="350" height="700">
 
-**Client Dashboard**
+### Client Dashboard
 
   <img src="https://i.imgur.com/5oEVgUe.jpg" width="350" height="700"> <img src="https://i.imgur.com/8Csx4xu.jpg" width="350" height="700">
   <img src="https://i.imgur.com/nk5iIH3.jpg" width="350" height="700"> <img src="https://i.imgur.com/w9V6KRe.jpg" width="350" height="700">
   <img src="https://i.imgur.com/HUuxh0f.jpg" width="350" height="700">
 
-**Restaurant Dashboard**
+### Restaurant Dashboard
 
   <img src="https://i.imgur.com/rKznnH9.jpg" width="350" height="700"> <img src="https://i.imgur.com/5xQsiqz.jpg" width="350" height="700">
   <img src="https://i.imgur.com/IPfv2VI.jpg" width="350" height="700"> <img src="https://i.imgur.com/96RYKGB.jpg" width="350" height="700">
