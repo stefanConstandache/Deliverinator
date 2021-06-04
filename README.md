@@ -37,4 +37,4 @@
       
 ## Screenshots
 
-![Imgur](https://imgur.com/5BJohW2)
+![Imgur](https://imgur.com/XHq7ovS)
