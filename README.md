@@ -13,7 +13,7 @@
     - Restaurant
     - Client
   - An admin account is predefined and cannout be made using the register activity.
-  - The admin user can create restaurant account or one.
+  - The admin user can create or delete a restaurant account.
   - Admin dashboard has 2 fragments:
     - Create restaurant fragment
       - Here are some field which must be filled by admin so the restaurant account can be made.
